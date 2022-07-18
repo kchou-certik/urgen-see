@@ -16,6 +16,7 @@ function Patients(props) {
 
     function handleSubmit(e) {
         e.preventDefault();
+        alert("Submitted!");
     }
 
     return (
@@ -24,7 +25,7 @@ function Patients(props) {
                 <h1>Patients</h1>
             </header>
             <Table cols={cols} rows={rows} />
-            <form>
+            <form onSubmit={handleSubmit} >
                 <h2>Register Patient</h2>
                 <p>MRN: 3</p>
                 <fieldset> <legend>Demographics</legend>
@@ -145,7 +146,7 @@ function Patients(props) {
                         </label>
                     </p>
                 </fieldset>
-                <input type="submit" onSubmit={handleSubmit} />
+                <input type="submit" />
             </form>
         </main >
     );
