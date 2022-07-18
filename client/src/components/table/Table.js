@@ -11,8 +11,8 @@ function Table({ cols, rows }) {
                 {<TableHead row={cols} />}
             </thead>
             <tbody>
-                {rows.map((row) => {
-                    return <TableRow row={row} />
+                {rows.map((row, i) => {
+                    return <TableRow row={row} key={i} />
                 })}
             </tbody>
         </table>

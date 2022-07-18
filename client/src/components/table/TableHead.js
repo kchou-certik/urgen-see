@@ -3,8 +3,8 @@ import React from 'react';
 function TableHead({ row }) {
     return (
         <tr>
-            {row.map((field) => {
-                return <th>{field}</th>
+            {row.map((field, i) => {
+                return <th key={i}>{field}</th>
             })}
         </tr>
     );

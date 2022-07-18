@@ -3,8 +3,8 @@ import React from 'react';
 function TableRow({ row }) {
     return (
         <tr>
-            {row.map((field) => {
-                return <td>{field}</td>
+            {row.map((field, i) => {
+                return <td key={i}>{field}</td>
             })}
         </tr>
     );
