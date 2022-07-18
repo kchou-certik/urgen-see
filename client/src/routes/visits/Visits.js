@@ -3,7 +3,7 @@ import Table from '../../components/table/Table'
 import { Link } from 'react-router-dom'
 
 function Visits(props) {
-    const cols = ["visit_ID", "patient_ID", "visit_insurance", "carrier.name", "plan.name", "primary_diagnosis", "scheduled_time", "check_in_time", "discharge_time", "visit_type"];
+    const cols = ["visit_ID", "mrn", "plan_ID", "carrier.provider", "plan.name", "primary_diagnosis", "scheduled_time", "check_in_time", "discharge_time", "visit_type"];
     const rows = [
         [1, 1, 1, "Empire BCBS ", "HealthPlus", "exposure to covid-19", "10/07/2022 10:30", "10/07/2022 10:30", "10/07/2022 11:00", "WALKIN covid test"]
     ]

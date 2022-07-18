@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Table from '../../components/table/Table';
 
 function Carriers(props) {
-    const cols = ["carrier_ID", "phone_number", "name"];
+    const cols = ["carrier_ID", "phone_number", "provider"];
     const rows = [
         [1, "800-888-8888", "Empire BCBS"],
         [2, "800-111-1111", "Aetna"]

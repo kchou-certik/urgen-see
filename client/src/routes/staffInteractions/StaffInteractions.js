@@ -12,6 +12,7 @@ function StaffInteractions(props) {
     return (
         <>
             <header>
+                <Link to="/visits">{"<-"} Visits</Link>
                 <h1>Patient-Staff Visit Interactions</h1>
             </header>
             <main>
