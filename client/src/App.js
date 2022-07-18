@@ -7,29 +7,33 @@ import Plans from './routes/Plans';
 import Staff from './routes/Staff';
 import Visits from './routes/Visits';
 
+import './App.css';
+
 function App() {
   return (
     <div>
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/patients">Patients</Link>
-        </li>
-        <li>
-          <Link to="/visits">Visits</Link>
-        </li>
-        <li>
-          <Link to="/staff">Staff</Link>
-        </li>
-        <li>
-          <Link to="/plans">Plans</Link>
-        </li>
-        <li>
-          <Link to="/carriers">Carriers</Link>
-        </li>
-      </ul>
+      <nav>
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/patients">Patients</Link>
+          </li>
+          <li>
+            <Link to="/visits">Visits</Link>
+          </li>
+          <li>
+            <Link to="/staff">Staff</Link>
+          </li>
+          <li>
+            <Link to="/plans">Plans</Link>
+          </li>
+          <li>
+            <Link to="/carriers">Carriers</Link>
+          </li>
+        </ul>
+      </nav>
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="patients" element={<Patients />} />
