@@ -15,51 +15,43 @@ import StaffInteractions from './routes/staffInteractions/StaffInteractions';
 import InteractionNew from './routes/staffInteractions/InteractionNew';
 
 import './App.css';
+import { CssBaseline } from '@mui/material';
+import { Container } from '@mui/material';
+import { Toolbar } from '@mui/material';
 
 function App() {
   return (
-    <div>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/patients">Patients</Link>
-          </li>
-          <li>
-            <Link to="/visits">Visits</Link>
-          </li>
-          <li>
-            <Link to="/staff">Staff</Link>
-          </li>
-          <li>
-            <Link to="/plans">Plans</Link>
-          </li>
-          <li>
-            <Link to="/carriers">Carriers</Link>
-          </li>
-          <li>
-            <Link to="/staff-interactions">Staff Interactions</Link>
-          </li>
-        </ul>
-      </nav>
-      <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="patients" element={<Patients />} />
-        <Route path="patients/new" element={<PatientRegistration />} />
-        <Route path="visits" element={<Visits />} />
-        <Route path="visits/new" element={<VisitNew />} />
-        <Route path="staff" element={<Staff />} />
-        <Route path="staff/new" element={<StaffNew />} />
-        <Route path="carriers" element={<Carriers />} />
-        <Route path="carriers/new" element={<CarrierNew />} />
-        <Route path="plans" element={<Plans />} />
-        <Route path="plans/new" element={<PlanNew />} />
-        <Route path="staff-interactions" element={<StaffInteractions />} />
-        <Route path="staff-interactions/new" element={<InteractionNew />} />
-      </Routes>
-    </div >
+    <>
+      <CssBaseline />
+      <Container maxWidth="xl">
+        <Toolbar component="nav" variant="dense" sx={{ justifyContent: "space-between" }}>
+          <Link to="/">Home</Link>
+          <Link to="/patients">Patients</Link>
+          <Link to="/visits">Visits</Link>
+          <Link to="/staff">Staff</Link>
+          <Link to="/plans">Plans</Link>
+          <Link to="/carriers">Carriers</Link>
+          <Link to="/staff-interactions">Staff Interactions</Link>
+        </Toolbar>
+      </Container>
+      <Container maxWidth="xl">
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="patients" element={<Patients />} />
+          <Route path="patients/new" element={<PatientRegistration />} />
+          <Route path="visits" element={<Visits />} />
+          <Route path="visits/new" element={<VisitNew />} />
+          <Route path="staff" element={<Staff />} />
+          <Route path="staff/new" element={<StaffNew />} />
+          <Route path="carriers" element={<Carriers />} />
+          <Route path="carriers/new" element={<CarrierNew />} />
+          <Route path="plans" element={<Plans />} />
+          <Route path="plans/new" element={<PlanNew />} />
+          <Route path="staff-interactions" element={<StaffInteractions />} />
+          <Route path="staff-interactions/new" element={<InteractionNew />} />
+        </Routes>
+      </Container >
+    </>
   );
 }
 
