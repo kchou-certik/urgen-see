@@ -6,11 +6,35 @@ import Stack from '@mui/material/Stack';
 
 import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
 import EditIcon from '@mui/icons-material/Edit';
+import MUITableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
 
 function TableRow({ row, deleteLink, updateLink }) {
     return (
-        <tr>
-            <td>
+        // <tr>
+        //     <td>
+        //         <Stack direction="row">
+        //             {deleteLink &&
+        //                 <IconButton component={Link} to="#">
+        //                     <RemoveCircleOutlineOutlinedIcon />
+        //                 </IconButton>
+        //             }
+        //             {
+        //                 updateLink &&
+        //                 <IconButton component={Link} to={updateLink}>
+        //                     <EditIcon />
+        //                 </IconButton>
+        //             }
+        //         </Stack>
+        //     </td>
+        //     {
+        //         row.map((field, i) => {
+        //             return <td key={i}>{field}</td>
+        //         })
+        //     }
+        // </tr >
+        <MUITableRow>
+            <TableCell padding="checkbox">
                 <Stack direction="row">
                     {deleteLink &&
                         <IconButton component={Link} to="#">
@@ -24,13 +48,15 @@ function TableRow({ row, deleteLink, updateLink }) {
                         </IconButton>
                     }
                 </Stack>
-            </td>
+            </TableCell>
             {
                 row.map((field, i) => {
-                    return <td key={i}>{field}</td>
+                    return (
+                        <TableCell key={i}>{field}</TableCell>
+                    )
                 })
             }
-        </tr >
+        </MUITableRow>
     );
 }
 export default TableRow;

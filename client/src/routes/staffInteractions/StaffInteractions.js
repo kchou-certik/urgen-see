@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Table from '../../components/table/Table';
 
+import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import PeopleIcon from '@mui/icons-material/People';
 
@@ -19,9 +20,11 @@ function StaffInteractions(props) {
                 <h1>Patient-Staff Visit Interactions</h1>
             </header>
             <main>
-                <Button component={Link} to="/staff-interactions/new" variant="outlined" endIcon={<PeopleIcon />}>
-                    Add Interaction
-                </Button>
+                <Stack direction="row" spacing="1em" sx={{ mb: 2 }}>
+                    <Button component={Link} to="/staff-interactions/new" variant="outlined" endIcon={<PeopleIcon />}>
+                        Add Interaction
+                    </Button>
+                </Stack>
                 <Table cols={cols} rows={rows} updateLink="/staff-interactions/test/update" />
             </main>
         </>

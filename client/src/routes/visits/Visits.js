@@ -2,6 +2,7 @@ import React from 'react';
 import Table from '../../components/table/Table'
 import { Link } from 'react-router-dom'
 
+import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
 
@@ -30,9 +31,11 @@ function Visits(props) {
                 </section>
             </header>
             <main>
-                <Button component={Link} to="/visits/new" variant="contained" endIcon={<MoreTimeIcon />}>
-                    Book Appointment
-                </Button>
+                <Stack direction="row" spacing="1em" sx={{ mb: 2 }}>
+                    <Button component={Link} to="/visits/new" variant="outlined" endIcon={<MoreTimeIcon />}>
+                        Book Appointment
+                    </Button>
+                </Stack>
                 <Table cols={cols} rows={rows} updateLink={"/visits/test/update"} />
             </main>
         </>

@@ -1,15 +1,19 @@
 import React from 'react';
 
+import MUITableHead from '@mui/material/TableHead';
+import TableRow from './TableRow';
+
 function TableHead({ row }) {
     return (
-        <tr>
-            <th>
+        // <tr>
+        //     <th>
 
-            </th>
-            {row.map((field, i) => {
-                return <th key={i}>{field}</th>
-            })}
-        </tr>
+        //     </th>
+        //     
+        // </tr>
+        <MUITableHead>
+            <TableRow row={row} />
+        </MUITableHead>
     );
 }
 export default TableHead;

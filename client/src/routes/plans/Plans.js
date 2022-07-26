@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Table from '../../components/table/Table';
 
+import Stack from '@mui/material/Stack';
 import { Button } from '@mui/material';
 import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined';
 
@@ -20,9 +21,11 @@ function Plans(props) {
                 <h1>Insurance Plans</h1>
             </header>
             <main>
-                <Button component={Link} to="/plans/new" variant="outlined" endIcon={<PostAddOutlinedIcon />}>
-                    Add Plan
-                </Button>
+                <Stack direction="row" spacing="1em" sx={{ mb: 2 }}>
+                    <Button component={Link} to="/plans/new" variant="outlined" endIcon={<PostAddOutlinedIcon />}>
+                        Add Plan
+                    </Button>
+                </Stack>
                 <Table cols={cols} rows={rows} updateLink="/plans/test/update" />
             </main>
         </>

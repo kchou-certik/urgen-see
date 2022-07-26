@@ -2,6 +2,7 @@ import React from 'react';
 import Table from '../../components/table/Table'
 import { Link } from 'react-router-dom';
 
+import Stack from '@mui/material/Stack';
 import { Button } from '@mui/material';
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
@@ -20,12 +21,14 @@ function Patients(props) {
             <header>
                 <h1>Patients</h1>
             </header>
-            <Button component={Link} to="/patients/search" variant="outlined" endIcon={<PersonSearchIcon />}>
-                Search
-            </Button>
-            <Button component={Link} to="/patients/new" variant="outlined" endIcon={<PersonAddIcon />}>
-                Register
-            </Button>
+            <Stack direction="row" spacing="1em" sx={{ mb: 2 }}>
+                <Button component={Link} to="/patients/search" variant="outlined" endIcon={<PersonSearchIcon />}>
+                    Search
+                </Button>
+                <Button component={Link} to="/patients/new" variant="outlined" endIcon={<PersonAddIcon />}>
+                    Register
+                </Button>
+            </Stack>
             <Table cols={cols} rows={rows} updateLink={"/patients/test/update"} deleteLink={null} />
         </main >
     );
