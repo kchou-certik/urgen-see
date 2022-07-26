@@ -2,6 +2,9 @@ import React from 'react';
 import Table from '../../components/table/Table'
 import { Link } from 'react-router-dom'
 
+import Button from '@mui/material/Button';
+import MoreTimeIcon from '@mui/icons-material/MoreTime';
+
 function Visits(props) {
     const cols = ["visit_ID", "mrn", "plan_ID", "carrier.provider", "plan.name", "primary_diagnosis", "scheduled_time", "check_in_time", "discharge_time", "visit_type"];
     const rows = [
@@ -27,8 +30,10 @@ function Visits(props) {
                 </section>
             </header>
             <main>
-                <Link to="/visits/new">Book Appointment</Link>
-                <Table cols={cols} rows={rows} />
+                <Button component={Link} to="/visits/new" variant="contained" endIcon={<MoreTimeIcon />}>
+                    Book Appointment
+                </Button>
+                <Table cols={cols} rows={rows} updateLink={"/visits/test/update"} />
             </main>
         </>
 

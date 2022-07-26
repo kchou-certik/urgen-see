@@ -2,6 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Table from '../../components/table/Table';
 
+import { Button } from '@mui/material';
+import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined';
+
 function Plans(props) {
     const cols = ["plan_ID", "referral_required", "carrier_ID", "carrier.provider", "name"];
     const rows = [
@@ -17,8 +20,10 @@ function Plans(props) {
                 <h1>Insurance Plans</h1>
             </header>
             <main>
-                <Link to="/plans/new">Add a Plan</Link>
-                <Table cols={cols} rows={rows} />
+                <Button component={Link} to="/plans/new" variant="outlined" endIcon={<PostAddOutlinedIcon />}>
+                    Add Plan
+                </Button>
+                <Table cols={cols} rows={rows} updateLink="/plans/test/update" />
             </main>
         </>
 

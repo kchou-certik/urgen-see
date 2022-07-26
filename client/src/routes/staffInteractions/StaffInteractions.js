@@ -2,6 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Table from '../../components/table/Table';
 
+import Button from '@mui/material/Button';
+import PeopleIcon from '@mui/icons-material/People';
+
 function StaffInteractions(props) {
     const cols = ["visit_staff_ID", "visit_ID", "visit.scheduled_time", "patient.first_name", "patient.last_name", "patient.date_of_birth", "staff_ID", "staff.first_name", "staff.last_name", "staff.practitioner_type"];
     const rows = [
@@ -16,8 +19,10 @@ function StaffInteractions(props) {
                 <h1>Patient-Staff Visit Interactions</h1>
             </header>
             <main>
-                <Link to="/staff-interactions/new">Add an Interaction</Link>
-                <Table cols={cols} rows={rows} />
+                <Button component={Link} to="/staff-interactions/new" variant="outlined" endIcon={<PeopleIcon />}>
+                    Add Interaction
+                </Button>
+                <Table cols={cols} rows={rows} updateLink="/staff-interactions/test/update" />
             </main>
         </>
 

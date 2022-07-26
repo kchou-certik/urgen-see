@@ -2,6 +2,10 @@ import React from 'react';
 import Table from '../../components/table/Table'
 import { Link } from 'react-router-dom';
 
+import { Button } from '@mui/material';
+import PersonSearchIcon from '@mui/icons-material/PersonSearch';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+
 
 
 function Patients(props) {
@@ -16,8 +20,13 @@ function Patients(props) {
             <header>
                 <h1>Patients</h1>
             </header>
-            <Link to="/patients/new">Register Patient</Link>
-            <Table cols={cols} rows={rows} />
+            <Button component={Link} to="/patients/search" variant="outlined" endIcon={<PersonSearchIcon />}>
+                Search
+            </Button>
+            <Button component={Link} to="/patients/new" variant="outlined" endIcon={<PersonAddIcon />}>
+                Register
+            </Button>
+            <Table cols={cols} rows={rows} updateLink={"/patients/test/update"} deleteLink={null} />
         </main >
     );
 }

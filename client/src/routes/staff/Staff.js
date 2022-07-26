@@ -2,6 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Table from '../../components/table/Table';
 
+import Button from '@mui/material/Button';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+
 function Staff(props) {
     const cols = ["staff_ID", "practitioner_type", "first_name", "last_name", "phone_number", "email", "address_1", "address_2", "city", "state", "postal_code"];
 
@@ -16,8 +19,10 @@ function Staff(props) {
             <header>
                 <h1>Staff List</h1>
             </header>
-            <Link to="/staff/new">Add Staff</Link>
-            <Table cols={cols} rows={rows} />
+            <Button component={Link} to="/staff/new" variant="outlined" endIcon={<PersonAddIcon />}>
+                Add Staff
+            </Button>
+            <Table cols={cols} rows={rows} updateLink="/staff/test/update" />
         </main >
 
     );

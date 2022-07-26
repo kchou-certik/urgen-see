@@ -4,7 +4,7 @@ import TableHead from './TableHead';
 
 
 
-function Table({ cols, rows }) {
+function Table({ cols, rows, updateLink, deleteLink }) {
     return (
         <table>
             <thead>
@@ -12,7 +12,7 @@ function Table({ cols, rows }) {
             </thead>
             <tbody>
                 {rows.map((row, i) => {
-                    return <TableRow row={row} key={i} />
+                    return <TableRow row={row} key={i} updateLink={updateLink} deleteLink={deleteLink} />
                 })}
             </tbody>
         </table>

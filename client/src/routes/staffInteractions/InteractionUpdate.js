@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-function InteractionNew() {
+import Button from '@mui/material/Button';
+
+function InteractionUpdate() {
     const [staff, setStaff] = useState();
 
     function handleSubmit(e) {
@@ -13,7 +15,7 @@ function InteractionNew() {
         <>
             <header>
                 <Link to="/staff-interactions">{"<-"} Interactions</Link>
-                <h1>New Patient-Staff Visit Interaction</h1>
+                <h1>Update Patient-Staff Interaction</h1>
                 <section>
                     <p>
                         <h2>Betty, Betty</h2>
@@ -33,7 +35,7 @@ function InteractionNew() {
                 <p>Visit ID: 2</p>
                 <p>Visit Date: 10/07/2022</p>
                 <form onSubmit={handleSubmit} >
-                    <fieldset> <legend>Add Staff Member to Visit</legend>
+                    <fieldset> <legend>Staff Interaction</legend>
                         <p>
                             <label htmlFor="staff">
                                 Staff Member
@@ -47,9 +49,12 @@ function InteractionNew() {
                     </fieldset>
                     <input type="submit" />
                 </form>
+                <p>
+                    <Button variant="outlined" color="warning" component={Link} to="#">Delete Interaction</Button>
+                </p>
             </main>
         </>
     )
 }
 
-export default InteractionNew;
+export default InteractionUpdate;
