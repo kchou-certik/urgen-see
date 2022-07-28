@@ -32,11 +32,22 @@ app.post('/carriers', (req, res) => {
         [phone_number, provider],
         (err, rows, fields) => {
             if (err) {
-                res.sendStatus(500);
+                res.status(500).json(err);
             } else {
-                res.send(rows);
+                res.json(rows);
             }
         });
+});
+
+app.delete('/carriers/:id', (req, res) => {
+    const carrier_id = req.params.id;
+    db.pool.query('DELETE FROM Carriers WHERE carrier_id = ?', carrier_id, (err, results, fields) => {
+        if (err) {
+            res.status(500).json(err);
+        } else {
+            res.json(results);
+        }
+    });
 });
 
 app.listen(port, () => {
