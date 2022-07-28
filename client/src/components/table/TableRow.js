@@ -10,29 +10,8 @@ import MUITableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 
 function TableRow({ row, deleteLink, updateLink }) {
+    const rowFields = Object.values(row);
     return (
-        // <tr>
-        //     <td>
-        //         <Stack direction="row">
-        //             {deleteLink &&
-        //                 <IconButton component={Link} to="#">
-        //                     <RemoveCircleOutlineOutlinedIcon />
-        //                 </IconButton>
-        //             }
-        //             {
-        //                 updateLink &&
-        //                 <IconButton component={Link} to={updateLink}>
-        //                     <EditIcon />
-        //                 </IconButton>
-        //             }
-        //         </Stack>
-        //     </td>
-        //     {
-        //         row.map((field, i) => {
-        //             return <td key={i}>{field}</td>
-        //         })
-        //     }
-        // </tr >
         <MUITableRow>
             <TableCell padding="checkbox">
                 <Stack direction="row">
@@ -50,7 +29,7 @@ function TableRow({ row, deleteLink, updateLink }) {
                 </Stack>
             </TableCell>
             {
-                row.map((field, i) => {
+                rowFields.map((field, i) => {
                     return (
                         <TableCell key={i}>{field}</TableCell>
                     )
