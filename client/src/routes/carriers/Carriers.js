@@ -7,14 +7,20 @@ import Stack from '@mui/material/Stack';
 import { Button } from '@mui/material';
 import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined';
 
+import ErrorMessage from '../../components/ErrorMessage';
+
 function Carriers(props) {
     const [rows, setRows] = React.useState(null);
     const [loaded, setLoaded] = React.useState(false);
+    const [error, setError] = React.useState(false);
     React.useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/carriers`)
             .then((res) => {
                 setLoaded(true);
                 setRows(res.data);
+            })
+            .catch((err) => {
+                setError(true);
             });
     }, []);
 
@@ -31,6 +37,14 @@ function Carriers(props) {
                         Add Carrier
                     </Button>
                 </Stack>
+                {
+                    !loaded &&
+                    <h3>Loading table...</h3>
+                }
+                {
+                    error &&
+                    <ErrorMessage />
+                }
                 {
                     loaded &&
                     <Table cols={cols} rows={rows} updateLink="/carriers/test/update" />
