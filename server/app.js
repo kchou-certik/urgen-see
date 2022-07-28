@@ -28,10 +28,10 @@ app.post('/carriers', (req, res) => {
         return;
     }
     db.pool.query(`INSERT INTO Carriers (phone_number, provider)
-        VALUES (${phone_number}, ${provider})`,
+        VALUES (?, ?)`,
+        [phone_number, provider],
         (err, rows, fields) => {
             if (err) {
-                console.log(err);
                 res.sendStatus(500);
             } else {
                 res.send(rows);

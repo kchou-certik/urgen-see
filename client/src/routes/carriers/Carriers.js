@@ -1,13 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Table from '../../components/table/Table';
-import axios from 'axios';
 
 import Stack from '@mui/material/Stack';
 import { Button } from '@mui/material';
 import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined';
 
 import ErrorMessage from '../../components/ErrorMessage';
+
+const axios = require('axios').default;
 
 function Carriers(props) {
     const [rows, setRows] = React.useState(null);
