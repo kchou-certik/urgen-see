@@ -1,3 +1,17 @@
+# Urgen-See React UI
+
+## Starting up
+- `cd` into this directory (/client)
+- `npm install` to install dependencies
+- See below for .env info
+- `npm start` to start up development web app
+- Don't forget to start up your API server! (See /server)
+
+## Environment Variables
+This server uses [dotenv](https://www.npmjs.com/package/dotenv) for environment variables. Create a file named `.env` **IN THIS DIRECTORY** with the following information:
+
+- **REACT_APP_API**=[your base url for API requests] - in development, we use http://localhost:3000
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -9,7 +23,7 @@ In the project directory, you can run:
 ### `npm start`
 
 Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Open [http://localhost:5000](http://localhost:5000) to view it in your browser.
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
