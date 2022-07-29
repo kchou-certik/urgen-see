@@ -1,8 +1,9 @@
 import React from 'react';
+import Alert from '@mui/material/Alert';
 
 function ErrorMessage() {
     return (
-        <p>There was an error while loading this resource. Please try again later.</p>
+        <Alert severity="error">There was an error processing your request. Please try again!</Alert>
     )
 }
 

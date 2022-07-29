@@ -25,7 +25,7 @@ function Staff(props) {
                     Add Staff
                 </Button>
             </Stack>
-            <Table cols={cols} rows={rows} updateLink="/staff/test/update" />
+            <Table cols={cols} rows={rows} updatable pKey="staff_ID" />
         </main >
 
     );

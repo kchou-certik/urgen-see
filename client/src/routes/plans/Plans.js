@@ -26,7 +26,7 @@ function Plans(props) {
                         Add Plan
                     </Button>
                 </Stack>
-                <Table cols={cols} rows={rows} updateLink="/plans/test/update" />
+                <Table cols={cols} rows={rows} updatable pKey="plans_ID" />
             </main>
         </>
 

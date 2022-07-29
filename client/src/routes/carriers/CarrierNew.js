@@ -25,13 +25,11 @@ function CarrierNew() {
     function handleSubmit(e) {
         e.preventDefault();
 
-        axios.post('/carriers', data)
+        axios.post(`${process.env.REACT_APP_API}/carriers`, data)
             .then((res) => {
-                console.log(res);
                 setStatus("success");
             })
             .catch((err) => {
-                console.log(err);
                 setStatus("error");
             });
     }

@@ -87,23 +87,23 @@ function App() {
             <Route path="/" element={<Index />} />
             <Route path="patients" element={<Patients />} />
             <Route path="patients/new" element={<PatientRegistration />} />
-            <Route path="patients/test/update" element={<PatientUpdate />} />
+            <Route path="patients/test/edit" element={<PatientUpdate />} />
             <Route path="patients/search" element={<PatientSearch />} />
             <Route path="visits" element={<Visits />} />
             <Route path="visits/new" element={<VisitNew />} />
-            <Route path="visits/test/update" element={<VisitUpdate />} />
+            <Route path="visits/test/edit" element={<VisitUpdate />} />
             <Route path="staff" element={<Staff />} />
             <Route path="staff/new" element={<StaffNew />} />
-            <Route path="staff/test/update" element={<StaffUpdate />} />
+            <Route path="staff/test/edit" element={<StaffUpdate />} />
             <Route path="carriers" element={<Carriers />} />
             <Route path="carriers/new" element={<CarrierNew />} />
-            <Route path="carriers/test/update" element={<CarrierUpdate />} />
+            <Route path="carriers/:carrier_ID/edit" element={<CarrierUpdate />} />
             <Route path="plans" element={<Plans />} />
             <Route path="plans/new" element={<PlanNew />} />
-            <Route path="plans/test/update" element={<PlanUpdate />} />
+            <Route path="plans/test/edit" element={<PlanUpdate />} />
             <Route path="staff-interactions" element={<StaffInteractions />} />
             <Route path="staff-interactions/new" element={<InteractionNew />} />
-            <Route path="staff-interactions/test/update" element={<InteractionUpdate />} />
+            <Route path="staff-interactions/test/edit" element={<InteractionUpdate />} />
           </Routes>
         </Container >
       </Paper>

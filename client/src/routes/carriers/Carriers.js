@@ -25,8 +25,6 @@ function Carriers(props) {
             });
     }, []);
 
-    const cols = ["carrier_ID", "phone_number", "provider"];
-
     return (
         <>
             <header>
@@ -48,7 +46,7 @@ function Carriers(props) {
                 }
                 {
                     loaded &&
-                    <Table cols={cols} rows={rows} updateLink="/carriers/test/update" />
+                    <Table rows={rows} updatable={true} pKey="carrier_ID" />
                 }
             </main>
         </>

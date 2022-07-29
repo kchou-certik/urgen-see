@@ -29,7 +29,7 @@ function Patients(props) {
                     Register
                 </Button>
             </Stack>
-            <Table cols={cols} rows={rows} updateLink={"/patients/test/update"} deleteLink={null} />
+            <Table cols={cols} rows={rows} updatable pKey="mrn" />
         </main >
     );
 }

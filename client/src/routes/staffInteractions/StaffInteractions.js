@@ -25,7 +25,7 @@ function StaffInteractions(props) {
                         Add Interaction
                     </Button>
                 </Stack>
-                <Table cols={cols} rows={rows} updateLink="/staff-interactions/test/update" />
+                <Table cols={cols} rows={rows} updatable pKey="visit_staff_ID" />
             </main>
         </>
 

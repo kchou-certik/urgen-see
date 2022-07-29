@@ -36,7 +36,7 @@ function Visits(props) {
                         Book Appointment
                     </Button>
                 </Stack>
-                <Table cols={cols} rows={rows} updateLink={"/visits/test/update"} />
+                <Table cols={cols} rows={rows} updatable pKey="visit_ID" />
             </main>
         </>
 
