@@ -15,8 +15,10 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes
 const carriers = require('./routes/carriers');
+const patients = require('./routes/patients');
 
 app.use('/carriers', carriers);
+app.use('/patients', patients);
 
 
 

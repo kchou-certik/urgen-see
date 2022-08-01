@@ -1,21 +1,32 @@
 import React from 'react';
 import Table from '../../components/table/Table'
 import { Link } from 'react-router-dom';
+import ErrorMessage from '../../components/ErrorMessage';
 
 import Stack from '@mui/material/Stack';
 import { Button } from '@mui/material';
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
-
+const axios = require('axios').default;
 
 function Patients(props) {
-    const cols = ["mrn", "first_name", "last_name", "sex", "date_of_birth", "phone_number", "email", "address_1", "address_2", "city", "state", "postal_code", "insurance_policy", "insurance_group", "plan_ID", "carrier.provider", "plan.name"];
+    const [rows, setRows] = React.useState(null);
+    const [loaded, setLoaded] = React.useState(false);
+    const [error, setError] = React.useState(false);
 
-    const rows = [
-        [1, "Alex", "Alex", "F", "1990-01-01", "111-222-3333", "alex@alex.com", "1 1st Street", null, "New York City", "NY", "10010", "12345abc", "xyz", 1, "Empire BCBS", "HealthPlus"],
-        [2, "Betty", "Betty", "MTF", "1980-01-01", "444-555-6666", "betty@betty.com", "2 2nd Street", "Unit 1A", "New York City", "NY", "10011", "67890def", "def", 2, "Aetna", "Bronze PPO"]
-    ];
+    // Load data
+    React.useEffect(() => {
+        axios.get(`${process.env.REACT_APP_API}/patients`)
+            .then((res) => {
+                setLoaded(true);
+                setRows(res.data);
+            })
+            .catch((err) => {
+                setError(true);
+            });
+    }, []);
+
     return (
         <main>
             <header>
@@ -29,7 +40,18 @@ function Patients(props) {
                     Register
                 </Button>
             </Stack>
-            <Table cols={cols} rows={rows} updatable pKey="mrn" />
+            {
+                !loaded &&
+                <h3>Loading table...</h3>
+            }
+            {
+                error &&
+                <ErrorMessage />
+            }
+            {
+                loaded &&
+                <Table rows={rows} updatable pKey="mrn" />
+            }
         </main >
     );
 }
