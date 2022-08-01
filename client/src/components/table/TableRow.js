@@ -34,6 +34,13 @@ function TableRow({ row, pKey, updatable }) {
 
                 urlPrefix = `/patients/${id}`;
                 break;
+            case "staff_ID":
+                // Copy-paste below lines for each case when GET API route is implemented; can move it out of these cases once we stop using sample data
+                idPair = pairs.filter((pair) => pair[0] === pKey)[0];
+                id = idPair[1];
+
+                urlPrefix = `/staff/${id}`;
+                break;
             default:
                 urlPrefix = "test"
         }
