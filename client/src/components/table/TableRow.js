@@ -41,6 +41,9 @@ function TableRow({ options, row, pKey, updatable }) {
             case "staff_ID":
                 urlPrefix = `/staff/${id}`;
                 break;
+            case "plan_ID":
+                urlPrefix = `/plans/${id}`;
+                break;
             case "visit_ID":
                 urlPrefix = `/visits/${id}`;
                 break;

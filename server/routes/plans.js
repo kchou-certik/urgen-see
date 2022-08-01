@@ -4,20 +4,25 @@ const router = express.Router();
 
 router.get('/', (req, res) => {
     db.pool.query(
-        `SELECT * FROM Patients
-        INNER JOIN (SELECT plan_ID, name AS plan_name FROM Plans) AS plans
-        ON Patients.plan_ID = plans.plan_ID`,
-        (err, rows, fields) => {
-            if (err) {
-                res.status(500).send(err);
-                return;
-            }
-            res.json(rows);
-        });
+        `SELECT plan_ID, Plans.carrier_ID, provider, name, referral_required
+        FROM Plans
+        INNER JOIN Carriers
+        ON Plans.carrier_ID = Carriers.carrier_ID
+        ORDER BY 
+        provider ASC,
+        name ASC;`, (err, rows, fields) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send(err);
+            return;
+        }
+        res.json(rows);
+    });
 });
 
+// TODO
 router.get('/:id', (req, res) => {
-    db.pool.query('SELECT * FROM Patients WHERE mrn=?;', req.params.id, (err, rows, fields) => {
+    db.pool.query('SELECT * FROM Carriers WHERE carrier_ID=?;', req.params.id, (err, rows, fields) => {
         if (err) {
             res.status(500).send(err);
             return;
@@ -25,7 +30,6 @@ router.get('/:id', (req, res) => {
         res.json(rows[0]);  // SELECT returns an array; we only need the first result
     });
 });
-
 
 // TODO
 router.post('/', (req, res) => {
@@ -45,7 +49,6 @@ router.post('/', (req, res) => {
             }
         });
 });
-
 
 // TODO
 router.put('/:carrier_ID', (req, res) => {

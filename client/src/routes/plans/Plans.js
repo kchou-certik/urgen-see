@@ -1,18 +1,42 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Table from '../../components/table/Table';
+import ErrorMessage from '../../components/ErrorMessage';
 
 import Stack from '@mui/material/Stack';
 import { Button } from '@mui/material';
 import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined';
 
+const axios = require('axios').default;
+
 function Plans(props) {
-    const cols = ["plan_ID", "referral_required", "carrier_ID", "carrier.provider", "name"];
-    const rows = [
-        [1, 1, 1, "Empire BCBS", "HealthPlus"],
-        [2, 0, 2, "Aetna", "Bronze PPO"],
-        [3, 1, 2, "Aetna", "HMO"]
-    ]
+    const [rows, setRows] = React.useState(null);
+    const [loaded, setLoaded] = React.useState(false);
+    const [error, setError] = React.useState(false);
+
+    const tableOptions = {
+        name: 'Plan Name',
+        plan_ID: false,
+        referral_required: 'Referral Required',
+        carrier_ID: false,
+        provider: 'Carrier'
+    };
+
+    // Load data
+    React.useEffect(() => {
+        axios.get(`${process.env.REACT_APP_API}/plans`)
+            .then((res) => {
+                const data = res.data.map((row) => {
+                    row.referral_required = Boolean(row.referral_required) ? 'Yes' : 'No';
+                    return row;
+                })
+                setLoaded(true);
+                setRows(data);
+            })
+            .catch((err) => {
+                setError(true);
+            });
+    }, []);
 
     return (
         <>
@@ -26,7 +50,18 @@ function Plans(props) {
                         Add Plan
                     </Button>
                 </Stack>
-                <Table cols={cols} rows={rows} updatable pKey="plans_ID" />
+                {
+                    !loaded &&
+                    <h3>Loading table...</h3>
+                }
+                {
+                    error &&
+                    <ErrorMessage />
+                }
+                {
+                    loaded &&
+                    <Table options={tableOptions} rows={rows} updatable pKey="plan_ID" />
+                }
             </main>
         </>
 
