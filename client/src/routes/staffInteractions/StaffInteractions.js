@@ -1,17 +1,46 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Table from '../../components/table/Table';
+import ErrorMessage from '../../components/ErrorMessage';
 
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import PeopleIcon from '@mui/icons-material/People';
 
+import date from 'date-and-time';
+
+const axios = require('axios').default;
+
 function StaffInteractions(props) {
-    const cols = ["visit_staff_ID", "visit_ID", "visit.scheduled_time", "patient.first_name", "patient.last_name", "patient.date_of_birth", "staff_ID", "staff.first_name", "staff.last_name", "staff.practitioner_type"];
-    const rows = [
-        [1, 1, "10/07/2022 10:30", "Alex", "Alex", "01/01/1990", 2, "Florence", "Nightingale", "RN"],
-        [2, 1, "10/07/2022 10:30", "Alex", "Alex", "01/01/1990", 3, "Bill", "Billingson", "PA"]
-    ]
+    const [rows, setRows] = React.useState(null);
+    const [loaded, setLoaded] = React.useState(false);
+    const [error, setError] = React.useState(false);
+
+    const tableOptions = {
+        visit_staff_ID: false,
+        patient_name: "Patient",
+        date_of_birth: "DOB",
+        mrn: "MRN",
+        scheduled_time: "Visit Date",
+        staff_name: "Staff"
+    }
+
+    // Load data
+    React.useEffect(() => {
+        axios.get(`${process.env.REACT_APP_API}/staff-interactions`)
+            .then((res) => {
+                res.data.map((row) => {
+                    row.date_of_birth = date.format(new Date(row.date_of_birth), "M/D/YYYY");
+                    row.scheduled_time = date.format(new Date(row.scheduled_time), "M/D/YY HH:mm");
+                    return row;
+                });
+                setLoaded(true);
+                setRows(res.data);
+            })
+            .catch((err) => {
+                setError(true);
+            });
+    }, []);
 
     return (
         <>
@@ -25,7 +54,18 @@ function StaffInteractions(props) {
                         Add Interaction
                     </Button>
                 </Stack>
-                <Table cols={cols} rows={rows} updatable pKey="visit_staff_ID" />
+                {
+                    !loaded &&
+                    <h3>Loading table...</h3>
+                }
+                {
+                    error &&
+                    <ErrorMessage />
+                }
+                {
+                    loaded &&
+                    <Table options={tableOptions} rows={rows} updatable pKey="visit_staff_ID" />
+                }
             </main>
         </>
 
