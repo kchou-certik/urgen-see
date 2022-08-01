@@ -15,6 +15,24 @@ function Patients(props) {
     const [loaded, setLoaded] = React.useState(false);
     const [error, setError] = React.useState(false);
 
+    const colNames = {
+        mrn: "MRN",
+        first_name: "First Name",
+        last_name: "Last Name",
+        sex: "Sex",
+        date_of_birth: "DOB",
+        phone_number: "Phone Number",
+        email: "Email",
+        address_1: "Address 1",
+        address_2: "Address 2",
+        city: "City",
+        state: "State",
+        postal_code: "Postcode",
+        insurance_policy: "Policy #",
+        insurance_group: "Group #",
+        plan_ID: "Plan"
+    };
+
     // Load data
     React.useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/patients`)
@@ -50,7 +68,7 @@ function Patients(props) {
             }
             {
                 loaded &&
-                <Table rows={rows} updatable pKey="mrn" />
+                <Table colNames={colNames} rows={rows} updatable pKey="mrn" />
             }
         </main >
     );

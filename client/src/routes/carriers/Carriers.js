@@ -14,6 +14,13 @@ function Carriers(props) {
     const [rows, setRows] = React.useState(null);
     const [loaded, setLoaded] = React.useState(false);
     const [error, setError] = React.useState(false);
+
+    const colNames = {
+        carrier_ID: "Carrier ID",
+        phone_number: "Phone Number",
+        provider: "Name"
+    }
+
     React.useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/carriers`)
             .then((res) => {
@@ -46,7 +53,7 @@ function Carriers(props) {
                 }
                 {
                     loaded &&
-                    <Table rows={rows} updatable={true} pKey="carrier_ID" />
+                    <Table colNames={colNames} rows={rows} updatable={true} pKey="carrier_ID" />
                 }
             </main>
         </>
