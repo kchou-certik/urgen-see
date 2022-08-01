@@ -8,6 +8,8 @@ import { Button } from '@mui/material';
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
+import date from 'date-and-time';
+
 const axios = require('axios').default;
 
 function Patients(props) {
@@ -37,6 +39,10 @@ function Patients(props) {
     React.useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/patients`)
             .then((res) => {
+                res.data.map((row) => {
+                    row.date_of_birth = date.format(new Date(row.date_of_birth), "M/D/YYYY");
+                    return row;
+                });
                 setLoaded(true);
                 setRows(res.data);
             })

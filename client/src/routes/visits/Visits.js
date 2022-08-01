@@ -7,6 +7,8 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
 
+import date from 'date-and-time';
+
 const axios = require('axios').default;
 
 function Visits(props) {
@@ -29,6 +31,12 @@ function Visits(props) {
     React.useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/visits`)
             .then((res) => {
+                res.data.map((row) => {
+                    row.scheduled_time = date.format(new Date(row.scheduled_time), "M/D/YY HH:mm");
+                    row.check_in_time = date.format(new Date(row.check_in_time), "M/D/YY HH:mm");
+                    row.discharge_time = date.format(new Date(row.discharge_time), "M/D/YY HH:mm");
+                    return row;
+                });
                 setLoaded(true);
                 setRows(res.data);
             })
