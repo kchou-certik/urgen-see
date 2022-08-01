@@ -17,10 +17,12 @@ app.use(express.urlencoded({ extended: true }));
 const carriers = require('./routes/carriers');
 const patients = require('./routes/patients');
 const staff = require('./routes/staff');
+const visits = require('./routes/visits');
 
 app.use('/carriers', carriers);
 app.use('/patients', patients);
 app.use('/staff', staff);
+app.use('/visits', visits);
 
 
 

@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-    db.pool.query('SELECT * FROM Carriers WHERE carrier_ID=?;', req.params.id, (err, rows, fields) => {
+    db.pool.query('SELECT * FROM Patients WHERE mrn=?;', req.params.id, (err, rows, fields) => {
         if (err) {
             res.status(500).send(err);
             return;
@@ -22,6 +22,8 @@ router.get('/:id', (req, res) => {
     });
 });
 
+
+// TODO
 router.post('/', (req, res) => {
     const { phone_number, provider } = req.body;
     if (!phone_number || !provider) {
@@ -40,6 +42,8 @@ router.post('/', (req, res) => {
         });
 });
 
+
+// TODO
 router.put('/:carrier_ID', (req, res) => {
     const { provider, phone_number } = req.body;
     const carrier_ID = req.params.carrier_ID;
@@ -59,6 +63,7 @@ router.put('/:carrier_ID', (req, res) => {
         });
 });
 
+// TODO
 router.delete('/:id', (req, res) => {
     const carrier_id = req.params.id;
     db.pool.query('DELETE FROM Carriers WHERE carrier_id = ?', carrier_id, (err, results, fields) => {

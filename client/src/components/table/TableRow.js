@@ -18,31 +18,27 @@ function TableRow({ row, pKey, updatable }) {
 
     if (updatable && pKey) {
         // filters pairs to get the one(s) that correspond to the pKey (by comparing key with pKey name string passed down from above)
+        idPair = pairs.filter((pair) => pair[0] === pKey)[0];
+        id = idPair[1];
 
         switch (pKey) {
             case "carrier_ID":
-                // Copy-paste below lines for each case when GET API route is implemented; can move it out of these cases once we stop using sample data
-                idPair = pairs.filter((pair) => pair[0] === pKey)[0];
-                id = idPair[1];
-
                 urlPrefix = `/carriers/${id}`;
                 break;
             case "mrn":
-                // Copy-paste below lines for each case when GET API route is implemented; can move it out of these cases once we stop using sample data
-                idPair = pairs.filter((pair) => pair[0] === pKey)[0];
-                id = idPair[1];
-
                 urlPrefix = `/patients/${id}`;
                 break;
             case "staff_ID":
-                // Copy-paste below lines for each case when GET API route is implemented; can move it out of these cases once we stop using sample data
-                idPair = pairs.filter((pair) => pair[0] === pKey)[0];
-                id = idPair[1];
-
                 urlPrefix = `/staff/${id}`;
                 break;
+            case "visit_ID":
+                urlPrefix = `/visits/${id}`;
+                break;
+            case "visit_staff_ID":
+                urlPrefix = `/interactions/${id}`
+                break;
             default:
-                urlPrefix = "test"
+                urlPrefix = "404"
         }
     }
 

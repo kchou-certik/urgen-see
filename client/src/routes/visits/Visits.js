@@ -1,16 +1,41 @@
 import React from 'react';
 import Table from '../../components/table/Table'
 import { Link } from 'react-router-dom'
+import ErrorMessage from '../../components/ErrorMessage';
 
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
 
+const axios = require('axios').default;
+
 function Visits(props) {
-    const cols = ["visit_ID", "mrn", "plan_ID", "carrier.provider", "plan.name", "primary_diagnosis", "scheduled_time", "check_in_time", "discharge_time", "visit_type"];
-    const rows = [
-        [1, 1, 1, "Empire BCBS ", "HealthPlus", "exposure to covid-19", "10/07/2022 10:30", "10/07/2022 10:30", "10/07/2022 11:00", "WALKIN covid test"]
-    ]
+    const [rows, setRows] = React.useState(null);
+    const [loaded, setLoaded] = React.useState(false);
+    const [error, setError] = React.useState(false);
+
+    const colNames = {
+        visit_ID: "ID",
+        mrn: "MRN",
+        plan_ID: "Plan",
+        primary_diagnosis: "Primary Diagnosis",
+        scheduled_time: "Scheduled",
+        check_in_time: "Checked In",
+        discharge_time: "Checked Out",
+        visit_type: "Visit Type"
+    };
+
+    // Load data
+    React.useEffect(() => {
+        axios.get(`${process.env.REACT_APP_API}/visits`)
+            .then((res) => {
+                setLoaded(true);
+                setRows(res.data);
+            })
+            .catch((err) => {
+                setError(true);
+            });
+    }, []);
 
     return (
         <>
@@ -36,7 +61,19 @@ function Visits(props) {
                         Book Appointment
                     </Button>
                 </Stack>
-                <Table cols={cols} rows={rows} updatable pKey="visit_ID" />
+                {
+                    !loaded &&
+                    <h3>Loading table...</h3>
+                }
+                {
+                    error &&
+                    <ErrorMessage />
+                }
+                {
+                    loaded &&
+                    <Table colNames={colNames} rows={rows} updatable pKey="visit_ID" />
+                }
+
             </main>
         </>
 

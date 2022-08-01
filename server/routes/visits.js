@@ -3,8 +3,21 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    db.pool.query('SELECT * FROM Staff;', (err, rows, fields) => {
+    // Accept array of column names, default to *
+    const cols = !(req.query.cols) ? "*" : db.pool.escapeId(req.query.cols);
+
+    // Select visits from a specific day in YYYY-MM-DD format
+    let date = "";
+    if (req.query.date) {
+        const dateParam = db.pool.escape(req.query.date);
+        date = `WHERE date(scheduled_time) = ${dateParam}`;
+    }
+
+    const query = `SELECT ${cols} FROM Visits ${date};`
+
+    db.pool.query(query, (err, rows, fields) => {
         if (err) {
+            console.log(err);
             res.status(500).send(err);
             return;
         }
@@ -13,7 +26,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-    db.pool.query('SELECT * FROM Staff WHERE staff_ID=?;', req.params.id, (err, rows, fields) => {
+    db.pool.query('SELECT * FROM Visits WHERE visit_ID=?;', req.params.id, (err, rows, fields) => {
         if (err) {
             res.status(500).send(err);
             return;

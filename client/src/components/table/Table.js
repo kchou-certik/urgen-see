@@ -12,8 +12,8 @@ function Table({ colNames, rows, updatable, pKey }) {
     if (rows.length === 0) {
         return (
             <Alert severity="info">
-                <AlertTitle>No Data</AlertTitle>
-                There are currently no entries in this table.
+                <AlertTitle>No Entries</AlertTitle>
+                There are no entries to display yet.
             </Alert>
         )
     }
