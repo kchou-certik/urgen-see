@@ -16,7 +16,7 @@ function Carriers(props) {
     const [error, setError] = React.useState(false);
 
     const tableOptions = {
-        carrier_ID: "Carrier ID",
+        carrier_ID: false,
         phone_number: "Phone Number",
         provider: "Name"
     }
