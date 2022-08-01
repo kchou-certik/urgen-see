@@ -3,13 +3,18 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    db.pool.query('SELECT * FROM Patients;', (err, rows, fields) => {
-        if (err) {
-            res.status(500).send(err);
-            return;
-        }
-        res.json(rows);
-    });
+    db.pool.query(
+        `SELECT * FROM Patients
+        INNER JOIN (SELECT plan_ID, name AS plan_name FROM Plans) AS plans
+        ON Patients.plan_ID = plans.plan_ID`,
+        (err, rows, fields) => {
+            if (err) {
+                console.log(err);
+                res.status(500).send(err);
+                return;
+            }
+            res.json(rows);
+        });
 });
 
 router.get('/:id', (req, res) => {

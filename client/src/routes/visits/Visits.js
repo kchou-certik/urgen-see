@@ -16,7 +16,7 @@ function Visits(props) {
     const [loaded, setLoaded] = React.useState(false);
     const [error, setError] = React.useState(false);
 
-    const colNames = {
+    const tableOptions = {
         visit_ID: "ID",
         mrn: "MRN",
         plan_ID: "Plan",
@@ -79,7 +79,7 @@ function Visits(props) {
                 }
                 {
                     loaded &&
-                    <Table colNames={colNames} rows={rows} updatable pKey="visit_ID" />
+                    <Table options={tableOptions} rows={rows} updatable pKey="visit_ID" />
                 }
 
             </main>

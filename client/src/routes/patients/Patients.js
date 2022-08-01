@@ -17,7 +17,7 @@ function Patients(props) {
     const [loaded, setLoaded] = React.useState(false);
     const [error, setError] = React.useState(false);
 
-    const colNames = {
+    const tableOptions = {
         mrn: "MRN",
         first_name: "First Name",
         last_name: "Last Name",
@@ -32,7 +32,8 @@ function Patients(props) {
         postal_code: "Postcode",
         insurance_policy: "Policy #",
         insurance_group: "Group #",
-        plan_ID: "Plan"
+        plan_ID: false,
+        plan_name: "Plan"
     };
 
     // Load data
@@ -74,7 +75,7 @@ function Patients(props) {
             }
             {
                 loaded &&
-                <Table colNames={colNames} rows={rows} updatable pKey="mrn" />
+                <Table options={tableOptions} rows={rows} updatable pKey="mrn" />
             }
         </main >
     );

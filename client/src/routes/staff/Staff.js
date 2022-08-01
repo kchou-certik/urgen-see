@@ -14,7 +14,7 @@ function Staff(props) {
     const [loaded, setLoaded] = React.useState(false);
     const [error, setError] = React.useState(false);
 
-    const colNames = {
+    const tableOptions = {
         staff_ID: "ID",
         practitioner_type: "Type",
         first_name: "First Name",
@@ -60,7 +60,7 @@ function Staff(props) {
             }
             {
                 loaded &&
-                <Table colNames={colNames} rows={rows} updatable pKey="staff_ID" />
+                <Table options={tableOptions} rows={rows} updatable pKey="staff_ID" />
             }
         </main >
 

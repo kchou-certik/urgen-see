@@ -15,7 +15,7 @@ function Carriers(props) {
     const [loaded, setLoaded] = React.useState(false);
     const [error, setError] = React.useState(false);
 
-    const colNames = {
+    const tableOptions = {
         carrier_ID: "Carrier ID",
         phone_number: "Phone Number",
         provider: "Name"
@@ -53,7 +53,7 @@ function Carriers(props) {
                 }
                 {
                     loaded &&
-                    <Table colNames={colNames} rows={rows} updatable={true} pKey="carrier_ID" />
+                    <Table options={tableOptions} rows={rows} updatable={true} pKey="carrier_ID" />
                 }
             </main>
         </>

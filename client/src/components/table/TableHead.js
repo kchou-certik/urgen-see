@@ -3,10 +3,10 @@ import React from 'react';
 import MUITableHead from '@mui/material/TableHead';
 import TableRow from './TableRow';
 
-function TableHead({ row }) {
+function TableHead({ options, row }) {
     return (
         <MUITableHead>
-            <TableRow row={row} />
+            <TableRow options={options} row={row} />
         </MUITableHead>
     );
 }

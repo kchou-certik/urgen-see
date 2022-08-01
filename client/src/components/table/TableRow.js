@@ -8,15 +8,25 @@ import EditIcon from '@mui/icons-material/Edit';
 import MUITableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 
-function TableRow({ row, pKey, updatable }) {
-    const rowFields = Object.values(row);
+function TableRow({ options, row, pKey, updatable }) {
+    const pairs = Object.entries(row); // e.g. [[key1, value1], ...etc];
+    // The below filter/pair shenanigans should all still work with the header TableRow, even though `row` is an array instead of object
+    // Object.entries() converts the array into similar pairs but with the keys being array indices
 
-    // converts objects into an array of sub-arrays, each one corresponding to a key-val pair
-    const pairs = Object.entries(row);
+    // remove fields which are `false` in options; unspecified fields are maintained
+    const rowFiltered = pairs.filter((pair) => {
+        return !(options.hasOwnProperty(pair[0])) || options[pair[0]] !== false;
+    });
 
+    // convert the pair array to an array of just the data values
+    const rowFields = rowFiltered.map((pair) => {
+        return pair[1];
+    })
+
+    // generate the edit URL for rows designated `updatable`
     let idPair, id, urlPrefix;
-
     if (updatable && pKey) {
+
         // filters pairs to get the one(s) that correspond to the pKey (by comparing key with pKey name string passed down from above)
         idPair = pairs.filter((pair) => pair[0] === pKey)[0];
         id = idPair[1];

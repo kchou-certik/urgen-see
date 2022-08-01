@@ -39,7 +39,7 @@ function Index(props) {
         navigate(`?date=${e.target.value}`, { replace: true });
     }
 
-    const colNames = {
+    const tableOptions = {
         visit_ID: "ID",
         mrn: "MRN",
         plan_ID: "Plan",
@@ -107,7 +107,7 @@ function Index(props) {
                     }
                     {
                         loaded &&
-                        <Table colNames={colNames} rows={rows} updatable pKey="visit_ID" />
+                        <Table options={tableOptions} rows={rows} updatable pKey="visit_ID" />
                     }
                 </Container>
             </main>
