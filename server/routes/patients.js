@@ -4,9 +4,13 @@ const router = express.Router();
 
 router.get('/', (req, res) => {
     db.pool.query(
-        `SELECT * FROM Patients
-        INNER JOIN (SELECT plan_ID, name AS plan_name FROM Plans) AS plans
-        ON Patients.plan_ID = plans.plan_ID`,
+        `SELECT mrn, last_name, first_name, date_of_birth,
+        sex, phone_number, email, address_1, address_2, city, state,
+        postal_code, insurance_policy, insurance_group, Plans.name AS plan_name 
+        FROM Patients
+        JOIN Plans
+        ON Patients.plan_ID = Plans.plan_ID
+        ORDER BY last_name ASC`,
         (err, rows, fields) => {
             if (err) {
                 res.status(500).send(err);

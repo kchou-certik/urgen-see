@@ -3,7 +3,10 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    db.pool.query('SELECT provider, phone_number, carrier_ID FROM Carriers;', (err, rows, fields) => {
+    db.pool.query(`
+    SELECT provider, phone_number, carrier_ID 
+    FROM Carriers
+    ORDER BY provider ASC;`, (err, rows, fields) => {
         if (err) {
             res.status(500).send(err);
             return;

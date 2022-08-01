@@ -3,7 +3,12 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    db.pool.query('SELECT * FROM Staff;', (err, rows, fields) => {
+    db.pool.query(
+        `SELECT staff_ID, last_name, first_name,
+        practitioner_type, phone_number, email,
+        address_1, address_2, city, state, postal_code
+        FROM Staff
+        ORDER BY last_name ASC;`, (err, rows, fields) => {
         if (err) {
             res.status(500).send(err);
             return;

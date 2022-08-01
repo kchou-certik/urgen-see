@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
         date = `WHERE date(scheduled_time) = ${dateParam}`;
     }
 
-    const query = `SELECT ${cols} FROM Visits ${date};`
+    const query = `SELECT ${cols} FROM Visits ${date} ORDER BY scheduled_time ASC;`
 
     db.pool.query(query, (err, rows, fields) => {
         if (err) {
