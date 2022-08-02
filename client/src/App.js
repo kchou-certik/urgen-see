@@ -81,7 +81,7 @@ function App() {
           </Button>
         </Toolbar>
       </Container>
-      <Paper elevation={1} sx={{ pt: "2em", pb: "4em", mt: "1em" }}>
+      <Paper variant="outlined" sx={{ pt: "2em", pb: "4em", mt: "1em" }}>
         <Container maxWidth="xl">
           <Routes>
             <Route path="/" element={<Index />} />
