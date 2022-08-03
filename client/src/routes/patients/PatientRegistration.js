@@ -83,7 +83,8 @@ function PatientRegistration() {
         <>
             <Container component="main" maxWidth="md" sx={{ mb: 10 }} >
                 <Button component={Link} to="/patients">{"<-"} Patients</Button>
-                <Typography variant="h4" gutterBottom>Patient Registration</Typography>
+                <Typography variant="h4">Patient Registration</Typography>
+                <Typography variant="subtitle1" gutterBottom>* denotes required</Typography>
                 <Box component="form" onSubmit={handleSubmit}>
                     <Card sx={{ mb: 2, p: 2 }}>
                         <CardContent>
@@ -100,16 +101,16 @@ function PatientRegistration() {
                                     }} />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <FormLabel id="sex-radio">Sex</FormLabel>
+                                    <FormLabel id="sex-radio">Sex *</FormLabel>
                                     <RadioGroup
                                         aria-labelledby="sex-radio"
                                         name="sex"
                                         value={data.sex}
                                         onChange={handleInputChange}
                                     >
-                                        <FormControlLabel value="female" control={<Radio required size="small" />} label="Female" onClick={() => setReq(false)} />
-                                        <FormControlLabel value="male" control={<Radio size="small" />} label="Male" onClick={() => setReq(false)} />
-                                        <FormControlLabel value="other" control={<Radio size="small" />} label="Other" onClick={() => setReq(true)} />
+                                        <FormControlLabel value="F" name="sex" control={<Radio size="small" />} label="Female" onClick={() => setReq(false)} />
+                                        <FormControlLabel value="M" name="sex" control={<Radio size="small" />} label="Male" onClick={() => setReq(false)} />
+                                        <FormControlLabel value="other" name="sex" control={<Radio size="small" />} label="Other" onClick={() => setReq(true)} />
                                         <TextField name="sex" value={req ? data.sex : ""} size="small" label="Other" fullWidth required={req} disabled={!req} onChange={handleInputChange} />
                                     </RadioGroup>
                                 </Grid>

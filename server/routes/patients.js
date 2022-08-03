@@ -8,7 +8,7 @@ router.get('/', (req, res) => {
         sex, phone_number, email, address_1, address_2, city, state,
         postal_code, insurance_policy, insurance_group, Plans.name AS plan_name 
         FROM Patients
-        JOIN Plans
+        LEFT JOIN Plans
         ON Patients.plan_ID = Plans.plan_ID
         ORDER BY last_name ASC`,
         (err, rows, fields) => {
@@ -31,16 +31,57 @@ router.get('/:id', (req, res) => {
 });
 
 
-// TODO
 router.post('/', (req, res) => {
-    const { phone_number, provider } = req.body;
-    if (!phone_number || !provider) {
-        res.sendStatus(400);
-        return;
-    }
-    db.pool.query(`INSERT INTO Carriers (phone_number, provider)
-        VALUES (?, ?)`,
-        [phone_number, provider],
+    const data = req.body;
+
+    // Converts empty strings to null
+    Object.keys(data).map((key) => {
+        if (data[key] === '') data[key] = null;
+    });
+
+    // // Backend validation
+    // if (!data.first_name || !data.last_name || !data.date_of_birth || !data.phone_number) {
+    //     res.sendStatus(400);
+    //     return;
+    // }
+
+    // Prepare inserts for query
+    const inserts = [
+        data.first_name,
+        data.last_name,
+        data.date_of_birth,
+        data.sex,
+        data.phone_number,
+        data.email,
+        data.address_1,
+        data.address_2,
+        data.city,
+        data.state,
+        data.postal_code,
+        data.insurance_policy,
+        data.insurance_group,
+        data.plan && data.plan.plan_ID  // if data.plan is NULL, store NULL
+    ];
+
+    db.pool.query(
+        `INSERT INTO Patients (
+            first_name, 
+            last_name, 
+            date_of_birth, 
+            sex, 
+            phone_number, 
+            email,
+            address_1,
+            address_2,
+            city,
+            state,
+            postal_code,
+            insurance_policy,
+            insurance_group,
+            plan_ID
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        inserts,
         (err, rows, fields) => {
             if (err) {
                 res.status(500).json(err);
