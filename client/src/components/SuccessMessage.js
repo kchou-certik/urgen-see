@@ -1,22 +1,24 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import Alert from '@mui/material/Alert';
-
+import Button from '@mui/material/Button';
 
 import CloseIcon from '@mui/icons-material/Close';
 
-function ErrorMessage({ msg }) {
+function SuccessMessage({ msg }) {
+    const navigate = useNavigate();
     const [open, setOpen] = React.useState(true);
 
     function handleClose(e, reason) {
-        if (reason === 'clickaway') return;
         setOpen(false);
     };
 
     const action = (
         <>
+            <Button size="small" color="inherit" onClick={() => navigate(-1)}>BACK</Button>
             <IconButton
                 size="small"
                 aria-label="close"
@@ -31,15 +33,14 @@ function ErrorMessage({ msg }) {
     return (
         <Snackbar
             open={open}
-            autoHideDuration={10000}
             onClose={handleClose}
-            action={action}
+            message={msg}
         >
-            <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+            <Alert onClose={handleClose} severity="success" action={action} >
                 {msg}
             </Alert>
         </Snackbar>
     )
 }
 
-export default ErrorMessage;
+export default SuccessMessage;

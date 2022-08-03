@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ErrorMessage from '../../components/ErrorMessage';
+import SuccessMessage from '../../components/SuccessMessage';
 import { Link } from 'react-router-dom';
 
 import Container from '@mui/material/Container';
@@ -18,6 +19,7 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Switch from '@mui/material/Switch';
 import CircularProgress from '@mui/material/CircularProgress';
+
 
 const axios = require('axios').default;
 
@@ -83,6 +85,7 @@ function PatientRegistration() {
     return (
         <>
             <Container component="main" maxWidth="md" sx={{ mb: 10 }} >
+                {status === 'success' && <SuccessMessage msg="Successfully added!" />}
                 {status === "error" && <ErrorMessage msg="An error occurred! Please try again." />}
                 <Button component={Link} to="/patients">{"<-"} Patients</Button>
                 <Typography variant="h4">Patient Registration</Typography>
