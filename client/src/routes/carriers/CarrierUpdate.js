@@ -10,10 +10,12 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { DialogContentText } from '@mui/material';
+
 const axios = require('axios').default;
 
 function CarrierUpdate() {
-    const [data, setData] = React.useState({
+    // STATE VARIABLES
+    const [data, setData] = React.useState({    // form data
         provider: null,
         phone_number: null
     });
@@ -27,6 +29,7 @@ function CarrierUpdate() {
     const { carrier_ID } = useParams();
 
 
+    // API FETCH REQUESTS
     React.useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/carriers/${carrier_ID}`)
             .then((res) => {
@@ -40,7 +43,9 @@ function CarrierUpdate() {
 
     }, [carrier_ID]);
 
-    // FORM EDIT & SUBMIT
+
+    // HANDLERS
+
     function handleChange(e) {
         const target = e.target;
         const name = target.name;
@@ -66,7 +71,7 @@ function CarrierUpdate() {
             });
     }
 
-    // DELETE MODAL
+    // delete modal:
     function handleOpen() {
         setDeleteModalOpen(true);
     }

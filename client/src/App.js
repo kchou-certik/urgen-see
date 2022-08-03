@@ -87,7 +87,7 @@ function App() {
             <Route path="/" element={<Index />} />
             <Route path="patients" element={<Patients />} />
             <Route path="patients/new" element={<PatientRegistration />} />
-            <Route path="patients/test/edit" element={<PatientUpdate />} />
+            <Route path="patients/:mrn/edit" element={<PatientUpdate />} />
             <Route path="patients/search" element={<PatientSearch />} />
             <Route path="visits" element={<Visits />} />
             <Route path="visits/new" element={<VisitNew />} />

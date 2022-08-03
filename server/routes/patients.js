@@ -21,7 +21,11 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-    db.pool.query('SELECT * FROM Patients WHERE mrn=?;', req.params.id, (err, rows, fields) => {
+    db.pool.query(`
+    SELECT * FROM Patients
+    LEFT JOIN Plans
+    ON Patients.plan_ID = Plans.plan_ID
+    WHERE mrn=?;`, req.params.id, (err, rows, fields) => {
         if (err) {
             res.status(500).send(err);
             return;

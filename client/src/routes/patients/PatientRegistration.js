@@ -8,7 +8,6 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Grid';
-import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import FormLabel from '@mui/material/FormLabel';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -20,11 +19,14 @@ import TextField from '@mui/material/TextField';
 import Switch from '@mui/material/Switch';
 import CircularProgress from '@mui/material/CircularProgress';
 
-
 const axios = require('axios').default;
 
+
 function PatientRegistration() {
-    const [req, setReq] = useState(false);
+    const [status, setStatus] = React.useState(null); // success | error
+
+    const [req, setReq] = useState(false);  // if text input field for 'other' sex is required
+
     const [data, setData] = useState({
         first_name: "",
         last_name: "",
@@ -41,12 +43,12 @@ function PatientRegistration() {
         insurance_group: "",
         plan: null
     });
+
+    // Insurance selector/input state variables
     const [planInput, setPlanInput] = useState("");
     const [plans, setPlans] = useState([]);
     const [insuranceNeeded, setInsuranceNeeded] = useState(true);
     const [planSelectorOpen, setPlanSelectorOpen] = useState(false);
-
-    const [status, setStatus] = React.useState(null);
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -66,7 +68,7 @@ function PatientRegistration() {
         });
     }
 
-    // Load data
+    // Load Plan selector data
     const loading = planSelectorOpen && plans.length === 0; // from https://mui.com/material-ui/react-autocomplete/#load-on-open
     React.useEffect(() => {
         if (!loading) {
