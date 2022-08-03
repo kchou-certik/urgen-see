@@ -7,12 +7,13 @@ import Alert from '@mui/material/Alert';
 
 import CloseIcon from '@mui/icons-material/Close';
 
-function ErrorMessage({ msg }) {
+function ErrorMessage({ msg, setStatus }) {
     const [open, setOpen] = React.useState(true);
 
     function handleClose(e, reason) {
         if (reason === 'clickaway') return;
         setOpen(false);
+        setStatus(null);
     };
 
     const action = (

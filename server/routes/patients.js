@@ -20,6 +20,7 @@ router.get('/', (req, res) => {
         });
 });
 
+
 router.get('/:id', (req, res) => {
     db.pool.query(`
     SELECT * FROM Patients
@@ -42,12 +43,6 @@ router.post('/', (req, res) => {
     Object.keys(data).map((key) => {
         if (data[key] === '') data[key] = null;
     });
-
-    // // Backend validation
-    // if (!data.first_name || !data.last_name || !data.date_of_birth || !data.phone_number) {
-    //     res.sendStatus(400);
-    //     return;
-    // }
 
     // Prepare inserts for query
     const inserts = [
@@ -96,24 +91,14 @@ router.post('/', (req, res) => {
 });
 
 
-// TODO
 router.put('/:mrn', (req, res) => {
     const data = req.body;
     const mrn = req.params.mrn;
-
-    console.log(data)
 
     // Converts empty strings to null
     Object.keys(data).map((key) => {
         if (data[key] === '') data[key] = null;
     });
-
-
-    // // Backend validation
-    // if (!data.first_name || !data.last_name || !data.date_of_birth || !data.phone_number) {
-    //     res.sendStatus(400);
-    //     return;
-    // }
 
     // Prepare inserts for query
     const inserts = [
@@ -134,7 +119,6 @@ router.put('/:mrn', (req, res) => {
         mrn
     ];
 
-    console.log(inserts)
     db.pool.query(
         `UPDATE Patients 
         SET
@@ -165,9 +149,9 @@ router.put('/:mrn', (req, res) => {
 });
 
 // TODO
-router.delete('/:id', (req, res) => {
-    const carrier_id = req.params.id;
-    db.pool.query('DELETE FROM Carriers WHERE carrier_id = ?', carrier_id, (err, results, fields) => {
+router.delete('/:mrn', (req, res) => {
+    const mrn = req.params.mrn;
+    db.pool.query('DELETE FROM Patients WHERE mrn = ?', mrn, (err, results, fields) => {
         if (err) {
             res.status(500).json(err);
         } else {

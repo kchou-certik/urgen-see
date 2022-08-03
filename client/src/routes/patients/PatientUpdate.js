@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ErrorMessage from '../../components/ErrorMessage';
 import SuccessMessage from '../../components/SuccessMessage';
+import DeleteButton from '../../components/DeleteButton';
 import { Link, useParams } from 'react-router-dom';
 import date from 'date-and-time';
 
@@ -19,6 +20,7 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Switch from '@mui/material/Switch';
 import CircularProgress from '@mui/material/CircularProgress';
+import Stack from '@mui/material/Stack';
 
 const axios = require('axios').default;
 
@@ -27,7 +29,7 @@ function PatientUpdate() {
     const { mrn } = useParams();
 
     // STATE VARIABLES
-    const [status, setStatus] = React.useState(null); // success | error
+    const [status, setStatus] = React.useState(null); // success | error | deleted
     const [req, setReq] = useState(false);  // if text input field for 'other' sex is required
     const [loaded, setLoaded] = useState(false); // if patient's data is loaded from API 
     const [edited, setEdited] = useState(false); // if form has been changed from original data
@@ -142,8 +144,9 @@ function PatientUpdate() {
     return (
         <>
             <Container component="main" maxWidth="md" sx={{ mb: 10 }} >
-                {status === 'success' && <SuccessMessage msg="Successfully added!" />}
-                {status === "error" && <ErrorMessage msg="An error occurred! Please try again." />}
+                {status === 'success' && <SuccessMessage msg="Successfully added!" setStatus={setStatus} />}
+                {status === "error" && <ErrorMessage msg="An error occurred! Please try again." setStatus={setStatus} />}
+                {status === 'deleted' && <SuccessMessage msg="Successfully deleted." setStatus={setStatus} />}
 
                 <Button component={Link} to="/patients">{"<-"} Patients</Button>
                 <Typography variant="h4">Edit Patient Record</Typography>
@@ -270,7 +273,10 @@ function PatientUpdate() {
                             </CardContent>
                         </Card>
                         <p>{JSON.stringify(data)}</p>
-                        <Button type="submit" variant="outlined" disabled={!edited}>Submit</Button>
+                        <Stack direction="row" spacing={2}>
+                            <Button type="submit" variant="outlined" disabled={!edited}>Submit</Button>
+                            <DeleteButton text="Delete" route={"patients"} id={mrn} setStatus={setStatus} />
+                        </Stack>
                     </Box>
                 }
             </Container>

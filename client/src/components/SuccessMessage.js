@@ -8,12 +8,13 @@ import Button from '@mui/material/Button';
 
 import CloseIcon from '@mui/icons-material/Close';
 
-function SuccessMessage({ msg }) {
+function SuccessMessage({ msg, setStatus }) {
     const navigate = useNavigate();
     const [open, setOpen] = React.useState(true);
 
     function handleClose(e, reason) {
         setOpen(false);
+        setStatus(null);
     };
 
     const action = (

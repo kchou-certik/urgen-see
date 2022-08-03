@@ -4,6 +4,7 @@ import Alert from '@mui/material/Alert';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import ErrorMessage from '../../components/ErrorMessage';
+import SuccessMessage from '../../components/SuccessMessage';
 import DeleteButton from '../../components/DeleteButton';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -15,21 +16,19 @@ const axios = require('axios').default;
 
 function CarrierUpdate() {
     // STATE VARIABLES
+
     const [data, setData] = React.useState({    // form data
         provider: null,
         phone_number: null
     });
     const [loaded, setLoaded] = React.useState(false);
-    const [status, setStatus] = React.useState({
-        message: null,
-        deleted: null
-    });
-    const [deleteModalOpen, setDeleteModalOpen] = React.useState(false);
+    const [status, setStatus] = React.useState(null); // success | error | deleted
 
     const { carrier_ID } = useParams();
 
 
     // API FETCH REQUESTS
+
     React.useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/carriers/${carrier_ID}`)
             .then((res) => {
@@ -60,42 +59,15 @@ function CarrierUpdate() {
         axios.put(`${process.env.REACT_APP_API}/carriers/${carrier_ID}`, data)
             .then((res) => {
                 if (res.data.affectedRows > 0) {
-                    setStatus({ ...status, message: "success" });
+                    setStatus("success");
                 } else {
-                    setStatus({ ...status, message: "error" });
+                    setStatus("error");
                 }
             })
             .catch((err) => {
                 console.log(err);
-                setStatus({ ...status, message: "error" });
+                setStatus("error");
             });
-    }
-
-    // delete modal:
-    function handleOpen() {
-        setDeleteModalOpen(true);
-    }
-
-    function handleClose() {
-        setDeleteModalOpen(false);
-    }
-
-    // DELETE API CALL
-    function handleDelete() {
-        axios.delete(`${process.env.REACT_APP_API}/carriers/${carrier_ID}`)
-            .then((res) => {
-                if (res.data.affectedRows > 0) {
-                    setStatus({ message: "deleted", deleted: res.data.affectedRows });
-                } else {
-                    setStatus({ ...status, message: "error" });
-                }
-            })
-            .catch((err) => {
-                console.log(err);
-                setStatus({ ...status, message: "error" });
-            });
-
-        handleClose();
     }
 
     return (
@@ -105,20 +77,10 @@ function CarrierUpdate() {
                 <h1>Update Carrier</h1>
             </header>
             <main>
-                <section>
-                    {
-                        status.message === "success" &&
-                        <Alert severity="success">Successfully updated!</Alert>
-                    }
-                    {
-                        status.message === "error" &&
-                        <ErrorMessage msg="An error occurred! Please try again." />
-                    }
-                    {
-                        status.message === "deleted" &&
-                        <Alert severity="info">Deleted {status.deleted} record{status.deleted > 1 ? "s" : ""}!</Alert>
-                    }
-                </section>
+                {status === 'success' && <SuccessMessage msg="Successfully added!" setStatus={setStatus} />}
+                {status === "error" && <ErrorMessage msg="An error occurred! Please try again." setStatus={setStatus} />}
+                {status === 'deleted' && <SuccessMessage msg="Successfully deleted." setStatus={setStatus} />}
+
                 <form onSubmit={handleSubmit} >
                     {!loaded &&
                         <h3>Loading fields...</h3>
@@ -134,28 +96,7 @@ function CarrierUpdate() {
                         </div>
                     }
                     <input type="submit" />
-                    <p>
-                        <Button variant="outlined" color="warning" onClick={handleOpen}>Delete Carrier</Button>
-                    </p>
-                    <Dialog
-                        open={deleteModalOpen}
-                        onClose={handleClose}
-                        aria-labelledby="dialog-title"
-                        aria-describedby="dialog-desc"
-                    >
-                        <DialogTitle id="dialog-title">
-                            Delete this record?
-                        </DialogTitle>
-                        <DialogContent>
-                            <DialogContentText id="dialog-desc">
-                                Are you sure you want to delete this? This action is irreversible and may affect other entities in the database!
-                            </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={handleClose} autoFocus>Cancel</Button>
-                            <DeleteButton onClick={handleClose} handleDelete={handleDelete} text="Delete Carrier" />
-                        </DialogActions>
-                    </Dialog>
+                    <DeleteButton text="Delete carrier" route="carriers" id={carrier_ID} setStatus={setStatus} />
                     <p>
                         <Button variant="text" component={Link} to="/carriers">Back</Button>
                     </p>

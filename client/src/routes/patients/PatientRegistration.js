@@ -87,8 +87,9 @@ function PatientRegistration() {
     return (
         <>
             <Container component="main" maxWidth="md" sx={{ mb: 10 }} >
-                {status === 'success' && <SuccessMessage msg="Successfully added!" />}
-                {status === "error" && <ErrorMessage msg="An error occurred! Please try again." />}
+                {status === 'success' && <SuccessMessage msg="Successfully added!" setStatus={setStatus} />}
+                {status === "error" && <ErrorMessage msg="An error occurred! Please try again." setStatus={setStatus} />}
+
                 <Button component={Link} to="/patients">{"<-"} Patients</Button>
                 <Typography variant="h4">Patient Registration</Typography>
                 <Typography variant="subtitle1" gutterBottom>* denotes required</Typography>
