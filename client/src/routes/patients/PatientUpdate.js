@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PlanSelect from '../../components/PlanSelect';
 import { Link } from 'react-router-dom';
 
 import Button from '@mui/material/Button';
@@ -150,7 +149,7 @@ function PatientUpdate() {
                         <p>
                             <label htmlFor="insplan">
                                 Insurance Plan
-                                <PlanSelect carrier={carrier} disabled={!insuranceNeeded} />
+
                             </label>
                         </p>
                     </fieldset>

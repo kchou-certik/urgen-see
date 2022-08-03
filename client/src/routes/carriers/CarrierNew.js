@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
+
+import ErrorMessage from '../../components/ErrorMessage';
 const axios = require('axios').default;
 
 function CarrierNew() {
@@ -48,7 +50,7 @@ function CarrierNew() {
                     }
                     {
                         status === "error" &&
-                        <Alert severity="error">There was an error processing your request. Please try again!</Alert>
+                        <ErrorMessage />
                     }
                 </section>
                 <form onSubmit={handleSubmit} >
