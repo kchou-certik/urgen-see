@@ -56,7 +56,7 @@ function Plans(props) {
                 }
                 {
                     error &&
-                    <ErrorMessage />
+                    <ErrorMessage msg="An error occurred while loading data. Please try again." />
                 }
                 {
                     loaded &&

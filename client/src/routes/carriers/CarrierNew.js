@@ -50,7 +50,7 @@ function CarrierNew() {
                     }
                     {
                         status === "error" &&
-                        <ErrorMessage />
+                        <ErrorMessage msg="An error occurred! Please try again." />
                     }
                 </section>
                 <form onSubmit={handleSubmit} >

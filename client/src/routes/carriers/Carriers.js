@@ -49,7 +49,7 @@ function Carriers(props) {
                 }
                 {
                     error &&
-                    <ErrorMessage />
+                    <ErrorMessage msg="An error occurred! Please try again." />
                 }
                 {
                     loaded &&

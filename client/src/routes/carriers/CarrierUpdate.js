@@ -107,7 +107,7 @@ function CarrierUpdate() {
                     }
                     {
                         status.message === "error" &&
-                        <ErrorMessage />
+                        <ErrorMessage msg="An error occurred! Please try again." />
                     }
                     {
                         status.message === "deleted" &&
