@@ -49,7 +49,6 @@ function PatientUpdate() {
     });
 
     // insurance selector/input state variables
-    const [planInput, setPlanInput] = useState("");
     const [plans, setPlans] = useState([]);
     const [insuranceNeeded, setInsuranceNeeded] = useState(true);
     const [planSelectorOpen, setPlanSelectorOpen] = useState(false);
@@ -58,7 +57,7 @@ function PatientUpdate() {
     // HANDLERS
     function handleSubmit(e) {
         e.preventDefault();
-        axios.put(`${process.env.REACT_APP_API}/patients`, data)
+        axios.put(`${process.env.REACT_APP_API}/patients/${mrn}`, data)
             .then((res) => setStatus("success"))
             .catch((err) => setStatus("error"));
     }
@@ -119,10 +118,19 @@ function PatientUpdate() {
                     setInsuranceNeeded(false);
                 }
 
-                setPlanInput(resData.name)  // `name` returned from API is Plan name
                 // update form data; `plan` is set to null as that is what Autocomplete component expects
                 // (despite all the other inputs not liking null lol)
-                setData({ ...data, ...resData, plan: resData.name === "" ? null : resData.name });
+
+                if (resData.plan_ID) {
+                    resData.plan = {
+                        plan_ID: resData.plan_ID,
+                        name: resData.name
+                    }
+                } else {
+                    resData.plan = null;
+                }
+
+                setData({ ...data, ...resData });
                 setLoaded(true);
             })
             .catch((err) => {
@@ -229,23 +237,13 @@ function PatientUpdate() {
                                         <Autocomplete id="plans"
                                             disabled={!insuranceNeeded}
                                             options={plans} groupBy={(option) => option.provider}
-                                            getOptionLabel={(option) => {
-                                                if (option === "") {
-                                                    return "";
-                                                } else if (option.name) {
-                                                    return option.name;
-                                                } else {
-                                                    return option;
-                                                }
-                                            }}
-                                            isOptionEqualToValue={(option, val) => option.name === val || option.name === val.name}
-                                            inputValue={planInput}
+                                            getOptionLabel={(option) => option.name}
+                                            isOptionEqualToValue={(option, val) => option.plan_ID === val.plan_ID}
                                             value={data.plan}
                                             onChange={(e, val) => {
                                                 setData({ ...data, plan: val });
                                                 if (!edited) setEdited(true);
                                             }}
-                                            onInputChange={(e, val) => setPlanInput(val)}
                                             open={planSelectorOpen}
                                             onOpen={() => {
                                                 setPlanSelectorOpen(true);
@@ -271,6 +269,7 @@ function PatientUpdate() {
                                 </Grid>
                             </CardContent>
                         </Card>
+                        <p>{JSON.stringify(data)}</p>
                         <Button type="submit" variant="outlined" disabled={!edited}>Submit</Button>
                     </Box>
                 }

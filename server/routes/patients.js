@@ -97,21 +97,69 @@ router.post('/', (req, res) => {
 
 
 // TODO
-router.put('/:carrier_ID', (req, res) => {
-    const { provider, phone_number } = req.body;
-    const carrier_ID = req.params.carrier_ID;
-    if (!phone_number || !provider) {
-        res.sendStatus(400);
-        return;
-    }
-    let updateCarrierQuery = `UPDATE Carriers SET phone_number = ?, provider = ? WHERE carrier_ID = ?`;
-    db.pool.query(updateCarrierQuery, [phone_number, provider, carrier_ID],
+router.put('/:mrn', (req, res) => {
+    const data = req.body;
+    const mrn = req.params.mrn;
+
+    console.log(data)
+
+    // Converts empty strings to null
+    Object.keys(data).map((key) => {
+        if (data[key] === '') data[key] = null;
+    });
+
+
+    // // Backend validation
+    // if (!data.first_name || !data.last_name || !data.date_of_birth || !data.phone_number) {
+    //     res.sendStatus(400);
+    //     return;
+    // }
+
+    // Prepare inserts for query
+    const inserts = [
+        data.first_name,
+        data.last_name,
+        data.date_of_birth,
+        data.sex,
+        data.phone_number,
+        data.email,
+        data.address_1,
+        data.address_2,
+        data.city,
+        data.state,
+        data.postal_code,
+        data.insurance_policy,
+        data.insurance_group,
+        data.plan && data.plan.plan_ID,  // if data.plan is NULL, store NULL
+        mrn
+    ];
+
+    console.log(inserts)
+    db.pool.query(
+        `UPDATE Patients 
+        SET
+            first_name = ?, 
+            last_name = ?, 
+            date_of_birth = ?, 
+            sex = ?, 
+            phone_number = ?, 
+            email = ?,
+            address_1 = ?,
+            address_2 = ?,
+            city = ?,
+            state = ?,
+            postal_code = ?,
+            insurance_policy = ?,
+            insurance_group = ?,
+            plan_ID = ?
+        WHERE mrn = ?`,
+        inserts,
         (err, rows, fields) => {
             if (err) {
                 console.log(err);
-                res.sendStatus(500);
+                res.status(500).json(err);
             } else {
-                res.send(rows);
+                res.json(rows);
             }
         });
 });
