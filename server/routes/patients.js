@@ -140,7 +140,6 @@ router.put('/:mrn', (req, res) => {
         inserts,
         (err, rows, fields) => {
             if (err) {
-                console.log(err);
                 res.status(500).json(err);
             } else {
                 res.json(rows);

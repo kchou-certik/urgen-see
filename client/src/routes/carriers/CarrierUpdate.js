@@ -65,7 +65,6 @@ function CarrierUpdate() {
                 }
             })
             .catch((err) => {
-                console.log(err);
                 setStatus("error");
             });
     }

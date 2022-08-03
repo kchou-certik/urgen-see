@@ -105,6 +105,7 @@ function PatientUpdate() {
                     if (resData[key] === null) {
                         resData[key] = "";
                     }
+                    return null;
                 });
 
                 // format DOB so it works with calendar input field
@@ -228,6 +229,7 @@ function PatientUpdate() {
                                                 setData({ ...data, insurance_policy: "", insurance_group: "", plan: null });
                                             }
                                             setInsuranceNeeded(!e.target.checked);
+                                            if (!edited) setEdited(true)
                                         }} />
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
@@ -272,7 +274,6 @@ function PatientUpdate() {
                                 </Grid>
                             </CardContent>
                         </Card>
-                        <p>{JSON.stringify(data)}</p>
                         <Stack direction="row" spacing={2}>
                             <Button type="submit" variant="outlined" disabled={!edited}>Submit</Button>
                             <DeleteButton text="Delete" route={"patients"} id={mrn} setStatus={setStatus} />

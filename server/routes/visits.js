@@ -17,7 +17,6 @@ router.get('/', (req, res) => {
 
     db.pool.query(query, (err, rows, fields) => {
         if (err) {
-            console.log(err);
             res.status(500).send(err);
             return;
         }
@@ -66,7 +65,6 @@ router.put('/:carrier_ID', (req, res) => {
     db.pool.query(updateCarrierQuery, [phone_number, provider, carrier_ID],
         (err, rows, fields) => {
             if (err) {
-                console.log(err);
                 res.sendStatus(500);
             } else {
                 res.send(rows);
