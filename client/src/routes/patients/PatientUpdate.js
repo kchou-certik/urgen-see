@@ -30,6 +30,7 @@ function PatientUpdate() {
     const [status, setStatus] = React.useState(null); // success | error
     const [req, setReq] = useState(false);  // if text input field for 'other' sex is required
     const [loaded, setLoaded] = useState(false); // if patient's data is loaded from API 
+    const [edited, setEdited] = useState(false); // if form has been changed from original data
     const [data, setData] = useState({      // form data
         first_name: "",
         last_name: "",
@@ -71,6 +72,8 @@ function PatientUpdate() {
             ...data,
             [name]: target.value
         });
+
+        if (!edited) setEdited(true);
     }
 
 
@@ -126,6 +129,7 @@ function PatientUpdate() {
                 setStatus("error");
             });
     }, [mrn, data, loaded]);
+
 
     return (
         <>
@@ -216,7 +220,7 @@ function PatientUpdate() {
                                         }} />
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
-                                        <TextField id="inspolicy" name="insurance_policy" value={data.insurance_policy} label="Insurance Policy #" fullWidth onChange={handleInputChange} disabled={!insuranceNeeded} />
+                                        <TextField id="inspolicy" name="insurance_policy" required={insuranceNeeded} value={data.insurance_policy} label="Insurance Policy #" fullWidth onChange={handleInputChange} disabled={!insuranceNeeded} />
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
                                         <TextField id="insgrp" name="insurance_group" value={data.insurance_group} label="Insurance Group #" fullWidth onChange={handleInputChange} disabled={!insuranceNeeded} />
@@ -237,7 +241,10 @@ function PatientUpdate() {
                                             isOptionEqualToValue={(option, val) => option.name === val || option.name === val.name}
                                             inputValue={planInput}
                                             value={data.plan}
-                                            onChange={(e, val) => setData({ ...data, plan: val })}
+                                            onChange={(e, val) => {
+                                                setData({ ...data, plan: val });
+                                                if (!edited) setEdited(true);
+                                            }}
                                             onInputChange={(e, val) => setPlanInput(val)}
                                             open={planSelectorOpen}
                                             onOpen={() => {
@@ -264,7 +271,7 @@ function PatientUpdate() {
                                 </Grid>
                             </CardContent>
                         </Card>
-                        <Button type="submit" variant="outlined">Submit</Button>
+                        <Button type="submit" variant="outlined" disabled={!edited}>Submit</Button>
                     </Box>
                 }
             </Container>

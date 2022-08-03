@@ -165,7 +165,7 @@ function PatientRegistration() {
                                     }} />
                                 </Grid>
                                 <Grid item xs={12} sm={4}>
-                                    <TextField id="inspolicy" name="insurance_policy" value={data.insurance_policy} label="Insurance Policy #" fullWidth onChange={handleInputChange} disabled={!insuranceNeeded} />
+                                    <TextField id="inspolicy" name="insurance_policy" required={insuranceNeeded} value={data.insurance_policy} label="Insurance Policy #" fullWidth onChange={handleInputChange} disabled={!insuranceNeeded} />
                                 </Grid>
                                 <Grid item xs={12} sm={4}>
                                     <TextField id="insgrp" name="insurance_group" value={data.insurance_group} label="Insurance Group #" fullWidth onChange={handleInputChange} disabled={!insuranceNeeded} />
