@@ -97,10 +97,10 @@ function PatientRegistration() {
                         <CardContent>
                             <Grid container spacing={2} mb={2}>
                                 <Grid item xs={12} sm={4}>
-                                    <TextField required id="firstName" value={data.first_name} name="first_name" label="First name" fullWidth autoComplete="given-name" onChange={handleInputChange} />
+                                    <TextField required id="lastName" value={data.last_name} name="last_name" label="Last name" fullWidth autoComplete="family-name" onChange={handleInputChange} />
                                 </Grid>
                                 <Grid item xs={12} sm={4}>
-                                    <TextField required id="lastName" value={data.last_name} name="last_name" label="Last name" fullWidth autoComplete="family-name" onChange={handleInputChange} />
+                                    <TextField required id="firstName" value={data.first_name} name="first_name" label="First name" fullWidth autoComplete="given-name" onChange={handleInputChange} />
                                 </Grid>
                                 <Grid item xs={12} sm={4}>
                                     <TextField required id="dob" value={data.date_of_birth} type="date" name="date_of_birth" label="Date of birth" fullWidth autoComplete="bday" onChange={handleInputChange} InputLabelProps={{

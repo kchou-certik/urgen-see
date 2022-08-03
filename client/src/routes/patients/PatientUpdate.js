@@ -129,14 +129,12 @@ function PatientUpdate() {
 
     return (
         <>
-            <p>{JSON.stringify(data)}</p>
-            <p>{JSON.stringify(planInput)}</p>
             <Container component="main" maxWidth="md" sx={{ mb: 10 }} >
                 {status === 'success' && <SuccessMessage msg="Successfully added!" />}
                 {status === "error" && <ErrorMessage msg="An error occurred! Please try again." />}
 
                 <Button component={Link} to="/patients">{"<-"} Patients</Button>
-                <Typography variant="h4">Patient Registration</Typography>
+                <Typography variant="h4">Edit Patient Record</Typography>
                 <Typography variant="subtitle1" gutterBottom>* denotes required</Typography>
 
                 {!loaded && <Box sx={{ display: 'flex', alignItems: 'center' }}><CircularProgress /></Box>}
@@ -147,10 +145,10 @@ function PatientUpdate() {
                             <CardContent>
                                 <Grid container spacing={2} mb={2}>
                                     <Grid item xs={12} sm={4}>
-                                        <TextField required id="firstName" value={data.first_name} name="first_name" label="First name" fullWidth autoComplete="given-name" onChange={handleInputChange} />
+                                        <TextField required id="lastName" value={data.last_name} name="last_name" label="Last name" fullWidth autoComplete="family-name" onChange={handleInputChange} />
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
-                                        <TextField required id="lastName" value={data.last_name} name="last_name" label="Last name" fullWidth autoComplete="family-name" onChange={handleInputChange} />
+                                        <TextField required id="firstName" value={data.first_name} name="first_name" label="First name" fullWidth autoComplete="given-name" onChange={handleInputChange} />
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
                                         <TextField required id="dob" value={data.date_of_birth} type="date" name="date_of_birth" label="Date of birth" fullWidth autoComplete="bday" onChange={handleInputChange} InputLabelProps={{
@@ -170,6 +168,9 @@ function PatientUpdate() {
                                             <FormControlLabel value="other" checked={data.sex !== 'M' && data.sex !== 'F'} name="sex" control={<Radio size="small" />} label="Other" onClick={() => setReq(true)} />
                                             <TextField name="sex" value={req ? data.sex : ""} size="small" label="Other" fullWidth required={req} disabled={!req} onChange={handleInputChange} />
                                         </RadioGroup>
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField id="mrn" value={data.mrn} label="MRN" disabled />
                                     </Grid>
                                 </Grid>
                             </CardContent>
