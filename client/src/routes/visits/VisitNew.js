@@ -154,7 +154,7 @@ function VisitNew() {
                                     <TextField id="fname1" label="First Name" disabled fullWidth value={data.first_name} />
                                 </Grid>
                                 <Grid item xs={12} sm={4}>
-                                    <TextField id="dob1" label="Date of Birth" disabled fullWidth value={date.format(new Date(data.date_of_birth), "MM/DD/YYYY")} />
+                                    <TextField id="dob1" label="Date of Birth" disabled fullWidth value={data.date_of_birth && date.format(new Date(data.date_of_birth), "MM/DD/YYYY")} />
                                 </Grid>
                                 <Grid item xs={12} sm={4}>
                                     <TextField id="mrn1" label="MRN" placeholder="Select a patient" disabled fullWidth value={data.mrn} InputLabelProps={{
