@@ -23,11 +23,11 @@ const axios = require('axios').default;
 
 
 function PatientRegistration() {
+    // STATE VARIABLES
+
     const [status, setStatus] = React.useState(null); // success | error
-
     const [req, setReq] = useState(false);  // if text input field for 'other' sex is required
-
-    const [data, setData] = useState({
+    const [data, setData] = useState({      // form data
         first_name: "",
         last_name: "",
         date_of_birth: "",
@@ -44,11 +44,14 @@ function PatientRegistration() {
         plan: null
     });
 
-    // Insurance selector/input state variables
+    // insurance selector/input state variables
     const [planInput, setPlanInput] = useState("");
     const [plans, setPlans] = useState([]);
     const [insuranceNeeded, setInsuranceNeeded] = useState(true);
     const [planSelectorOpen, setPlanSelectorOpen] = useState(false);
+
+
+    // HANDLERS
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -67,6 +70,9 @@ function PatientRegistration() {
             [name]: target.value
         });
     }
+
+
+    // API FETCH REQUESTS
 
     // Load Plan selector data
     const loading = planSelectorOpen && plans.length === 0; // from https://mui.com/material-ui/react-autocomplete/#load-on-open

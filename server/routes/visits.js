@@ -34,16 +34,27 @@ router.get('/:id', (req, res) => {
     });
 });
 
-// TODO
+
 router.post('/', (req, res) => {
-    const { phone_number, provider } = req.body;
-    if (!phone_number || !provider) {
-        res.sendStatus(400);
-        return;
-    }
-    db.pool.query(`INSERT INTO Carriers (phone_number, provider)
-        VALUES (?, ?)`,
-        [phone_number, provider],
+    const data = req.body;
+
+    // Converts empty strings to null
+    Object.keys(data).map((key) => {
+        if (data[key] === '') data[key] = null;
+    });
+
+    // Prepare inserts for query
+    const inserts = [
+        data.mrn,
+        data.plan_ID,
+        data.primary_diagnosis,
+        data.scheduled_time,
+        data.visit_type
+    ];
+
+    db.pool.query(`INSERT INTO Visits (mrn, plan_ID, primary_diagnosis, scheduled_time, visit_type)
+        VALUES (?, ?, ?, ?, ?)`,
+        inserts,
         (err, rows, fields) => {
             if (err) {
                 res.status(500).json(err);
