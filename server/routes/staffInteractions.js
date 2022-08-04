@@ -23,7 +23,11 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-    db.pool.query('SELECT * FROM Staff WHERE staff_ID=?;', req.params.id, (err, rows, fields) => {
+    db.pool.query(`
+    SELECT * FROM Staff_Interactions
+    LEFT JOIN Staff
+    ON Staff.staff_ID = Staff_interactions.staff_ID
+    WHERE visit_staff_ID=?;`, req.params.id, (err, rows, fields) => {
         if (err) {
             res.status(500).send(err);
             return;
@@ -51,16 +55,11 @@ router.post('/', (req, res) => {
         });
 });
 
-// TODO
-router.put('/:carrier_ID', (req, res) => {
-    const { provider, phone_number } = req.body;
-    const carrier_ID = req.params.carrier_ID;
-    if (!phone_number || !provider) {
-        res.sendStatus(400);
-        return;
-    }
-    let updateCarrierQuery = `UPDATE Carriers SET phone_number = ?, provider = ? WHERE carrier_ID = ?`;
-    db.pool.query(updateCarrierQuery, [phone_number, provider, carrier_ID],
+router.put('/:visit_staff_ID', (req, res) => {
+    const staff_ID = req.body.staffMember.staff_ID;
+    const visit_staff_ID = req.params.visit_staff_ID;
+
+    db.pool.query(`UPDATE Staff_Interactions SET staff_ID = ? WHERE visit_staff_ID = ?`, [staff_ID, visit_staff_ID],
         (err, rows, fields) => {
             if (err) {
                 res.sendStatus(500);

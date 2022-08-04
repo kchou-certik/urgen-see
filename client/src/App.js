@@ -103,7 +103,7 @@ function App() {
             <Route path="plans/test/edit" element={<PlanUpdate />} />
             <Route path="staff-interactions" element={<StaffInteractions />} />
             <Route path="staff-interactions/new" element={<InteractionNew />} />
-            <Route path="staff-interactions/test/edit" element={<InteractionUpdate />} />
+            <Route path="staff-interactions/:visit_staff_ID/edit" element={<InteractionUpdate />} />
           </Routes>
         </Container >
       </Paper>

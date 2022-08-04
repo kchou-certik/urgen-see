@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.get('/', (req, res) => {
     db.pool.query(
-        `SELECT staff_ID, last_name, first_name,
+        `SELECT staff_ID, CONCAT(first_name, " ", last_name) AS Name,
         practitioner_type, phone_number, email,
         address_1, address_2, city, state, postal_code
         FROM Staff

@@ -48,7 +48,7 @@ function TableRow({ options, row, pKey, updatable }) {
                 urlPrefix = `/visits/${id}`;
                 break;
             case "visit_staff_ID":
-                urlPrefix = `/interactions/${id}`
+                urlPrefix = `/staff-interactions/${id}`
                 break;
             default:
                 urlPrefix = "404"
