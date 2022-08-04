@@ -3,14 +3,32 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', (req, res) => {
+
+    const query = `SELECT mrn, last_name, first_name, date_of_birth,
+    sex, phone_number, email, address_1, address_2, city, state,
+    postal_code, insurance_policy, insurance_group, Patients.plan_ID, Plans.name AS plan_name 
+    FROM Patients 
+    LEFT JOIN Plans
+    ON Patients.plan_ID = Plans.plan_ID
+    WHERE IFNULL(first_name=?, True) 
+    AND IFNULL(last_name=?, True) 
+    AND IFNULL(date_of_birth=?, True) 
+    AND IFNULL(mrn=?, True)
+    ORDER BY last_name ASC;`;
+
+    const paramArr = [
+        req.query.first_name,
+        req.query.last_name,
+        req.query.date_of_birth,
+        req.query.mrn
+    ];
+
+    // convert empty strings to null
+    const inserts = paramArr.map((param) => param === '' ? null : param);
+
+    // SELECT ALL
     db.pool.query(
-        `SELECT mrn, last_name, first_name, date_of_birth,
-        sex, phone_number, email, address_1, address_2, city, state,
-        postal_code, insurance_policy, insurance_group, Plans.name AS plan_name 
-        FROM Patients
-        LEFT JOIN Plans
-        ON Patients.plan_ID = Plans.plan_ID
-        ORDER BY last_name ASC`,
+        query, inserts,
         (err, rows, fields) => {
             if (err) {
                 res.status(500).send(err);
@@ -147,7 +165,7 @@ router.put('/:mrn', (req, res) => {
         });
 });
 
-// TODO
+
 router.delete('/:mrn', (req, res) => {
     const mrn = req.params.mrn;
     db.pool.query('DELETE FROM Patients WHERE mrn = ?', mrn, (err, results, fields) => {
