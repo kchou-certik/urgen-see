@@ -158,7 +158,7 @@ function InteractionUpdate() {
                         </Card>
                         <Stack direction="row" spacing={2}>
                             <Button type="submit" variant="outlined" disabled={!edited}>Submit</Button>
-                            <DeleteButton text="Delete" route={"patients"} id={visit_staff_ID} setStatus={setStatus} />
+                            <DeleteButton text="Delete" route={"staff-interactions"} id={visit_staff_ID} setStatus={setStatus} />
                         </Stack>
                     </Box>
                 }

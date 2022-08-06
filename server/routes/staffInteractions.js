@@ -69,10 +69,9 @@ router.put('/:visit_staff_ID', (req, res) => {
         });
 });
 
-// TODO
 router.delete('/:id', (req, res) => {
-    const carrier_id = req.params.id;
-    db.pool.query('DELETE FROM Carriers WHERE carrier_id = ?', carrier_id, (err, results, fields) => {
+    const visit_staff_ID = req.params.id;
+    db.pool.query(`DELETE FROM Staff_Interactions WHERE visit_staff_ID = ?`, visit_staff_ID, (err, results, fields) => {
         if (err) {
             res.status(500).json(err);
         } else {
