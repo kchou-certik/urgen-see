@@ -3,7 +3,6 @@ import ErrorMessage from '../../components/ErrorMessage';
 import SuccessMessage from '../../components/SuccessMessage';
 import DeleteButton from '../../components/DeleteButton';
 import { Link, useParams } from 'react-router-dom';
-import date from 'date-and-time';
 
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
@@ -11,14 +10,9 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
-import FormLabel from '@mui/material/FormLabel';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
 import Autocomplete from '@mui/material/Autocomplete';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
-import Switch from '@mui/material/Switch';
 import CircularProgress from '@mui/material/CircularProgress';
 import Stack from '@mui/material/Stack';
 
@@ -30,7 +24,6 @@ function InteractionUpdate() {
 
     // STATE VARIABLES
     const [status, setStatus] = React.useState(null); // success | error | deleted
-    const [req, setReq] = useState(false);  // if text input field for 'other' sex is required
     const [loaded, setLoaded] = useState(false); // if patient's data is loaded from API 
     const [edited, setEdited] = useState(false); // if form has been changed from original data
     const [data, setData] = useState({      // form data
@@ -95,7 +88,8 @@ function InteractionUpdate() {
                 if (resData.staff_ID) {
                     resData.staffMember = {
                         staff_ID: resData.staff_ID,
-                        name: resData.first_name + " " + resData.last_name
+                        name: resData.last_name + ", " + resData.first_name,
+                        practitioner_type: resData.practitioner_type
                     }
                 } else {
                     resData.staffMember = null;
@@ -130,7 +124,7 @@ function InteractionUpdate() {
                                     <Grid item xs={12} sm={12}>
                                         <Autocomplete id="staffInput"
                                             options={staffInput}
-                                            getOptionLabel={(option) => option.name}
+                                            getOptionLabel={(option) => option.name + ", " + option.practitioner_type}
                                             isOptionEqualToValue={(option, val) => option.staff_ID === val.staff_ID}
                                             value={data.staffMember}
                                             onChange={(e, val) => {
