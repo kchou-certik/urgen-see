@@ -52,9 +52,9 @@ CREATE TABLE IF NOT EXISTS Visits(
     visit_type varchar(45) NOT NULL,
     PRIMARY KEY (visit_ID),
     FOREIGN KEY (mrn) REFERENCES Patients(mrn)
-        ON DELETE RESTRICT
+        ON DELETE CASCADE
         ON UPDATE CASCADE,
-    FOREIGN KEY (plan_ID) REFERENCES Insurances(plan_ID)
+    FOREIGN KEY (plan_ID) REFERENCES Plans(plan_ID)
         ON DELETE NO ACTION
         ON UPDATE NO ACTION
 );
