@@ -30,16 +30,30 @@ router.get('/:id', (req, res) => {
     });
 });
 
-// TODO
 router.post('/', (req, res) => {
-    const { phone_number, provider } = req.body;
-    if (!phone_number || !provider) {
-        res.sendStatus(400);
-        return;
-    }
-    db.pool.query(`INSERT INTO Carriers (phone_number, provider)
-        VALUES (?, ?)`,
-        [phone_number, provider],
+    const data = req.body;
+
+    // Converts empty strings to null
+    Object.keys(data).map((key) => {
+        if (data[key] === '') data[key] = null;
+    });
+
+    // Prepare inserts for query
+    const inserts = [
+        data.carrier && data.carrier.carrier_ID, // if data.carrier is NULL, store NULL
+        data.name,
+        data.referral_required
+    ];
+
+    console.log(inserts)
+    db.pool.query(
+        `INSERT INTO Plans (
+            carrier_ID,
+            name,
+            referral_required
+        )
+        VALUES (?, ?, ?)`,
+        inserts,
         (err, rows, fields) => {
             if (err) {
                 res.status(500).json(err);

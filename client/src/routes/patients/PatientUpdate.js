@@ -86,7 +86,6 @@ function PatientUpdate() {
         axios.get(`${process.env.REACT_APP_API}/plans`)
             .then((res) => {
                 setPlans(res.data);
-                console.log(res.data);
             })
             .catch((err) => {
                 setStatus("error");

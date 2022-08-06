@@ -78,7 +78,6 @@ function VisitNew() {
 
         axios.get(`${process.env.REACT_APP_API}/patients`, { params: patientData })
             .then((res) => {
-                console.log(res.data)
                 setPatients(res.data);
             })
             .catch((err) => setStatus("error"));

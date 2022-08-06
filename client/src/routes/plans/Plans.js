@@ -27,7 +27,13 @@ function Plans(props) {
         axios.get(`${process.env.REACT_APP_API}/plans`)
             .then((res) => {
                 const data = res.data.map((row) => {
-                    row.referral_required = Boolean(row.referral_required) ? 'Yes' : 'No';
+                    if (row.referral_required === 1) {
+                        row.referral_required = "Yes";
+                    } else if (row.referral_required === 0) {
+                        row.referral_required = "No";
+                    } else {
+                        row.referral_required = "";
+                    }
                     return row;
                 })
                 setLoaded(true);
