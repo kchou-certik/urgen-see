@@ -45,7 +45,6 @@ router.post('/', (req, res) => {
         data.referral_required
     ];
 
-    console.log(inserts)
     db.pool.query(
         `INSERT INTO Plans (
             carrier_ID,

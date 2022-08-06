@@ -32,8 +32,6 @@ function PlanNew() {
         name: ""
     });
 
-    console.log(data)
-
     // insurance selector/input state variables
     const [carriers, setCarriers] = useState([]);
     const [carrierSelectorOpen, setCarrierSelectorOpen] = useState(false);
