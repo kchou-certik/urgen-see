@@ -104,13 +104,13 @@ function PatientRegistration() {
                         <CardContent>
                             <Grid container spacing={2} mb={2}>
                                 <Grid item xs={12} sm={4}>
-                                    <TextField required id="lastName" value={data.last_name} name="last_name" label="Last name" fullWidth autoComplete="family-name" onChange={handleInputChange} />
+                                    <TextField required id="lastName" value={data.last_name} name="last_name" label="Last name" fullWidth onChange={handleInputChange} />
                                 </Grid>
                                 <Grid item xs={12} sm={4}>
-                                    <TextField required id="firstName" value={data.first_name} name="first_name" label="First name" fullWidth autoComplete="given-name" onChange={handleInputChange} />
+                                    <TextField required id="firstName" value={data.first_name} name="first_name" label="First name" fullWidth onChange={handleInputChange} />
                                 </Grid>
                                 <Grid item xs={12} sm={4}>
-                                    <TextField required id="dob" value={data.date_of_birth} type="date" name="date_of_birth" label="Date of birth" fullWidth autoComplete="bday" onChange={handleInputChange} InputLabelProps={{
+                                    <TextField required id="dob" value={data.date_of_birth} type="date" name="date_of_birth" label="Date of birth" fullWidth onChange={handleInputChange} InputLabelProps={{
                                         shrink: true,
                                     }} />
                                 </Grid>
@@ -136,25 +136,25 @@ function PatientRegistration() {
                             <Typography variant="h6" gutterBottom>Contact Info</Typography>
                             <Grid container spacing={2}>
                                 <Grid item xs={12} sm={6}>
-                                    <TextField id="phone" required value={data.phone_number} autoComplete="tel" name="phone_number" label="Phone number" fullWidth onChange={handleInputChange} />
+                                    <TextField id="phone" required value={data.phone_number} type="tel" name="phone_number" label="Phone number" fullWidth onChange={handleInputChange} />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <TextField id="email" value={data.email} autoComplete="email" name="email" label="Email" fullWidth onChange={handleInputChange} />
+                                    <TextField id="email" value={data.email} type="email" name="email" label="Email" fullWidth onChange={handleInputChange} />
                                 </Grid>
                                 <Grid item xs={12} sm={12}>
-                                    <TextField id="addr1" value={data.address_1} autoComplete="address-line1" name="address_1" label="Address line 1" fullWidth onChange={handleInputChange} />
+                                    <TextField id="addr1" value={data.address_1} name="address_1" label="Address line 1" fullWidth onChange={handleInputChange} />
                                 </Grid>
                                 <Grid item xs={12} sm={12}>
-                                    <TextField id="addr2" value={data.address_2} autoComplete="address-line2" name="address_2" label="Address line 2" fullWidth onChange={handleInputChange} />
+                                    <TextField id="addr2" value={data.address_2} name="address_2" label="Address line 2" fullWidth onChange={handleInputChange} />
                                 </Grid>
                                 <Grid item xs={12} sm={4}>
-                                    <TextField id="city" value={data.city} autoComplete="address-level2" name="city" label="City" fullWidth onChange={handleInputChange} />
+                                    <TextField id="city" value={data.city} name="city" label="City" fullWidth onChange={handleInputChange} />
                                 </Grid>
                                 <Grid item xs={6} sm={4}>
-                                    <TextField id="state" value={data.state} autoComplete="address-level1" name="state" label="State" fullWidth onChange={handleInputChange} />
+                                    <TextField id="state" value={data.state} name="state" label="State" fullWidth onChange={handleInputChange} />
                                 </Grid>
                                 <Grid item xs={6} sm={4}>
-                                    <TextField id="postalCode" value={data.postal_code} autoComplete="postal-code" name="postal_code" label="Postal code" fullWidth onChange={handleInputChange} />
+                                    <TextField id="postalCode" value={data.postal_code} name="postal_code" label="Postal code" fullWidth onChange={handleInputChange} />
                                 </Grid>
                             </Grid>
                         </CardContent>

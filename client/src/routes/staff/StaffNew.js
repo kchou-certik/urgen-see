@@ -1,81 +1,134 @@
+import React, { useState } from 'react';
+import ErrorMessage from '../../components/ErrorMessage';
+import SuccessMessage from '../../components/SuccessMessage';
 import { Link } from 'react-router-dom';
 
+import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
+
+const axios = require('axios').default;
+
+
 function StaffNew() {
+    // STATE VARIABLES
+
+    const [status, setStatus] = React.useState(null); // success | error
+    const [data, setData] = useState({      // form data
+        first_name: "",
+        last_name: "",
+        practitioner_type: "",
+        phone_number: "",
+        email: "",
+        address_1: "",
+        address_2: "",
+        city: "",
+        state: "",
+        postal_code: "",
+    });
+
+
+    // HANDLERS
+
     function handleSubmit(e) {
         e.preventDefault();
-        alert("Submitted!");
+        axios.post(`${process.env.REACT_APP_API}/staff`, data)
+            .then((res) => setStatus("success"))
+            .catch((err) => setStatus("error"));
+    }
+
+    // From https://reactjs.org/docs/forms.html#handling-multiple-inputs
+    function handleInputChange(event) {
+        const target = event.target;
+        const name = target.name;
+
+        setData({
+            ...data,
+            [name]: target.value
+        });
     }
 
     return (
         <>
-            <header>
-                <Link to="/staff">{"<-"} Staff</Link>
-                <h1>Staff Registration</h1>
-            </header>
-            <main>
-                <form onSubmit={handleSubmit} >
-                    <p>Staff ID: 3</p>
-                    <fieldset> <legend>Demographics</legend>
-                        <p>
-                            <label htmlFor="fname">First name
-                                <input type="text" id="fname" name="first_name" />
-                            </label>
-                        </p>
-                        <p>
-                            <label htmlFor="fname">Last name
-                                <input type="text" id="lname" name="last_name" />
-                            </label>
-                        </p>
-                    </fieldset>
-                    <fieldset> <legend>Contact Info</legend>
-                        <p>
-                            <label htmlFor="phone">
-                                Phone number
-                                <input type="tel" name="phone_number" id="phone" />
-                            </label>
-                        </p>
-                        <p>
-                            <label htmlFor="email">
-                                Email
-                                <input type="email" id="email" name="email" />
-                            </label>
-                        </p>
-                        <fieldset> <legend>Address</legend>
-                            <p>
-                                <label htmlFor="addr1">
-                                    Address Field 1
-                                    <input type="text" id="addr1" autoComplete="address-line1" name="address_1" />
-                                </label>
-                            </p>
-                            <p>
-                                <label htmlFor="addr2">
-                                    Address Field 2
-                                    <input type="text" id="addr2" autoComplete="address-line2" name="address_2" />
-                                </label>
-                            </p>
-                            <p>
-                                <label htmlFor="city">
-                                    City
-                                    <input type="text" id="city" autoComplete="address-level2" name="city" />
-                                </label>
-                            </p>
-                            <p>
-                                <label htmlFor="state">
-                                    State/Province
-                                    <input type="text" id="state" autoComplete="address-level1" name="state" />
-                                </label>
-                            </p>
-                            <p>
-                                <label htmlFor="post">
-                                    Postal Code
-                                    <input type="text" id="post" autoComplete="postal-code" name="postal_code" />
-                                </label>
-                            </p>
-                        </fieldset>
-                    </fieldset>
-                    <input type="submit" />
-                </form>
-            </main>
+            <Container component="main" maxWidth="md" sx={{ mb: 10 }} >
+                {status === 'success' && <SuccessMessage msg="Successfully added!" setStatus={setStatus} />}
+                {status === "error" && <ErrorMessage msg="An error occurred! Please try again." setStatus={setStatus} />}
+
+                <Button component={Link} to="/staff">{"<-"} Staff</Button>
+                <Typography variant="h4">Staff Registration</Typography>
+                <Typography variant="subtitle1" gutterBottom>* denotes required</Typography>
+                <Box component="form" onSubmit={handleSubmit}>
+                    <Card sx={{ mb: 2, p: 2 }}>
+                        <CardContent>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12} sm={4}>
+                                    <TextField required id="lastName" value={data.last_name} name="last_name" label="Last name" fullWidth onChange={handleInputChange} />
+                                </Grid>
+                                <Grid item xs={12} sm={4}>
+                                    <TextField required id="firstName" value={data.first_name} name="first_name" label="First name" fullWidth onChange={handleInputChange} />
+                                </Grid>
+                                <Grid item xs={12} sm={4}>
+                                    <FormControl fullWidth required>
+                                        <InputLabel id="typeLabel">Practitioner Type</InputLabel>
+                                        <Select
+                                            labelId="typeLabel"
+                                            id="type"
+                                            value={data.practitioner_type}
+                                            label="Practitioner Type"
+                                            onChange={handleInputChange}
+                                            name="practitioner_type"
+                                        >
+                                            <MenuItem value="MD">MD</MenuItem>
+                                            <MenuItem value="DO">DO</MenuItem>
+                                            <MenuItem value="PA">PA</MenuItem>
+                                            <MenuItem value="RN">RN</MenuItem>
+                                            <MenuItem value="RN">MA</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                            </Grid>
+                        </CardContent>
+                    </Card>
+                    <Card sx={{ mb: 2, p: 2 }}>
+                        <CardContent>
+                            <Typography variant="h6" gutterBottom>Contact Info</Typography>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField id="phone" required value={data.phone_number} type="tel" name="phone_number" label="Phone number" fullWidth onChange={handleInputChange} />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField id="email" value={data.email} type="email" name="email" label="Email" fullWidth onChange={handleInputChange} />
+                                </Grid>
+                                <Grid item xs={12} sm={12}>
+                                    <TextField id="addr1" value={data.address_1} name="address_1" label="Address line 1" fullWidth onChange={handleInputChange} />
+                                </Grid>
+                                <Grid item xs={12} sm={12}>
+                                    <TextField id="addr2" value={data.address_2} name="address_2" label="Address line 2" fullWidth onChange={handleInputChange} />
+                                </Grid>
+                                <Grid item xs={12} sm={4}>
+                                    <TextField id="city" value={data.city} name="city" label="City" fullWidth onChange={handleInputChange} />
+                                </Grid>
+                                <Grid item xs={6} sm={4}>
+                                    <TextField id="state" value={data.state} name="state" label="State" fullWidth onChange={handleInputChange} />
+                                </Grid>
+                                <Grid item xs={6} sm={4}>
+                                    <TextField id="postalCode" value={data.postal_code} name="postal_code" label="Postal code" fullWidth onChange={handleInputChange} />
+                                </Grid>
+                            </Grid>
+                        </CardContent>
+                    </Card>
+                    <Button type="submit" variant="outlined">Submit</Button>
+                </Box>
+            </Container>
         </>
     )
 }
