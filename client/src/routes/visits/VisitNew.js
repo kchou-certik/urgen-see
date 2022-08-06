@@ -74,6 +74,7 @@ function VisitNew() {
             if (params[key] === "") {
                 params[key] = null;
             }
+            return undefined;
         });
 
         axios.get(`${process.env.REACT_APP_API}/patients`, { params: patientData })

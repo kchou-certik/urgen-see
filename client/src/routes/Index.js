@@ -40,15 +40,18 @@ function Index(props) {
     }
 
     const tableOptions = {
-        visit_ID: "ID",
+        visit_ID: "Visit ID",
         mrn: "MRN",
-        plan_ID: "Plan",
-        primary_diagnosis: "Primary Diagnosis",
+        plan_ID: false,
+        carrier_ID: false,
+        primary_diagnosis: false,
         scheduled_time: "Scheduled",
         check_in_time: "Checked In",
         discharge_time: "Checked Out",
-        visit_type: "Visit Type"
-    };
+        visit_type: "Visit Type",
+        patient_name: "Patient",
+        visit_insurance: false
+    }
 
     // Load data
     React.useEffect(() => {

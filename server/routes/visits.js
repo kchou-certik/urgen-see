@@ -4,7 +4,10 @@ const router = express.Router();
 
 router.get('/', (req, res) => {
     // Accept array of column names, default to *
-    const cols = !(req.query.cols) ? "*" : db.pool.escapeId(req.query.cols);
+    const cols = !(req.query.cols) ?
+        `visit_ID, CONCAT(last_name, ", ", first_name) AS patient_name, patient.mrn, scheduled_time, check_in_time, discharge_time,
+        primary_diagnosis, visit_type, carrier.carrier_ID, plan.plan_ID, CONCAT(provider, " ", plan.name) AS visit_insurance`
+        : db.pool.escapeId(req.query.cols);
 
     // Select visits from a specific day in YYYY-MM-DD format
     let date = "";
@@ -13,10 +16,21 @@ router.get('/', (req, res) => {
         date = `WHERE date(scheduled_time) = ${dateParam}`;
     }
 
-    const query = `SELECT ${cols} FROM Visits ${date} ORDER BY scheduled_time ASC;`
+    const query =
+        `SELECT ${cols} 
+        FROM Visits 
+        JOIN (SELECT last_name, first_name, mrn FROM Patients) AS patient
+        ON patient.mrn = Visits.mrn
+        LEFT JOIN (SELECT plan_ID, carrier_ID, name FROM Plans) AS plan
+        ON plan.plan_ID = Visits.plan_ID
+        LEFT JOIN (SELECT carrier_ID, provider FROM Carriers) AS carrier
+        ON plan.carrier_ID = carrier.carrier_ID
+        ${date} 
+        ORDER BY scheduled_time ASC;`
 
     db.pool.query(query, (err, rows, fields) => {
         if (err) {
+            console.log(err)
             res.status(500).send(err);
             return;
         }

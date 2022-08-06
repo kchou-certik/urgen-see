@@ -17,14 +17,17 @@ function Visits(props) {
     const [error, setError] = React.useState(false);
 
     const tableOptions = {
-        visit_ID: "ID",
+        visit_ID: "Visit ID",
         mrn: "MRN",
-        plan_ID: "Plan",
+        plan_ID: false,
+        carrier_ID: false,
         primary_diagnosis: "Primary Diagnosis",
         scheduled_time: "Scheduled",
         check_in_time: "Checked In",
         discharge_time: "Checked Out",
-        visit_type: "Visit Type"
+        visit_type: "Visit Type",
+        patient_name: "Patient",
+        visit_insurance: "Visit Insurance"
     };
 
     // Load data
@@ -33,8 +36,8 @@ function Visits(props) {
             .then((res) => {
                 res.data.map((row) => {
                     row.scheduled_time = date.format(new Date(row.scheduled_time), "M/D/YY HH:mm");
-                    row.check_in_time = date.format(new Date(row.check_in_time), "M/D/YY HH:mm");
-                    row.discharge_time = date.format(new Date(row.discharge_time), "M/D/YY HH:mm");
+                    row.check_in_time = date.format(new Date(row.check_in_time), "HH:mm");
+                    row.discharge_time = date.format(new Date(row.discharge_time), "HH:mm");
                     return row;
                 });
                 setLoaded(true);
@@ -45,23 +48,13 @@ function Visits(props) {
             });
     }, []);
 
+    console.log(rows)
+
     return (
         <>
             <header>
                 <Link to="/patients">{"<-"} Patients</Link>
                 <h1>Patient Visits</h1>
-                {/* Consider modularizing patient headers if we use them a lot */}
-                <section>
-                    <p>
-                        <h2>Alex, Alex</h2>
-                        <em>Last Name, First Name</em>
-                    </p>
-                    <p>
-                        <strong>DOB: 01/01/1990</strong>
-                        <br />
-                        <strong>MRN: 1</strong>
-                    </p>
-                </section>
             </header>
             <main>
                 <Stack direction="row" spacing="1em" sx={{ mb: 2 }}>
