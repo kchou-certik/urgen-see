@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS Plans(
     plan_ID int NOT NULL AUTO_INCREMENT,
     referral_required tinyint,
     carrier_ID int NOT NULL,
-    name varchar(45),
+    name varchar(45) NOT NULL,
     PRIMARY KEY (plan_ID),
     FOREIGN KEY (carrier_ID) REFERENCES Carriers(carrier_ID)
         ON DELETE CASCADE
