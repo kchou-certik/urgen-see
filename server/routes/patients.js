@@ -5,11 +5,13 @@ const router = express.Router();
 router.get('/', (req, res) => {
 
     const query = `SELECT mrn, last_name, first_name, date_of_birth,
-    sex, phone_number, email, address_1, address_2, city, state,
-    postal_code, insurance_policy, insurance_group, Patients.plan_ID, Plans.name AS plan_name 
+    sex, Patients.phone_number, email, address_1, address_2, city, state,
+    postal_code, insurance_policy, insurance_group, Patients.plan_ID, CONCAT(Carriers.provider, " ", Plans.name) AS plan_name 
     FROM Patients 
     LEFT JOIN Plans
     ON Patients.plan_ID = Plans.plan_ID
+    LEFT JOIN Carriers
+    ON Plans.carrier_ID = Carriers.carrier_ID
     WHERE IFNULL(first_name=?, True) 
     AND IFNULL(last_name=?, True) 
     AND IFNULL(date_of_birth=?, True) 
@@ -40,16 +42,49 @@ router.get('/', (req, res) => {
 
 
 router.get('/:id', (req, res) => {
-    db.pool.query(`
-    SELECT * FROM Patients
+    const query = `SELECT mrn, last_name, first_name, date_of_birth,
+    sex, Patients.phone_number, email, address_1, address_2, city, state,
+    postal_code, insurance_policy, insurance_group, Patients.plan_ID, 
+    CONCAT(Carriers.provider, " ", Plans.name) AS plan_name, Carriers.phone_number AS carrier_phone
+    FROM Patients 
     LEFT JOIN Plans
     ON Patients.plan_ID = Plans.plan_ID
-    WHERE mrn=?;`, req.params.id, (err, rows, fields) => {
+    LEFT JOIN Carriers
+    ON Plans.carrier_ID = Carriers.carrier_ID
+    WHERE mrn = ?
+    ORDER BY last_name ASC;`
+    db.pool.query(query, req.params.id, (err, rows, fields) => {
         if (err) {
             res.status(500).send(err);
             return;
         }
         res.json(rows[0]);  // SELECT returns an array; we only need the first result
+    });
+});
+
+router.get('/:id/visits', (req, res) => {
+    const mrn = req.params.id;
+
+    const query =
+        `SELECT visit_ID, CONCAT(last_name, ", ", first_name) AS patient_name, patient.mrn, scheduled_time, check_in_time, discharge_time,
+        primary_diagnosis, visit_type, carrier.carrier_ID, plan.plan_ID, CONCAT(provider, " ", plan.name) AS visit_insurance
+        FROM Visits 
+        JOIN (SELECT last_name, first_name, mrn FROM Patients) AS patient
+        ON patient.mrn = Visits.mrn
+        LEFT JOIN (SELECT plan_ID, carrier_ID, name FROM Plans) AS plan
+        ON plan.plan_ID = Visits.plan_ID
+        LEFT JOIN (SELECT carrier_ID, provider FROM Carriers) AS carrier
+        ON plan.carrier_ID = carrier.carrier_ID
+        WHERE patient.mrn = ?
+        ORDER BY scheduled_time ASC;`
+
+    db.pool.query(query, mrn, (err, rows, fields) => {
+        if (err) {
+            console.log(err)
+            res.status(500).send(err);
+            return;
+        }
+        res.json(rows);
     });
 });
 

@@ -5,6 +5,7 @@ import CarrierNew from './routes/carriers/CarrierNew';
 import CarrierUpdate from './routes/carriers/CarrierUpdate';
 import Index from "./routes/Index";
 import Patients from './routes/patients/Patients';
+import PatientView from './routes/patients/PatientView';
 import PatientRegistration from './routes/patients/PatientRegistration';
 import PatientUpdate from './routes/patients/PatientUpdate';
 import PatientSearch from './routes/patients/PatientSearch';
@@ -78,32 +79,31 @@ function App() {
           <PatientSearchButton />
         </Toolbar>
       </Container>
-      <Paper variant="outlined" sx={{ pt: "2em", pb: "4em", mt: "1em" }}>
-        <Container maxWidth="xl">
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="patients" element={<Patients />} />
-            <Route path="patients/new" element={<PatientRegistration />} />
-            <Route path="patients/:mrn/edit" element={<PatientUpdate />} />
-            <Route path="patients/search" element={<PatientSearch />} />
-            <Route path="visits" element={<Visits />} />
-            <Route path="visits/new" element={<VisitNew />} />
-            <Route path="visits/test/edit" element={<VisitUpdate />} />
-            <Route path="staff" element={<Staff />} />
-            <Route path="staff/new" element={<StaffNew />} />
-            <Route path="staff/test/edit" element={<StaffUpdate />} />
-            <Route path="carriers" element={<Carriers />} />
-            <Route path="carriers/new" element={<CarrierNew />} />
-            <Route path="carriers/:carrier_ID/edit" element={<CarrierUpdate />} />
-            <Route path="plans" element={<Plans />} />
-            <Route path="plans/new" element={<PlanNew />} />
-            <Route path="plans/test/edit" element={<PlanUpdate />} />
-            <Route path="staff-interactions" element={<StaffInteractions />} />
-            <Route path="staff-interactions/new" element={<InteractionNew />} />
-            <Route path="staff-interactions/:visit_staff_ID/edit" element={<InteractionUpdate />} />
-          </Routes>
-        </Container >
-      </Paper>
+      <Container maxWidth="xl">
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="patients" element={<Patients />} />
+          <Route path="patients/new" element={<PatientRegistration />} />
+          <Route path="patients/:mrn" element={<PatientView />} />
+          <Route path="patients/:mrn/edit" element={<PatientUpdate />} />
+          <Route path="patients/search" element={<PatientSearch />} />
+          <Route path="visits" element={<Visits />} />
+          <Route path="visits/new" element={<VisitNew />} />
+          <Route path="visits/test/edit" element={<VisitUpdate />} />
+          <Route path="staff" element={<Staff />} />
+          <Route path="staff/new" element={<StaffNew />} />
+          <Route path="staff/test/edit" element={<StaffUpdate />} />
+          <Route path="carriers" element={<Carriers />} />
+          <Route path="carriers/new" element={<CarrierNew />} />
+          <Route path="carriers/:carrier_ID/edit" element={<CarrierUpdate />} />
+          <Route path="plans" element={<Plans />} />
+          <Route path="plans/new" element={<PlanNew />} />
+          <Route path="plans/test/edit" element={<PlanUpdate />} />
+          <Route path="staff-interactions" element={<StaffInteractions />} />
+          <Route path="staff-interactions/new" element={<InteractionNew />} />
+          <Route path="staff-interactions/:visit_staff_ID/edit" element={<InteractionUpdate />} />
+        </Routes>
+      </Container >
     </>
   );
 }
