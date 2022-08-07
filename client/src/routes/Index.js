@@ -40,7 +40,7 @@ function Index(props) {
     }
 
     const tableOptions = {
-        visit_ID: "Visit ID",
+        visit_ID: false,
         mrn: "MRN",
         plan_ID: false,
         carrier_ID: false,

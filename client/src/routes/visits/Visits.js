@@ -17,7 +17,7 @@ function Visits(props) {
     const [error, setError] = React.useState(false);
 
     const tableOptions = {
-        visit_ID: "Visit ID",
+        visit_ID: false,
         mrn: "MRN",
         plan_ID: false,
         carrier_ID: false,
