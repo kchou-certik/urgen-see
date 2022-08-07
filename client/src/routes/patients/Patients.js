@@ -2,10 +2,10 @@ import React from 'react';
 import Table from '../../components/table/Table'
 import { Link } from 'react-router-dom';
 import ErrorMessage from '../../components/ErrorMessage';
+import PatientSearchButton from '../../components/PatientSearchButton';
 
 import Stack from '@mui/material/Stack';
 import { Button } from '@mui/material';
-import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 import date from 'date-and-time';
@@ -58,9 +58,7 @@ function Patients(props) {
                 <h1>Patients</h1>
             </header>
             <Stack direction="row" spacing="1em" sx={{ mb: 2 }}>
-                <Button component={Link} to="/patients/search" variant="outlined" endIcon={<PersonSearchIcon />}>
-                    Search
-                </Button>
+                <PatientSearchButton />
                 <Button component={Link} to="/patients/new" variant="outlined" endIcon={<PersonAddIcon />}>
                     Register
                 </Button>

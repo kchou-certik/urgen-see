@@ -195,7 +195,7 @@ function VisitNew() {
                                                             <TableCell>MRN</TableCell>
                                                         </TableRow>
                                                     </TableHead>
-                                                    {!patients.length && <TableRow><TableCell>No patients found with your query.</TableCell></TableRow>}
+                                                    {!patients.length && <TableBody><TableRow><TableCell>No patients found with your query.</TableCell></TableRow></TableBody>}
                                                     <TableBody>
                                                         {patients.map((patient) => (
                                                             <TableRow hover key={patient.mrn} onClick={() => handlePatientClick(patient)}>

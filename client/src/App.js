@@ -20,6 +20,7 @@ import VisitUpdate from './routes/visits/VisitUpdate';
 import StaffInteractions from './routes/staffInteractions/StaffInteractions';
 import InteractionNew from './routes/staffInteractions/InteractionNew';
 import InteractionUpdate from './routes/staffInteractions/InteractionUpdate';
+import PatientSearchButton from './components/PatientSearchButton';
 
 import './App.css';
 
@@ -31,7 +32,6 @@ import { Toolbar } from '@mui/material';
 import { Button } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 
 function App() {
   const [menu, setMenu] = useState(null);
@@ -75,10 +75,7 @@ function App() {
             <MenuItem component={Link} to="/carriers" onClick={handleClose}>Carriers</MenuItem>
             <MenuItem component={Link} to="/staff-interactions" onClick={handleClose}>Staff Interactions</MenuItem>
           </Menu>
-
-          <Button component={Link} to="/patients/search" variant="outlined" endIcon={<PersonSearchIcon />}>
-            Search
-          </Button>
+          <PatientSearchButton />
         </Toolbar>
       </Container>
       <Paper variant="outlined" sx={{ pt: "2em", pb: "4em", mt: "1em" }}>
