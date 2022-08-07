@@ -7,6 +7,7 @@ import { Button } from '@mui/material';
 import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined';
 
 import ErrorMessage from '../../components/ErrorMessage';
+import Loading from '../../components/Loading';
 
 const axios = require('axios').default;
 
@@ -45,7 +46,7 @@ function Carriers(props) {
                 </Stack>
                 {
                     !loaded &&
-                    <h3>Loading table...</h3>
+                    <Loading />
                 }
                 {
                     error &&

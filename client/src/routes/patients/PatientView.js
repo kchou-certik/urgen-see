@@ -2,15 +2,10 @@ import React from 'react';
 import Table from '../../components/table/Table'
 import { Link, useParams } from 'react-router-dom';
 import ErrorMessage from '../../components/ErrorMessage';
-import PatientSearchButton from '../../components/PatientSearchButton';
+import Loading from '../../components/Loading';
 
-import Stack from '@mui/material/Stack';
-import { Button } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
@@ -90,9 +85,7 @@ function Patients(props) {
         <main>
             {
                 !patientLoaded &&
-                <Box sx={{ my: 3, width: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
-                    <CircularProgress />
-                </Box>
+                <Loading />
             }
             {
                 error &&
@@ -144,9 +137,7 @@ function Patients(props) {
                     <Grid item sm={7} width="100%">
                         {
                             !visitsLoaded &&
-                            <Box sx={{ my: 3, width: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
-                                <CircularProgress />
-                            </Box>
+                            <Loading />
                         }
                         {
                             error &&

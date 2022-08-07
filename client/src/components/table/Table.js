@@ -8,7 +8,8 @@ import Paper from '@mui/material/Paper';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 
-function Table({ options, rows, updatable, pKey }) {
+function Table({ options, rows, updatable, pKey, clickable }) {
+
     if (rows.length === 0) {
         return (
             <Alert severity="info">
@@ -38,7 +39,7 @@ function Table({ options, rows, updatable, pKey }) {
                 <TableHead options={options} row={cols} />
                 <TableBody>
                     {rows.map((row, i) => {
-                        return <TableRow options={options} row={row} key={i} updatable={updatable} pKey={pKey} />
+                        return <TableRow options={options} row={row} key={i} pKey={pKey} clickable={clickable} updatable={updatable} />
                     })}
                 </TableBody>
             </MUITable>

@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import ErrorMessage from '../../components/ErrorMessage';
 import SuccessMessage from '../../components/SuccessMessage';
 import DeleteButton from '../../components/DeleteButton';
+import Loading from '../../components/Loading';
 
 const axios = require('axios').default;
 
@@ -76,7 +77,7 @@ function CarrierUpdate() {
 
                 <form onSubmit={handleSubmit} >
                     {!loaded &&
-                        <h3>Loading fields...</h3>
+                        <Loading />
                     }
                     {loaded &&
                         <div>

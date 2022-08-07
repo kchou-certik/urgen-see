@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 import PeopleIcon from '@mui/icons-material/People';
 
 import date from 'date-and-time';
+import Loading from '../../components/Loading';
 
 const axios = require('axios').default;
 
@@ -56,7 +57,7 @@ function StaffInteractions(props) {
                 </Stack>
                 {
                     !loaded &&
-                    <h3>Loading table...</h3>
+                    <Loading />
                 }
                 {
                     error &&

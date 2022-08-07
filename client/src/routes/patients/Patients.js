@@ -9,6 +9,7 @@ import { Button } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 import date from 'date-and-time';
+import Loading from '../../components/Loading';
 
 const axios = require('axios').default;
 
@@ -65,7 +66,7 @@ function Patients(props) {
             </Stack>
             {
                 !loaded &&
-                <h3>Loading table...</h3>
+                <Loading />
             }
             {
                 error &&
@@ -73,7 +74,7 @@ function Patients(props) {
             }
             {
                 loaded &&
-                <Table options={tableOptions} rows={rows} updatable pKey="mrn" />
+                <Table options={tableOptions} rows={rows} updatable clickable pKey="mrn" />
             }
         </main >
     );

@@ -6,6 +6,7 @@ import ErrorMessage from '../../components/ErrorMessage';
 import Stack from '@mui/material/Stack';
 import { Button } from '@mui/material';
 import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined';
+import Loading from '../../components/Loading';
 
 const axios = require('axios').default;
 
@@ -58,7 +59,7 @@ function Plans(props) {
                 </Stack>
                 {
                     !loaded &&
-                    <h3>Loading table...</h3>
+                    <Loading />
                 }
                 {
                     error &&

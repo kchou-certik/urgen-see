@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
 
 import date from 'date-and-time';
+import Loading from '../../components/Loading';
 
 const axios = require('axios').default;
 
@@ -48,7 +49,6 @@ function Visits(props) {
             });
     }, []);
 
-    console.log(rows)
 
     return (
         <>
@@ -64,7 +64,7 @@ function Visits(props) {
                 </Stack>
                 {
                     !loaded &&
-                    <h3>Loading table...</h3>
+                    <Loading />
                 }
                 {
                     error &&

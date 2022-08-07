@@ -12,6 +12,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import ErrorMessage from '../components/ErrorMessage';
 
 import date from 'date-and-time';
+import Loading from '../components/Loading';
 
 const axios = require('axios').default;
 
@@ -102,7 +103,7 @@ function Index(props) {
                     </Stack>
                     {
                         !loaded &&
-                        <h3>Loading table...</h3>
+                        <Loading />
                     }
                     {
                         error &&

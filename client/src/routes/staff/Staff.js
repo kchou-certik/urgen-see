@@ -6,6 +6,7 @@ import ErrorMessage from '../../components/ErrorMessage';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import Loading from '../../components/Loading';
 
 const axios = require('axios').default;
 
@@ -52,7 +53,7 @@ function Staff(props) {
             </Stack>
             {
                 !loaded &&
-                <h3>Loading table...</h3>
+                <Loading />
             }
             {
                 error &&
