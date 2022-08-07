@@ -38,21 +38,20 @@ router.get('/:id', (req, res) => {
 
 // TODO
 router.post('/', (req, res) => {
-    const { phone_number, provider } = req.body;
-    if (!phone_number || !provider) {
-        res.sendStatus(400);
-        return;
-    }
-    db.pool.query(`INSERT INTO Carriers (phone_number, provider)
+    const staff_ID = req.body.data.staffMember.staff_ID;
+    const visit_ID = req.body.insertId;
+
+    db.pool.query(`INSERT INTO Staff_interactions (staff_ID, visit_ID)
         VALUES (?, ?)`,
-        [phone_number, provider],
+        [staff_ID, visit_ID],
         (err, rows, fields) => {
             if (err) {
                 res.status(500).json(err);
             } else {
                 res.json(rows);
             }
-        });
+        }
+    );
 });
 
 router.put('/:visit_staff_ID', (req, res) => {

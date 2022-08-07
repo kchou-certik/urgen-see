@@ -24,6 +24,7 @@ import TableRow from '@mui/material/TableRow';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
+import Autocomplete from '@mui/material/Autocomplete';
 
 const axios = require('axios').default;
 
@@ -52,6 +53,11 @@ function VisitNew() {
     const [patients, setPatients] = useState(null); // patient search results
     const [searchOpen, setSearchOpen] = useState(false); // search modal open state
 
+    // staff selector/input state variables
+    const [staffEdited, setStaffEdited] = useState(false);
+    const [staffInput, setStaffInput] = useState([]);
+    const [staffSelectorOpen, setStaffSelectorOpen] = useState(false);
+
     // HANDLERS
 
     function handleSubmit(e) {
@@ -62,9 +68,13 @@ function VisitNew() {
             return;
         }
 
-        axios.post(`${process.env.REACT_APP_API}/visits`, data)
+        // chaining axios queries: https://medium.com/software-development-turkey/using-async-await-with-axios-edf8a0fed4b1
+        axios.post(`${process.env.REACT_APP_API}/visits`, data).then(response => {return response.data.insertId})
+        .then(insertId => {
+            axios.post(`${process.env.REACT_APP_API}/staff-interactions`, {data, insertId})
             .then((res) => setStatus("success"))
             .catch((err) => setStatus("error"));
+        });
     }
 
     function handlePatientSubmit(e) {
@@ -117,6 +127,18 @@ function VisitNew() {
 
         handleClose();
     }
+
+    // load Staff data
+    const staffLoading = staffSelectorOpen && staffInput.length === 0; // from https://mui.com/material-ui/react-autocomplete/#load-on-open
+    React.useEffect(() => {
+        axios.get(`${process.env.REACT_APP_API}/staff`)
+            .then((res) => {
+                setStaffInput(res.data);
+            })
+            .catch((err) => {
+                setStatus("error");
+            });
+    }, [staffLoading]);
 
     // search modal open/close handlers
     function handleOpen() {
@@ -233,10 +255,36 @@ function VisitNew() {
                                 <Grid item xs={12} sm={12}>
                                     <TextField id="type" label="Visit Type / Notes" name="visit_type" required value={data.visit_type} fullWidth multiline onChange={handleInputChange} />
                                 </Grid>
+                                <Grid item xs={12} sm={12}>
+                                    <Autocomplete id="staffInput"
+                                        options={staffInput}
+                                        getOptionLabel={(option) => option.name + ", " + option.practitioner_type}
+                                        value={data.staffMember}
+                                        onChange={(e, val) => {
+                                            setData({ ...data, staffMember: val });
+                                            if (!staffEdited) setStaffEdited(true);
+                                        }}
+                                        open={staffSelectorOpen}
+                                        onOpen={() => {
+                                            setStaffSelectorOpen(true);
+                                        }}
+                                        onClose={() => {
+                                            setStaffSelectorOpen(false);
+                                        }}
+                                        renderInput={(params) => (
+                                            <TextField
+                                                {...params} label="Staff Member *" fullWidth
+                                                InputProps={{
+                                                    ...params.InputProps
+                                                }}
+                                            />
+                                        )}
+                                    />
+                                </Grid>
                             </Grid>
                         </CardContent>
                     </Card>
-                    <Button type="submit" variant="outlined">Submit</Button>
+                    <Button type="submit" variant="outlined" disabled={!staffEdited}>Submit</Button>
                 </Box>
             </Container>
         </>
