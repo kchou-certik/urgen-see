@@ -23,7 +23,8 @@ function StaffInteractions(props) {
         date_of_birth: "DOB",
         mrn: "MRN",
         scheduled_time: "Visit Date",
-        staff_name: "Staff"
+        staff_name: "Staff",
+        staff_ID: "Staff ID"
     }
 
     // Load data

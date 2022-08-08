@@ -40,7 +40,8 @@ function VisitNew() {
         scheduled_time: "",
         primary_diagnosis: "",
         visit_type: "",
-        plan_ID: ""
+        plan_ID: "",
+        staffMember: null
     });
 
     // for patient search:
@@ -69,12 +70,12 @@ function VisitNew() {
         }
 
         // chaining axios queries: https://medium.com/software-development-turkey/using-async-await-with-axios-edf8a0fed4b1
-        axios.post(`${process.env.REACT_APP_API}/visits`, data).then(response => {return response.data.insertId})
-        .then(insertId => {
-            axios.post(`${process.env.REACT_APP_API}/staff-interactions`, {data, insertId})
-            .then((res) => setStatus("success"))
-            .catch((err) => setStatus("error"));
-        });
+        axios.post(`${process.env.REACT_APP_API}/visits`, data).then(response => { return response.data.insertId })
+            .then(insertId => {
+                axios.post(`${process.env.REACT_APP_API}/staff-interactions`, { data, insertId })
+                    .then((res) => setStatus("success"))
+                    .catch((err) => setStatus("error"));
+            });
     }
 
     function handlePatientSubmit(e) {
@@ -121,7 +122,7 @@ function VisitNew() {
             mrn: patient.mrn,
             first_name: patient.first_name,
             last_name: patient.last_name,
-            date_of_birth: patient.date_of_birth,
+            date_of_birth: date.format(new Date(patient.date_of_birth), "MM/DD/YYYY"),
             plan_ID: patient.plan_ID
         });
 
@@ -168,19 +169,24 @@ function VisitNew() {
                                 <Grid item xs={12} sm={12}>
                                     <Button variant="outlined" onClick={handleOpen} fullWidth>Select a Patient</Button>
                                 </Grid>
-
                                 <Grid item xs={12} sm={4}>
-                                    <TextField id="lname1" label="Last Name" disabled fullWidth value={data.last_name} />
+                                    <TextField id="lastName" value={data.last_name} helperText={data.mrn === "" && "Click the button above to search for a patient"} label="Last name" variant="standard" fullWidth InputProps={{
+                                        readOnly: true,
+                                    }} />
                                 </Grid>
                                 <Grid item xs={12} sm={4}>
-                                    <TextField id="fname1" label="First Name" disabled fullWidth value={data.first_name} />
+                                    <TextField id="firstName" value={data.first_name} label="First name" variant="standard" fullWidth InputProps={{
+                                        readOnly: true,
+                                    }} />
                                 </Grid>
                                 <Grid item xs={12} sm={4}>
-                                    <TextField id="dob1" label="Date of Birth" disabled fullWidth value={data.date_of_birth && date.format(new Date(data.date_of_birth), "MM/DD/YYYY")} />
+                                    <TextField id="dob" value={data.date_of_birth} label="Date of birth" variant="standard" fullWidth InputProps={{
+                                        readOnly: true,
+                                    }} />
                                 </Grid>
                                 <Grid item xs={12} sm={4}>
-                                    <TextField id="mrn1" label="MRN" placeholder="Select a patient" disabled fullWidth value={data.mrn} InputLabelProps={{
-                                        shrink: true,
+                                    <TextField id="mrn" value={data.mrn} label="MRN" variant="standard" fullWidth InputProps={{
+                                        readOnly: true,
                                     }} />
                                 </Grid>
                                 <Dialog open={searchOpen} onClose={handleClose}>

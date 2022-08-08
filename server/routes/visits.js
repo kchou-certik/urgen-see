@@ -39,7 +39,16 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-    db.pool.query('SELECT * FROM Visits WHERE visit_ID=?;', req.params.id, (err, rows, fields) => {
+    const query =
+        `SELECT *, CONCAT(Carriers.provider, " ", Plans.name) AS plan_name FROM Visits
+        JOIN Patients
+        ON Visits.mrn = Patients.mrn
+        LEFT JOIN Plans
+        ON Visits.plan_ID = Plans.plan_ID
+        LEFT JOIN Carriers
+        ON Plans.carrier_ID = Carriers.carrier_ID
+        WHERE Visits.visit_ID=?;`;
+    db.pool.query(query, req.params.id, (err, rows, fields) => {
         if (err) {
             res.status(500).send(err);
             return;
@@ -78,29 +87,49 @@ router.post('/', (req, res) => {
         });
 });
 
-// TODO
-router.put('/:carrier_ID', (req, res) => {
-    const { provider, phone_number } = req.body;
-    const carrier_ID = req.params.carrier_ID;
-    if (!phone_number || !provider) {
-        res.sendStatus(400);
-        return;
-    }
-    let updateCarrierQuery = `UPDATE Carriers SET phone_number = ?, provider = ? WHERE carrier_ID = ?`;
-    db.pool.query(updateCarrierQuery, [phone_number, provider, carrier_ID],
+router.put('/:visit_ID', (req, res) => {
+    const data = req.body;
+    const visit_ID = req.params.visit_ID;
+
+    // Converts empty strings to null
+    Object.keys(data).map((key) => {
+        if (data[key] === '') data[key] = null;
+    });
+
+    // Prepare inserts for query
+    const inserts = [
+        data.scheduled_time,
+        data.check_in_time,
+        data.discharge_time,
+        data.primary_diagnosis,
+        data.visit_type,
+        data.plan && data.plan.plan_ID,  // if data.plan is NULL, store NULL
+        visit_ID
+    ];
+
+    db.pool.query(
+        `UPDATE Visits 
+        SET
+        scheduled_time = ?, 
+        check_in_time = ?, 
+        discharge_time = ?, 
+        primary_diagnosis = ?, 
+        visit_type = ?, 
+        plan_ID = ?
+        WHERE visit_ID = ?`,
+        inserts,
         (err, rows, fields) => {
             if (err) {
-                res.sendStatus(500);
+                res.status(500).json(err);
             } else {
-                res.send(rows);
+                res.json(rows);
             }
         });
 });
 
-// TODO
 router.delete('/:id', (req, res) => {
-    const carrier_id = req.params.id;
-    db.pool.query('DELETE FROM Carriers WHERE carrier_id = ?', carrier_id, (err, results, fields) => {
+    const visit_ID = req.params.id;
+    db.pool.query('DELETE FROM Visits WHERE visit_ID = ?', visit_ID, (err, results, fields) => {
         if (err) {
             res.status(500).json(err);
         } else {

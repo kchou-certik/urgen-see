@@ -36,7 +36,11 @@ function TableRow({ options, row, pKey, header, updatable, clickable }) {
     const rowFields = rowFiltered.map((pair) => {
         return pair[1];
     })
-    //∘₊✧──────✧₊∘∘₊✧──────✧₊∘∘₊✧──────✧₊∘∘₊✧──────✧₊∘∘₊✧──────✧₊∘∘₊✧──────✧₊∘∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+
+
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘∘₊✧──────✧₊∘∘₊✧──────✧₊∘∘₊✧──────✧₊∘∘₊✧──────✧
+    // Generate a URL prefix that we can use to link to edit/view routes
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘∘₊✧──────✧₊∘∘₊✧──────✧₊∘∘₊✧──────✧₊∘∘₊✧──────✧
 
     // get ID that matches pKey string
     let urlPrefix;

@@ -26,7 +26,6 @@ import PatientSearchButton from './components/PatientSearchButton';
 import './App.css';
 
 import MLink from '@mui/material/Link';
-import Paper from '@mui/material/Paper';
 import { CssBaseline } from '@mui/material';
 import { Container } from '@mui/material';
 import { Toolbar } from '@mui/material';
@@ -89,7 +88,7 @@ function App() {
           <Route path="patients/search" element={<PatientSearch />} />
           <Route path="visits" element={<Visits />} />
           <Route path="visits/new" element={<VisitNew />} />
-          <Route path="visits/test/edit" element={<VisitUpdate />} />
+          <Route path="visits/:visit_ID/edit" element={<VisitUpdate />} />
           <Route path="staff" element={<Staff />} />
           <Route path="staff/new" element={<StaffNew />} />
           <Route path="staff/test/edit" element={<StaffUpdate />} />

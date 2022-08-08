@@ -9,6 +9,16 @@ import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 
 function Table({ options, rows, updatable, pKey, clickable }) {
+    /**Builds a MUI Table using parameters given to it, intended for use with data received from API
+     * 
+     * options: Object - use this to rename or hide columns/data
+     *   - e.g. {"first_name": "First Name", "mrn": false} will rename first_name and hide mrn
+     * rows: Array[Object] - data received from the API; each row of data is an object where key=column name, value=data
+     *   - the first "row" corresponds to the column names (i.e. table headers), where key=index of array
+     * updatable: Bool - if True (you don't need to assign True to the prop actually, just have it present), rows will generate with an edit button linking to /edit
+     * clickable: Bool - if True (same as above - can just have the prop present), rows will link to the View routes for individual records
+     * pKey: String - the name of the primary key (e.g. for Patients, pKey="mrn"); used for determining where to route for edit/view links
+     */
 
     if (rows.length === 0) {
         return (

@@ -21,6 +21,7 @@ import TextField from '@mui/material/TextField';
 import Switch from '@mui/material/Switch';
 import CircularProgress from '@mui/material/CircularProgress';
 import Stack from '@mui/material/Stack';
+import Loading from '../../components/Loading';
 
 const axios = require('axios').default;
 
@@ -117,7 +118,7 @@ function PatientUpdate() {
                 }
 
                 // checks if patient is self-pay and adjusts form accordingly
-                if (resData.insurance_policy === "" && resData.insurance_group === "" & resData.plan_ID === "") {
+                if (resData.insurance_policy === "" && resData.insurance_group === "" && resData.plan_ID === "") {
                     setInsuranceNeeded(false);
                 }
 
@@ -127,7 +128,7 @@ function PatientUpdate() {
                 if (resData.plan_ID) {
                     resData.plan = {
                         plan_ID: resData.plan_ID,
-                        name: resData.name
+                        name: resData.plan_name
                     }
                 } else {
                     resData.plan = null;
@@ -145,7 +146,7 @@ function PatientUpdate() {
     return (
         <>
             <Container component="main" maxWidth="md" sx={{ mb: 10 }} >
-                {status === 'success' && <SuccessMessage msg="Successfully added!" setStatus={setStatus} />}
+                {status === 'success' && <SuccessMessage msg="Successfully updated!" setStatus={setStatus} />}
                 {status === "error" && <ErrorMessage msg="An error occurred! Please try again." setStatus={setStatus} />}
                 {status === 'deleted' && <SuccessMessage msg="Successfully deleted." setStatus={setStatus} />}
 
@@ -153,7 +154,10 @@ function PatientUpdate() {
                 <Typography variant="h4">Edit Patient Record</Typography>
                 <Typography variant="subtitle1" gutterBottom>* denotes required</Typography>
 
-                {!loaded && <Box sx={{ display: 'flex', alignItems: 'center' }}><CircularProgress /></Box>}
+                {
+                    !loaded &&
+                    <Loading />
+                }
 
                 {loaded &&
                     <Box component="form" onSubmit={handleSubmit}>
