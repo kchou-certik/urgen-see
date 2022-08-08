@@ -84,7 +84,7 @@ function App() {
       <Container maxWidth="xl">
         <Box component="header" sx={{ textAlign: "center", my: 5 }}>
           <MLink component={Link} to="/" underline="none">
-            <Typography component="h1" variant="h2">Urgen-See</Typography>
+            <Typography component="h1" variant="h2"><img src="/healthIcon.png" alt="" style={{ marginRight: 5, height: 40 }} />Urgen-See</Typography>
             <Typography variant="subtitle1">Patient Scheduling</Typography>
           </MLink>
         </Box>
