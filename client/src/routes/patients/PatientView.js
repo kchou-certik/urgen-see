@@ -9,7 +9,6 @@ import ErrorMessage from '../../components/ErrorMessage';
 import Loading from '../../components/Loading';
 
 // MUI Components
-import CircularProgress from '@mui/material/CircularProgress';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
