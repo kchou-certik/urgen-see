@@ -59,7 +59,7 @@ function VisitView(props) {
                 const resData = res.data;
 
                 // format dates/times
-                resData.scheduled_time = date.format(new Date(resData.scheduled_time), "DD/MM/YY at HH:mm");
+                resData.scheduled_time = date.format(new Date(resData.scheduled_time), "MM/DD/YY at HH:mm");
                 if (resData.check_in_time) resData.check_in_time = date.format(new Date(resData.check_in_time), "HH:mm");
                 if (resData.discharge_time) resData.discharge_time = date.format(new Date(resData.discharge_time), "HH:mm");
 

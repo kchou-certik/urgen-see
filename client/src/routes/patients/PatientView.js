@@ -75,7 +75,7 @@ function Patients(props) {
             .then((res) => {
                 res.data.map((row) => {
                     // formats dates/times
-                    row.scheduled_time = date.format(new Date(row.scheduled_time), "DD/MM/YY HH:mm");
+                    row.scheduled_time = date.format(new Date(row.scheduled_time), "MM/DD/YY HH:mm");
                     if (row.check_in_time) row.check_in_time = date.format(new Date(row.check_in_time), "HH:mm");
                     if (row.discharge_time) row.discharge_time = date.format(new Date(row.discharge_time), "HH:mm");
                     return row;
