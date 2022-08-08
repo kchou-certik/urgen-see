@@ -1,11 +1,14 @@
+// Packages
 import React, { useState } from 'react';
 import date from 'date-and-time';
-import ErrorMessage from './ErrorMessage';
 import { Link, useNavigate } from 'react-router-dom';
 
+// Components
+import ErrorMessage from './ErrorMessage';
+
+// MUI Components
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -19,19 +22,26 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 
+// Icons
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 
 const axios = require('axios').default;
 
 
 function PatientSearchButton() {
+    // A patient search button which opens a modal. This can be used to search for patient(s)
+    // and then view their patient page
+
     const navigate = useNavigate();
 
-    // STATE VARIABLES
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  STATE VARIABLES
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+
     const [status, setStatus] = React.useState(null); // "error" | null
 
     // for patient search:
-    const [patientData, setPatientData] = useState({      // patient search form data
+    const [patientData, setPatientData] = useState({      // patient search form data (parameters for search)
         first_name: "",
         last_name: "",
         date_of_birth: "",
@@ -40,12 +50,17 @@ function PatientSearchButton() {
     const [patients, setPatients] = useState(null); // patient search results
     const [searchOpen, setSearchOpen] = useState(false); // search modal open state
 
-
-    // HANDLERS
+    // ∘₊✧──────✧₊∘
+    //  HANDLERS
+    // ∘₊✧──────✧₊∘
 
     function handlePatientSubmit(e) {
+        // API GET for patient search results
+
         e.preventDefault();
-        const params = { ...patientData };
+        const params = { ...patientData };  // create params object w/ patient search form data
+
+        // set "" fields as Null
         Object.keys(params).map((key) => {
             if (params[key] === "") {
                 params[key] = null;
@@ -53,14 +68,17 @@ function PatientSearchButton() {
             return undefined;
         });
 
-        axios.get(`${process.env.REACT_APP_API}/patients`, { params: patientData })
+        // API GET request, passing search parameters as URL parameters
+        axios.get(`${process.env.REACT_APP_API}/patients`, { params: params })
             .then((res) => {
                 setPatients(res.data);
             })
             .catch((err) => setStatus("error"));
     }
 
+    // From https://reactjs.org/docs/forms.html#handling-multiple-inputs
     function handlePatientInputChange(event) {
+        // updates data state for controlled inputs
         const target = event.target;
         const name = target.name;
 
@@ -71,6 +89,7 @@ function PatientSearchButton() {
     }
 
     function handlePatientClick(patient) {
+        // navigates to the patient record when a result is clicked on
         navigate(`/patients/${patient.mrn}`);
         handleClose();
     }
@@ -83,6 +102,7 @@ function PatientSearchButton() {
     function handleClose() {
         setSearchOpen(false);
     }
+
 
     return (
         <>

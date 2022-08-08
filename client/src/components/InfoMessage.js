@@ -1,21 +1,41 @@
+// Packages
 import React from 'react';
 
+// MUI Components
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import Alert from '@mui/material/Alert';
 
-
+// Icons
 import CloseIcon from '@mui/icons-material/Close';
 
-function InfoMessage({ msg, setStatus }) {
-    const [open, setOpen] = React.useState(true);
 
+function InfoMessage({ msg, setStatus }) {
+    // An info message MUI snackbar notification
+    //
+    // msg: String - the text to display on the message
+    // setStatus: Function - a function returned by the setState() hook which
+    //      accepts status strings like "success" and "error"
+
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  STATE VARIABLES
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+
+    const [open, setOpen] = React.useState(true);   // if notification is open (i.e. displayed)
+
+    // ∘₊✧──────✧₊∘
+    //  HANDLERS
+    // ∘₊✧──────✧₊∘
+
+    // From: https://mui.com/material-ui/react-snackbar/#simple-snackbars
     function handleClose(e, reason) {
+        // disable clickaway dismissal of notification to ensure user doesn't accidentally miss it
         if (reason === 'clickaway') return;
-        setOpen(false);
-        setStatus(null);
+        setOpen(false); // close notif
+        setStatus(null);    // remove `status` state from parent component
     };
 
+    // action buttons to nest inside Snackbar notif
     const action = (
         <>
             <IconButton
@@ -28,6 +48,7 @@ function InfoMessage({ msg, setStatus }) {
             </IconButton>
         </>
     );
+
 
     return (
         <Snackbar

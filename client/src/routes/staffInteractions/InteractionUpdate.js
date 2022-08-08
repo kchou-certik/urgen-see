@@ -1,9 +1,13 @@
+// Packages
 import React, { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+
+// Components
 import ErrorMessage from '../../components/ErrorMessage';
 import SuccessMessage from '../../components/SuccessMessage';
 import DeleteButton from '../../components/DeleteButton';
-import { useParams, useNavigate } from 'react-router-dom';
 
+// MUI Components
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -16,6 +20,7 @@ import TextField from '@mui/material/TextField';
 import CircularProgress from '@mui/material/CircularProgress';
 import Stack from '@mui/material/Stack';
 
+// Icons
 import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 
 const axios = require('axios').default;
@@ -25,7 +30,10 @@ function InteractionUpdate() {
     const { visit_staff_ID } = useParams();
     const navigate = useNavigate();
 
-    // STATE VARIABLES
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  STATE VARIABLES
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+
     const [status, setStatus] = React.useState(null); // success | error | deleted
     const [loaded, setLoaded] = useState(false); // if patient's data is loaded from API 
     const [edited, setEdited] = useState(false); // if form has been changed from original data
@@ -37,32 +45,25 @@ function InteractionUpdate() {
     const [staffInput, setStaffInput] = useState([]);
     const [staffSelectorOpen, setStaffSelectorOpen] = useState(false);
 
-    // HANDLERS
+    // ∘₊✧──────✧₊∘
+    //  HANDLERS
+    // ∘₊✧──────✧₊∘
+
     function handleSubmit(e) {
+        // submits API PUT request
         e.preventDefault();
         axios.put(`${process.env.REACT_APP_API}/staff-interactions/${visit_staff_ID}`, data)
             .then((res) => setStatus("success"))
             .catch((err) => setStatus("error"));
     }
 
-    function handleInputChange(event) {
-        const target = event.target;
-        const name = target.name;
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  API FETCH REQUESTS
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
 
-        setData({
-            ...data,
-            [name]: target.value
-        });
-
-        if (!edited) setEdited(true);
-    }
-
-
-    // API FETCH REQUESTS
-
-    // load Staff data
     const loading = staffSelectorOpen && staffInput.length === 0; // from https://mui.com/material-ui/react-autocomplete/#load-on-open
     React.useEffect(() => {
+        // load Staff data for AutoComplete selector dropdown
         axios.get(`${process.env.REACT_APP_API}/staff`)
             .then((res) => {
                 setStaffInput(res.data);
@@ -72,8 +73,8 @@ function InteractionUpdate() {
             });
     }, [loading]);
 
-    // load Staff Interaction data
     React.useEffect(() => {
+        // load Staff Interaction data
         if (loaded) return;
 
         axios.get(`${process.env.REACT_APP_API}/staff-interactions/${visit_staff_ID}`)
@@ -88,6 +89,8 @@ function InteractionUpdate() {
                     return null;
                 });
 
+                // build data object that we will use as initial form data
+                // defaults to Null
                 if (resData.staff_ID) {
                     resData.staffMember = {
                         staff_ID: resData.staff_ID,
@@ -104,6 +107,7 @@ function InteractionUpdate() {
                 setStatus("error");
             });
     }, [visit_staff_ID, data, loaded]);
+
 
     return (
         <>

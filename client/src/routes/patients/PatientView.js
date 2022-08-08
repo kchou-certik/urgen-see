@@ -1,9 +1,14 @@
+// Packages
 import React from 'react';
-import Table from '../../components/table/Table'
 import { Link, useParams } from 'react-router-dom';
+import date from 'date-and-time';
+
+// Components
+import Table from '../../components/table/Table'
 import ErrorMessage from '../../components/ErrorMessage';
 import Loading from '../../components/Loading';
 
+// MUI Components
 import CircularProgress from '@mui/material/CircularProgress';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -11,16 +16,18 @@ import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 
+// Icons
 import PhoneIcon from '@mui/icons-material/Phone';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import EditIcon from '@mui/icons-material/Edit';
 
-import date from 'date-and-time';
-
 const axios = require('axios').default;
 
+
 function Patients(props) {
-    // STATE VARIABLES
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  STATE VARIABLES
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
 
     const { mrn } = useParams();
     const [error, setError] = React.useState(false);
@@ -47,11 +54,12 @@ function Patients(props) {
         visit_insurance: "Visit Insurance"
     }
 
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  API FETCH REQUESTS
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
 
-    // API FETCH REQUESTS
-
-    // patient
     React.useEffect(() => {
+        // gets patient data
         axios.get(`${process.env.REACT_APP_API}/patients/${mrn}`)
             .then((res) => {
                 setPatientLoaded(true);
@@ -62,14 +70,15 @@ function Patients(props) {
             });
     }, [mrn]);
 
-    // patient's visits
     React.useEffect(() => {
+        // gets patient's visits
         axios.get(`${process.env.REACT_APP_API}/patients/${mrn}/visits`)
             .then((res) => {
                 res.data.map((row) => {
+                    // formats dates/times
                     row.scheduled_time = date.format(new Date(row.scheduled_time), "DD/MM/YY HH:mm");
-                    row.check_in_time = date.format(new Date(row.check_in_time), "HH:mm");
-                    row.discharge_time = date.format(new Date(row.discharge_time), "HH:mm");
+                    if (row.check_in_time) row.check_in_time = date.format(new Date(row.check_in_time), "HH:mm");
+                    if (row.discharge_time) row.discharge_time = date.format(new Date(row.discharge_time), "HH:mm");
                     return row;
                 });
                 setVisitsLoaded(true);

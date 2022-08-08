@@ -1,47 +1,52 @@
+// Packages
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import date from 'date-and-time';
+
+// Components
 import ErrorMessage from '../components/ErrorMessage';
 import Loading from '../components/Loading';
 import Table from '../components/table/Table';
 
+// MUI Components
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
+// Icons
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
-
-import date from 'date-and-time';
-
-
 const axios = require('axios').default;
+
 
 const today = new Date();
 const todayFormatted = date.format(today, "YYYY-MM-DD");
 
-// From https://v5.reactrouter.com/web/example/query-parameters
-function useQuery() {
-    const { search } = useLocation();
 
+function useQuery() {   // From https://v5.reactrouter.com/web/example/query-parameters
+    // allows use of query params
+    const { search } = useLocation();
     return React.useMemo(() => new URLSearchParams(search), [search]);
 }
 
+
 function Index(props) {
+
     const navigate = useNavigate();
-    const query = useQuery();
-    const dateQueryVal = query.get("date");
+    const query = useQuery();   // query parameters
+    const dateQueryVal = query.get("date"); // get date from query params
 
-    const [rows, setRows] = React.useState(null);
-    const [loaded, setLoaded] = React.useState(false);
-    const [error, setError] = React.useState(false);
-    const [dateVal, setDate] = React.useState(dateQueryVal ? dateQueryVal : todayFormatted);
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  STATE VARIABLES
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
 
-    function handleChange(e) {
-        navigate(`?date=${e.target.value}`, { replace: true });
-    }
+    const [rows, setRows] = React.useState(null);   // visit data
+    const [loaded, setLoaded] = React.useState(false);  // if data is loaded
+    const [error, setError] = React.useState(false);    // error state
+    const [dateVal, setDate] = React.useState(dateQueryVal ? dateQueryVal : todayFormatted);    // the date to display visits for
 
     const tableOptions = {
         visit_ID: false,
@@ -57,10 +62,25 @@ function Index(props) {
         visit_insurance: false
     }
 
-    // Load data
+    // ∘₊✧──────✧₊∘
+    //  HANDLERS
+    // ∘₊✧──────✧₊∘
+
+    function handleChange(e) {
+        // change URL query parameter to selected date (selected via calendar input)
+        navigate(`?date=${e.target.value}`, { replace: true });
+    }
+
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  API FETCH REQUESTS
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+
     React.useEffect(() => {
+        // Load visit data for specified date
+        // Date specified by ?date= query param (defaults to today)
         let dateQueryStr;
 
+        // set date state based on query params; default to today
         if (dateQueryVal) {
             setDate(dateQueryVal);
             dateQueryStr = `?date=${dateQueryVal}`
@@ -68,10 +88,11 @@ function Index(props) {
             dateQueryStr = `?date=${todayFormatted}`;
         }
 
-        // Gets TODAY with only YYYY-MM-DD
+        // API GET visit data for specified date
         axios.get(`${process.env.REACT_APP_API}/visits${dateQueryStr}`)
             .then((res) => {
                 res.data.map((row) => {
+                    // formate dates/times
                     row.scheduled_time = date.format(new Date(row.scheduled_time), "HH:mm");
                     if (row.check_in_time) row.check_in_time = date.format(new Date(row.check_in_time), "HH:mm");
                     if (row.discharge_time) row.discharge_time = date.format(new Date(row.discharge_time), "HH:mm");
@@ -84,6 +105,7 @@ function Index(props) {
                 setError(true);
             });
     }, [dateQueryVal]);
+
 
     return (
         <>

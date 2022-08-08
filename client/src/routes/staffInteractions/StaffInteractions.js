@@ -1,16 +1,25 @@
+// Packages
 import React from 'react';
+import date from 'date-and-time';
+
+// Components
 import Table from '../../components/table/Table';
 import ErrorMessage from '../../components/ErrorMessage';
-
-import date from 'date-and-time';
 import Loading from '../../components/Loading';
+
+// MUI Components
 import Typography from '@mui/material/Typography';
 
 const axios = require('axios').default;
 
+
 function StaffInteractions(props) {
-    const [rows, setRows] = React.useState(null);
-    const [loaded, setLoaded] = React.useState(false);
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  STATE VARIABLES
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+
+    const [rows, setRows] = React.useState(null);   // staff-interaction data
+    const [loaded, setLoaded] = React.useState(false);  // if data is loaded
     const [error, setError] = React.useState(false);
 
     const tableOptions = {
@@ -23,11 +32,16 @@ function StaffInteractions(props) {
         staff_ID: "Staff ID"
     }
 
-    // Load data
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  API FETCH REQUESTS
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+
     React.useEffect(() => {
+        // Load staff-interaction data
         axios.get(`${process.env.REACT_APP_API}/staff-interactions`)
             .then((res) => {
                 res.data.map((row) => {
+                    // format dates/times
                     row.date_of_birth = date.format(new Date(row.date_of_birth), "M/D/YYYY");
                     row.scheduled_time = date.format(new Date(row.scheduled_time), "M/D/YY HH:mm");
                     return row;
@@ -39,6 +53,7 @@ function StaffInteractions(props) {
                 setError(true);
             });
     }, []);
+
 
     return (
         <>

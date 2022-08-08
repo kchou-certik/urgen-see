@@ -40,6 +40,7 @@ function VisitUpdate() {
     // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
     //  STATE VARIABLES
     // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+
     const [status, setStatus] = React.useState(null); // success | error | deleted
     const [loaded, setLoaded] = useState(false); // if data is loaded from API 
     const [edited, setEdited] = useState(false); // if form has been changed from original data
@@ -70,18 +71,21 @@ function VisitUpdate() {
     // ∘₊✧──────✧₊∘
     //  HANDLERS
     // ∘₊✧──────✧₊∘
+
     function handleSubmit(e) {
+        // submits API requests to update records
         e.preventDefault();
 
-        // update visit information
+        // PUT request to update visit data
         axios.put(`${process.env.REACT_APP_API}/visits/${visit_ID}`, data)
             .then((res) => {
+                // update visit-staff interaction records if staff list was changed
                 if (staffEdited) {
-
-                    // delete old interactions
+                    // delete old interactions via DELETE
                     axios.delete(`${process.env.REACT_APP_API}/staff-interactions?visit_ID=${visit_ID}`)
                         .then((res) => {
-                            // add new interactions one by one
+                            // add new interactions one by one via POST
+                            // body object structured as per /server/routes/staffInteractions.js
                             data.staff.map((entry) => {
                                 axios.post(`${process.env.REACT_APP_API}/staff-interactions`, {
                                     insertId: visit_ID,
@@ -106,6 +110,7 @@ function VisitUpdate() {
 
     // from https://reactjs.org/docs/forms.html#handling-multiple-inputs
     function handleInputChange(event) {
+        // update form data for controlled inputs
         const target = event.target;
         const name = target.name;
 
@@ -114,17 +119,17 @@ function VisitUpdate() {
             [name]: target.value
         });
 
+        // trigger edited state (used to enable submit button)
         if (!edited) setEdited(true);
     }
-
 
     // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
     //  API FETCH REQUESTS
     // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
 
-    // load plan data when dropdown opens
     const loadingPlans = planSelectorOpen && plans.length === 0; // from https://mui.com/material-ui/react-autocomplete/#load-on-open
     React.useEffect(() => {
+        // load plan data when AutoComplete dropdown selector opens
         axios.get(`${process.env.REACT_APP_API}/plans`)
             .then((res) => {
                 setPlans(res.data);
@@ -134,9 +139,9 @@ function VisitUpdate() {
             });
     }, [loadingPlans]);
 
-    // load staff data when dropdown opens
     const loadingStaff = staffSelectorOpen && staff.length === 0; // from https://mui.com/material-ui/react-autocomplete/#load-on-open
     React.useEffect(() => {
+        // load staff data when AutoComplete dropdown selector opens
         axios.get(`${process.env.REACT_APP_API}/staff`)
             .then((res) => {
                 setStaff(res.data);
@@ -146,10 +151,11 @@ function VisitUpdate() {
             });
     }, [loadingStaff]);
 
-    // load visit and interaction data
     React.useEffect(() => {
+        // load visit and interaction data for form prepopulation
         if (loaded) return;
 
+        // GET visit data
         axios.get(`${process.env.REACT_APP_API}/visits/${visit_ID}`)
             .then((res) => {
                 let resData = res.data;
@@ -173,9 +179,8 @@ function VisitUpdate() {
                     setInsuranceNeeded(false);
                 }
 
-                // update form data; `plan` is set to null as that is what Autocomplete component expects
-                // (despite all the other inputs not liking null lol)
-
+                // structure plan data (if exists); `plan` defaults to null as that is what Autocomplete component expects
+                // (despite all the other controlled inputs not liking null lol)
                 if (resData.plan_ID) {
                     resData.plan = {
                         plan_ID: resData.plan_ID,
@@ -187,6 +192,7 @@ function VisitUpdate() {
 
                 setData({ ...data, ...resData });
 
+                // GET staff interaction data for this visit
                 axios.get(`${process.env.REACT_APP_API}/staff-interactions?visit_ID=${visit_ID}`)
                     .then((res) => {
 
@@ -207,7 +213,6 @@ function VisitUpdate() {
                     });
             })
             .catch((err) => {
-                console.log(err)
                 setStatus("error");
                 setLoaded(true);
             });

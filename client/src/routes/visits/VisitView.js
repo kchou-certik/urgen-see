@@ -1,9 +1,14 @@
+// Packages
 import React from 'react';
-import Table from '../../components/table/Table'
 import { Link, useParams } from 'react-router-dom';
+import date from 'date-and-time';
+
+// Components
+import Table from '../../components/table/Table'
 import ErrorMessage from '../../components/ErrorMessage';
 import Loading from '../../components/Loading';
 
+// MUI Components
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
@@ -13,22 +18,25 @@ import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
 
-import date from 'date-and-time';
-
 const axios = require('axios').default;
 
+
 function VisitView(props) {
-    // STATE VARIABLES
     const { visit_ID } = useParams();
-    const [error, setError] = React.useState(false);
 
-    // patient
-    const [data, setData] = React.useState(null);
-    const [visitLoaded, setVisitLoaded] = React.useState(false);
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  STATE VARIABLES
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
 
-    // patient's visits
-    const [rows, setRows] = React.useState(null);
-    const [staffLoaded, setStaffLoaded] = React.useState(false);
+    const [error, setError] = React.useState(false);    // error state
+
+    // visit
+    const [data, setData] = React.useState(null);   // visit data
+    const [visitLoaded, setVisitLoaded] = React.useState(false);    // if data is loaded
+
+    // staff interactions
+    const [rows, setRows] = React.useState(null);   // staff interaction data
+    const [staffLoaded, setStaffLoaded] = React.useState(false);    // if data is loaded
 
     const tableOptions = {
         visit_staff_ID: false,
@@ -40,13 +48,17 @@ function VisitView(props) {
         staff_ID: false
     }
 
-    // API FETCH REQUESTS
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  API FETCH REQUESTS
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
 
-    // visit
     React.useEffect(() => {
+        // API GET visit data
         axios.get(`${process.env.REACT_APP_API}/visits/${visit_ID}`)
             .then((res) => {
                 const resData = res.data;
+
+                // format dates/times
                 resData.scheduled_time = date.format(new Date(resData.scheduled_time), "DD/MM/YY at HH:mm");
                 if (resData.check_in_time) resData.check_in_time = date.format(new Date(resData.check_in_time), "HH:mm");
                 if (resData.discharge_time) resData.discharge_time = date.format(new Date(resData.discharge_time), "HH:mm");
@@ -59,8 +71,8 @@ function VisitView(props) {
             });
     }, [visit_ID]);
 
-    // visit interactions
     React.useEffect(() => {
+        // API GET visit-staff interactions
         axios.get(`${process.env.REACT_APP_API}/staff-interactions?visit_ID=${visit_ID}`)
             .then((res) => {
                 setStaffLoaded(true);

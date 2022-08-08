@@ -16,24 +16,25 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 
+// Icons
 import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 
 const axios = require('axios').default;
 
-function CarrierNew() {
 
+function CarrierNew() {
     const navigate = useNavigate();
 
     // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
     //  STATE VARIABLES
     // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
 
-    const [data, setData] = React.useState({
+    const [data, setData] = React.useState({    // form data
         provider: "",
         phone_number: ""
     });
 
-    const [status, setStatus] = React.useState(null);
+    const [status, setStatus] = React.useState(null);   // "success" | "error"
 
     // ∘₊✧──────✧₊∘
     //  HANDLERS
@@ -41,6 +42,7 @@ function CarrierNew() {
 
     // from https://reactjs.org/docs/forms.html#handling-multiple-inputs
     function handleChange(e) {
+        // updates data state for controlled inputs
         const target = e.target;
         const name = target.name;
 
@@ -51,6 +53,7 @@ function CarrierNew() {
     }
 
     function handleSubmit(e) {
+        // submits API request
         e.preventDefault();
 
         axios.post(`${process.env.REACT_APP_API}/carriers`, data)

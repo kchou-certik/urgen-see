@@ -2,11 +2,21 @@ const db = require('../db');
 const express = require('express');
 const router = express.Router();
 
+/**GET ALL/SOME route 
+ * 
+ * URL QUERY parameters (OPTIONAL - parameters to narrow query):
+ * - if none specified, defaults to ALL
+ * 
+ *  visit_ID: foreign key for visit_ID - limit search to staff that interacted with just that visit
+ * 
+ * returns array of row objects, where each row has key=column name, value=data value
+*/
 router.get('/', (req, res) => {
     const { visit_ID } = req.query;
-    let idString = "";
+
+    let idString = "";  // the string to insert into our query; defaults to ""
     if (visit_ID) {
-        const idParam = db.pool.escape(visit_ID);
+        const idParam = db.pool.escape(visit_ID);   // escape the input
         idString = `WHERE Staff_Interactions.visit_ID = ${idParam}`;
     }
 
@@ -25,6 +35,7 @@ router.get('/', (req, res) => {
         ${idString}
         ORDER BY Visits.scheduled_time DESC;`
 
+    // perform query, passing in query
     db.pool.query(
         query, (err, rows, fields) => {
             if (err) {
@@ -35,7 +46,13 @@ router.get('/', (req, res) => {
         });
 });
 
+/**GET ONE route
+ * :id - visit_staff_ID URL parameter
+ * 
+ * returns a single object where key=column name, value=data
+ */
 router.get('/:id', (req, res) => {
+    // perform query, passing in ID
     db.pool.query(`
     SELECT * FROM Staff_Interactions
     LEFT JOIN Staff
@@ -49,11 +66,18 @@ router.get('/:id', (req, res) => {
     });
 });
 
-
+/**POST route
+ * Body structure ($ is mandatory)
+ * {
+ *  $staff_ID: foreign key - the staff member who interacted with this visit,
+ *  $visit_ID: foreign key - the visit we are adding the staff interaction to
+ * }
+ */
 router.post('/', (req, res) => {
     const staff_ID = req.body.data.staffMember.staff_ID;
     const visit_ID = req.body.insertId;
 
+    // perform query
     db.pool.query(`INSERT INTO Staff_interactions (staff_ID, visit_ID)
         VALUES (?, ?)`,
         [staff_ID, visit_ID],
@@ -67,10 +91,20 @@ router.post('/', (req, res) => {
     );
 });
 
+/**PUT route
+ * :visit_staff_ID - URL parameter for the record we wish to update
+ * 
+ * Body structure ($ is mandatory)
+ * {
+ *  $staff_ID: foreign key - the staff member who interacted with this visit,
+ *  $visit_ID: foreign key - the visit we are adding the staff interaction to
+ * }
+ */
 router.put('/:visit_staff_ID', (req, res) => {
     const staff_ID = req.body.staffMember.staff_ID;
     const visit_staff_ID = req.params.visit_staff_ID;
 
+    // perform query
     db.pool.query(`UPDATE Staff_Interactions SET staff_ID = ? WHERE visit_staff_ID = ?`, [staff_ID, visit_staff_ID],
         (err, rows, fields) => {
             if (err) {
@@ -81,11 +115,19 @@ router.put('/:visit_staff_ID', (req, res) => {
         });
 });
 
+/**DELETE SOME route
+ * deletes ALL staff interactions for ONE visit_ID
+ * 
+ * :visit_ID URL parameter - the visit_ID which we wish to delete staff interactions for
+ * 
+ * successful response contains affectedRows property
+ */
 router.delete('/', (req, res) => {
     const { visit_ID } = req.query;
 
     if (!visit_ID) {
-        // We require a visit_ID
+        // We require a visit_ID!
+        // Without specifying a visit_ID, mySQL would delete EVERYTHING!
         res.sendStatus(400);
         return;
     }
@@ -93,6 +135,7 @@ router.delete('/', (req, res) => {
     const query = `DELETE FROM Staff_Interactions 
     WHERE visit_ID = ?`;
 
+    // perform query, passing in id
     db.pool.query(query, visit_ID, (err, results, fields) => {
         if (err) {
             res.status(500).json(err);
@@ -102,6 +145,11 @@ router.delete('/', (req, res) => {
     });
 });
 
+/**DELETE ONE route
+ * :visit_staff_ID URL parameter
+ * 
+ * successful response contains affectedRows property
+ */
 router.delete('/:id', (req, res) => {
     const visit_staff_ID = req.params.id;
     db.pool.query(`DELETE FROM Staff_Interactions WHERE visit_staff_ID = ?`, visit_staff_ID, (err, results, fields) => {

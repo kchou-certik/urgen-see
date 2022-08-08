@@ -1,10 +1,15 @@
+// Packages
 import React, { useState } from 'react';
-import ErrorMessage from '../../components/ErrorMessage';
-import SuccessMessage from '../../components/SuccessMessage';
-import DeleteButton from '../../components/DeleteButton';
 import { useParams, useNavigate } from 'react-router-dom';
 import date from 'date-and-time';
 
+// Components
+import ErrorMessage from '../../components/ErrorMessage';
+import SuccessMessage from '../../components/SuccessMessage';
+import DeleteButton from '../../components/DeleteButton';
+import Loading from '../../components/Loading';
+
+// MUI Components
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -21,8 +26,8 @@ import TextField from '@mui/material/TextField';
 import Switch from '@mui/material/Switch';
 import CircularProgress from '@mui/material/CircularProgress';
 import Stack from '@mui/material/Stack';
-import Loading from '../../components/Loading';
 
+// Icons
 import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 
 const axios = require('axios').default;
@@ -32,7 +37,10 @@ function PatientUpdate() {
     const { mrn } = useParams();
     const navigate = useNavigate();
 
-    // STATE VARIABLES
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  STATE VARIABLES
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+
     const [status, setStatus] = React.useState(null); // success | error | deleted
     const [req, setReq] = useState(false);  // if text input field for 'other' sex is required
     const [loaded, setLoaded] = useState(false); // if patient's data is loaded from API 
@@ -55,13 +63,16 @@ function PatientUpdate() {
     });
 
     // insurance selector/input state variables
-    const [plans, setPlans] = useState([]);
-    const [insuranceNeeded, setInsuranceNeeded] = useState(true);
-    const [planSelectorOpen, setPlanSelectorOpen] = useState(false);
+    const [plans, setPlans] = useState([]);     // plan data
+    const [insuranceNeeded, setInsuranceNeeded] = useState(true);   // is insurance data needed? false for self-pay
+    const [planSelectorOpen, setPlanSelectorOpen] = useState(false);    // plan dropdown selector state
 
+    // ∘₊✧──────✧₊∘
+    //  HANDLERS
+    // ∘₊✧──────✧₊∘
 
-    // HANDLERS
     function handleSubmit(e) {
+        // submits API PUT request
         e.preventDefault();
         axios.put(`${process.env.REACT_APP_API}/patients/${mrn}`, data)
             .then((res) => setStatus("success"))
@@ -70,6 +81,7 @@ function PatientUpdate() {
 
     // from https://reactjs.org/docs/forms.html#handling-multiple-inputs
     function handleInputChange(event) {
+        // updates form data for controlled inputs
         const target = event.target;
         const name = target.name;
 
@@ -81,12 +93,13 @@ function PatientUpdate() {
         if (!edited) setEdited(true);
     }
 
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  API FETCH REQUESTS
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
 
-    // API FETCH REQUESTS
-
-    // load Plan data
     const loading = planSelectorOpen && plans.length === 0; // from https://mui.com/material-ui/react-autocomplete/#load-on-open
     React.useEffect(() => {
+        // load plan data for AutoComplete dropdown selector
         axios.get(`${process.env.REACT_APP_API}/plans`)
             .then((res) => {
                 setPlans(res.data);
@@ -96,8 +109,8 @@ function PatientUpdate() {
             });
     }, [loading]);
 
-    // load patient data
     React.useEffect(() => {
+        // load patient data
         if (loaded) return;
 
         axios.get(`${process.env.REACT_APP_API}/patients/${mrn}`)
@@ -127,7 +140,6 @@ function PatientUpdate() {
 
                 // update form data; `plan` is set to null as that is what Autocomplete component expects
                 // (despite all the other inputs not liking null lol)
-
                 if (resData.plan_ID) {
                     resData.plan = {
                         plan_ID: resData.plan_ID,

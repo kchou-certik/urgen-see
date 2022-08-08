@@ -1,31 +1,11 @@
+// Packages
 import React, { useState } from 'react';
 import { Link, Routes, Route } from 'react-router-dom';
 
-import Carriers from './routes/carriers/Carriers';
-import CarrierNew from './routes/carriers/CarrierNew';
-import CarrierUpdate from './routes/carriers/CarrierUpdate';
-import Index from "./routes/Index";
-import Patients from './routes/patients/Patients';
-import PatientView from './routes/patients/PatientView';
-import PatientRegistration from './routes/patients/PatientRegistration';
-import PatientUpdate from './routes/patients/PatientUpdate';
-import Plans from './routes/plans/Plans';
-import PlanNew from './routes/plans/PlanNew';
-import PlanUpdate from './routes/plans/PlanUpdate';
-import Staff from './routes/staff/Staff';
-import StaffNew from './routes/staff/StaffNew'
-import StaffUpdate from './routes/staff/StaffUpdate'
-import Visits from './routes/visits/Visits';
-import VisitView from './routes/visits/VisitView';
-import VisitNew from './routes/visits/VisitNew';
-import VisitUpdate from './routes/visits/VisitUpdate';
-import StaffInteractions from './routes/staffInteractions/StaffInteractions';
-import InteractionNew from './routes/staffInteractions/InteractionNew';
-import InteractionUpdate from './routes/staffInteractions/InteractionUpdate';
+// Components
 import PatientSearchButton from './components/PatientSearchButton';
 
-import './App.css';
-
+// MUI Components
 import Box from '@mui/material/Box';
 import MLink from '@mui/material/Link';
 import { CssBaseline } from '@mui/material';
@@ -36,9 +16,40 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 
+// Routes
+import Carriers from './routes/carriers/Carriers';
+import CarrierNew from './routes/carriers/CarrierNew';
+import CarrierUpdate from './routes/carriers/CarrierUpdate';
+import Index from "./routes/Index";
+import Patients from './routes/patients/Patients';
+import PatientView from './routes/patients/PatientView';
+import PatientRegistration from './routes/patients/PatientRegistration';
+import PatientUpdate from './routes/patients/PatientUpdate';
+import Plans from './routes/plans/Plans';
+import PlanNew from './routes/plans/PlanNew';
+import Staff from './routes/staff/Staff';
+import StaffNew from './routes/staff/StaffNew'
+import Visits from './routes/visits/Visits';
+import VisitView from './routes/visits/VisitView';
+import VisitNew from './routes/visits/VisitNew';
+import VisitUpdate from './routes/visits/VisitUpdate';
+import StaffInteractions from './routes/staffInteractions/StaffInteractions';
+import InteractionNew from './routes/staffInteractions/InteractionNew';
+import InteractionUpdate from './routes/staffInteractions/InteractionUpdate';
+
+import './App.css';
+
+
 function App() {
+
+  // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+  //  STATE VARIABLES
+  // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+
+  // for Data Tables menu
+  // from https://mui.com/material-ui/react-menu/#basic-menu
   const [menu, setMenu] = useState(null);
-  const open = Boolean(menu);
+  const open = Boolean(menu); // if menu exists, it is open
 
   function handleClick(e) {
     setMenu(e.currentTarget);
@@ -47,6 +58,7 @@ function App() {
   function handleClose() {
     setMenu(null);
   }
+
 
   return (
     <>

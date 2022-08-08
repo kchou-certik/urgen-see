@@ -1,19 +1,28 @@
+// Packages
 import React from 'react';
 import { Link } from 'react-router-dom';
+
+// Components
 import Table from '../../components/table/Table';
 import ErrorMessage from '../../components/ErrorMessage';
+import Loading from '../../components/Loading';
 
+// MUI Components
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import Loading from '../../components/Loading';
 
 const axios = require('axios').default;
 
 function Staff(props) {
-    const [rows, setRows] = React.useState(null);
-    const [loaded, setLoaded] = React.useState(false);
+
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  STATE VARIABLES
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+
+    const [rows, setRows] = React.useState(null);   // staff data
+    const [loaded, setLoaded] = React.useState(false);  // if data is loaded
     const [error, setError] = React.useState(false);
 
     const tableOptions = {
@@ -30,7 +39,11 @@ function Staff(props) {
         postal_code: "Postcode"
     }
 
-    // Load data
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  API FETCH REQUESTS
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+
+    // Load staff data
     React.useEffect(() => {
         axios.get(`${process.env.REACT_APP_API}/staff`)
             .then((res) => {

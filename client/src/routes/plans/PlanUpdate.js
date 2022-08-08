@@ -1,13 +1,29 @@
+// ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+//  TODO Unused route
+// ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+
+// Packages
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+// MUI Components
 import Button from '@mui/material/Button';
 
+// Icons
 import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 
 function PlanUpdate() {
     const navigate = useNavigate();
+
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  STATE VARIABLES
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+
     const [referral, setReferral] = useState(0);
+
+    // ∘₊✧──────✧₊∘
+    //  HANDLERS
+    // ∘₊✧──────✧₊∘
 
     function handleSubmit(e) {
         e.preventDefault();

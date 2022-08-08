@@ -1,10 +1,14 @@
+// Packages
 import React, { useState } from 'react';
 import date from 'date-and-time';
+import { useNavigate } from 'react-router-dom';
+
+// Components
 import ErrorMessage from '../../components/ErrorMessage';
 import SuccessMessage from '../../components/SuccessMessage';
 import InfoMessage from '../../components/InfoMessage';
-import { useNavigate } from 'react-router-dom';
 
+// MUI Components
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -26,14 +30,18 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import Autocomplete from '@mui/material/Autocomplete';
 
+// Icons
 import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 
 const axios = require('axios').default;
 
+
 function VisitNew() {
     const navigate = useNavigate();
 
-    // STATE VARIABLES
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  STATE VARIABLES
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
 
     const [status, setStatus] = React.useState(null); // success | error | nopatient
     const [data, setData] = useState({      // form data
@@ -63,9 +71,12 @@ function VisitNew() {
     const [staffInput, setStaffInput] = useState([]);
     const [staffSelectorOpen, setStaffSelectorOpen] = useState(false);
 
-    // HANDLERS
+    // ∘₊✧──────✧₊∘
+    //  HANDLERS
+    // ∘₊✧──────✧₊∘
 
     function handleSubmit(e) {
+        // submit API POST requests
         e.preventDefault();
 
         if (!data.mrn) {
@@ -83,8 +94,11 @@ function VisitNew() {
     }
 
     function handlePatientSubmit(e) {
+        // gets patient search data via API GET request
         e.preventDefault();
-        const params = { ...patientData };
+        const params = { ...patientData };  // generate parameters object w/ patientData
+
+        // change "" fields to null
         Object.keys(params).map((key) => {
             if (params[key] === "") {
                 params[key] = null;
@@ -92,7 +106,7 @@ function VisitNew() {
             return undefined;
         });
 
-        axios.get(`${process.env.REACT_APP_API}/patients`, { params: patientData })
+        axios.get(`${process.env.REACT_APP_API}/patients`, { params: params })
             .then((res) => {
                 setPatients(res.data);
             })
@@ -101,6 +115,7 @@ function VisitNew() {
 
     // From https://reactjs.org/docs/forms.html#handling-multiple-inputs
     function handleInputChange(event) {
+        // update form data for controlled inputs
         const target = event.target;
         const name = target.name;
 
@@ -110,7 +125,9 @@ function VisitNew() {
         });
     }
 
+    // From https://reactjs.org/docs/forms.html#handling-multiple-inputs
     function handlePatientInputChange(event) {
+        // update patient search form data for controlled inputs
         const target = event.target;
         const name = target.name;
 
@@ -121,6 +138,7 @@ function VisitNew() {
     }
 
     function handlePatientClick(patient) {
+        // set form data fields with patient information when patient search result is clicked
         setData({
             ...data,
             mrn: patient.mrn,
@@ -133,9 +151,13 @@ function VisitNew() {
         handleClose();
     }
 
-    // load Staff data
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  API FETCH REQUESTS
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+
     const staffLoading = staffSelectorOpen && staffInput.length === 0; // from https://mui.com/material-ui/react-autocomplete/#load-on-open
     React.useEffect(() => {
+        // load Staff data for visit AutoComplete dropdown selector
         axios.get(`${process.env.REACT_APP_API}/staff`)
             .then((res) => {
                 setStaffInput(res.data);
@@ -153,6 +175,7 @@ function VisitNew() {
     function handleClose() {
         setSearchOpen(false);
     }
+
 
     return (
         <>

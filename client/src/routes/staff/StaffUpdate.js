@@ -1,11 +1,23 @@
+// ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+//  TODO Unused route
+// ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+
+// Packages
 import { Link, useNavigate } from 'react-router-dom';
 
+// MUI Components
 import Button from '@mui/material/Button';
 
+// Icons
 import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 
 function StaffUpdate() {
     const navigate = useNavigate();
+
+
+    // ∘₊✧──────✧₊∘
+    //  HANDLERS
+    // ∘₊✧──────✧₊∘
 
     function handleSubmit(e) {
         e.preventDefault();

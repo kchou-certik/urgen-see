@@ -1,8 +1,12 @@
+// Packages
 import React, { useState } from 'react';
-import ErrorMessage from '../../components/ErrorMessage';
-import SuccessMessage from '../../components/SuccessMessage';
 import { useNavigate } from 'react-router-dom';
 
+// Components
+import ErrorMessage from '../../components/ErrorMessage';
+import SuccessMessage from '../../components/SuccessMessage';
+
+// MUI Components
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -16,6 +20,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 
+// Icons
 import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 
 const axios = require('axios').default;
@@ -24,7 +29,9 @@ const axios = require('axios').default;
 function StaffNew() {
     const navigate = useNavigate();
 
-    // STATE VARIABLES
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  STATE VARIABLES
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
 
     const [status, setStatus] = React.useState(null); // success | error
     const [data, setData] = useState({      // form data
@@ -40,10 +47,12 @@ function StaffNew() {
         postal_code: "",
     });
 
-
-    // HANDLERS
+    // ∘₊✧──────✧₊∘
+    //  HANDLERS
+    // ∘₊✧──────✧₊∘
 
     function handleSubmit(e) {
+        // submits API POST request
         e.preventDefault();
         axios.post(`${process.env.REACT_APP_API}/staff`, data)
             .then((res) => setStatus("success"))
@@ -52,6 +61,7 @@ function StaffNew() {
 
     // From https://reactjs.org/docs/forms.html#handling-multiple-inputs
     function handleInputChange(event) {
+        // updates form data for controlled inputs
         const target = event.target;
         const name = target.name;
 
@@ -60,6 +70,7 @@ function StaffNew() {
             [name]: target.value
         });
     }
+
 
     return (
         <>

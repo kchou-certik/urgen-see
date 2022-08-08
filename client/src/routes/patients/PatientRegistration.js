@@ -1,8 +1,12 @@
+// Packages
 import React, { useState } from 'react';
-import ErrorMessage from '../../components/ErrorMessage';
-import SuccessMessage from '../../components/SuccessMessage';
 import { useNavigate } from 'react-router-dom';
 
+// Components
+import ErrorMessage from '../../components/ErrorMessage';
+import SuccessMessage from '../../components/SuccessMessage';
+
+// MUI Components
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -19,16 +23,18 @@ import TextField from '@mui/material/TextField';
 import Switch from '@mui/material/Switch';
 import CircularProgress from '@mui/material/CircularProgress';
 
+// Icons
 import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 
 const axios = require('axios').default;
 
 
 function PatientRegistration() {
-
     const navigate = useNavigate();
 
-    // STATE VARIABLES
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  STATE VARIABLES
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
 
     const [status, setStatus] = React.useState(null); // success | error
     const [req, setReq] = useState(false);  // if text input field for 'other' sex is required
@@ -55,11 +61,14 @@ function PatientRegistration() {
     const [insuranceNeeded, setInsuranceNeeded] = useState(true);
     const [planSelectorOpen, setPlanSelectorOpen] = useState(false);
 
-
-    // HANDLERS
+    // ∘₊✧──────✧₊∘
+    //  HANDLERS
+    // ∘₊✧──────✧₊∘
 
     function handleSubmit(e) {
+        // submits API request
         e.preventDefault();
+
         axios.post(`${process.env.REACT_APP_API}/patients`, data)
             .then((res) => setStatus("success"))
             .catch((err) => setStatus("error"));
@@ -67,6 +76,7 @@ function PatientRegistration() {
 
     // From https://reactjs.org/docs/forms.html#handling-multiple-inputs
     function handleInputChange(event) {
+        // updates data state for controlled inputs
         const target = event.target;
         const name = target.name;
 
@@ -76,12 +86,14 @@ function PatientRegistration() {
         });
     }
 
-
-    // API FETCH REQUESTS
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  API FETCH REQUESTS
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
 
     // Load Plan selector data
     const loading = planSelectorOpen && plans.length === 0; // from https://mui.com/material-ui/react-autocomplete/#load-on-open
     React.useEffect(() => {
+        // loads plan options for AutoComplete dropdown selector
         if (!loading) {
             return undefined;
         }

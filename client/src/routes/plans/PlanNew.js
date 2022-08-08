@@ -1,8 +1,12 @@
+// Packages
 import React, { useState } from 'react';
-import ErrorMessage from '../../components/ErrorMessage';
-import SuccessMessage from '../../components/SuccessMessage';
 import { useNavigate } from 'react-router-dom';
 
+// Components
+import ErrorMessage from '../../components/ErrorMessage';
+import SuccessMessage from '../../components/SuccessMessage';
+
+// MUI Components
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -19,14 +23,18 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import RadioGroup from '@mui/material/RadioGroup';
 import Radio from '@mui/material/Radio';
 
+// Icons
 import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 
 const axios = require('axios').default;
 
+
 function PlanNew() {
     const navigate = useNavigate();
 
-    // STATE VARIABLES
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  STATE VARIABLES
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
 
     const [status, setStatus] = React.useState(null); // success | error | nocarrier
     const [data, setData] = useState({      // form data
@@ -39,10 +47,12 @@ function PlanNew() {
     const [carriers, setCarriers] = useState([]);
     const [carrierSelectorOpen, setCarrierSelectorOpen] = useState(false);
 
-
-    // HANDLERS
+    // ∘₊✧──────✧₊∘
+    //  HANDLERS
+    // ∘₊✧──────✧₊∘
 
     function handleSubmit(e) {
+        // submits API POST request
         e.preventDefault();
 
         axios.post(`${process.env.REACT_APP_API}/plans`, data)
@@ -52,6 +62,7 @@ function PlanNew() {
 
     // From https://reactjs.org/docs/forms.html#handling-multiple-inputs
     function handleInputChange(event) {
+        // updates form data for controlled inputs
         const target = event.target;
         const name = target.name;
 
@@ -61,8 +72,9 @@ function PlanNew() {
         });
     }
 
-
-    // API FETCH REQUESTS
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  API FETCH REQUESTS
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
 
     // load Carrier data
     const loading = carrierSelectorOpen && carriers.length === 0; // from https://mui.com/material-ui/react-autocomplete/#load-on-open

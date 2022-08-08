@@ -1,21 +1,30 @@
+// Packages
 import React from 'react';
-import Table from '../../components/table/Table'
 import { Link } from 'react-router-dom'
-import ErrorMessage from '../../components/ErrorMessage';
+import date from 'date-and-time';
 
+// Components
+import Table from '../../components/table/Table'
+import ErrorMessage from '../../components/ErrorMessage';
+import Loading from '../../components/Loading';
+
+// MUI Components
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
 import Typography from '@mui/material/Typography';
 
-import date from 'date-and-time';
-import Loading from '../../components/Loading';
-
 const axios = require('axios').default;
 
+
 function Visits(props) {
-    const [rows, setRows] = React.useState(null);
-    const [loaded, setLoaded] = React.useState(false);
+
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  STATE VARIABLES
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+
+    const [rows, setRows] = React.useState(null);   // visit data
+    const [loaded, setLoaded] = React.useState(false);  // if data is loaded
     const [error, setError] = React.useState(false);
 
     const tableOptions = {
@@ -32,8 +41,12 @@ function Visits(props) {
         visit_insurance: "Visit Insurance"
     };
 
-    // Load data
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  API FETCH REQUESTS
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+
     React.useEffect(() => {
+        // Load visit data
         axios.get(`${process.env.REACT_APP_API}/visits`)
             .then((res) => {
                 res.data.map((row) => {

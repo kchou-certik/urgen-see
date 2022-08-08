@@ -1,22 +1,31 @@
+// Packages
 import React from 'react';
-import Table from '../../components/table/Table'
 import { Link } from 'react-router-dom';
+import date from 'date-and-time';
+
+// Components
+import Table from '../../components/table/Table'
 import ErrorMessage from '../../components/ErrorMessage';
 import PatientSearchButton from '../../components/PatientSearchButton';
+import Loading from '../../components/Loading';
 
+// MUI Components
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import { Button } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
-import date from 'date-and-time';
-import Loading from '../../components/Loading';
-
 const axios = require('axios').default;
 
+
 function Patients(props) {
-    const [rows, setRows] = React.useState(null);
-    const [loaded, setLoaded] = React.useState(false);
+
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  STATE VARIABLES
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+
+    const [rows, setRows] = React.useState(null);   // patient data
+    const [loaded, setLoaded] = React.useState(false);  // if data is loaded
     const [error, setError] = React.useState(false);
 
     const tableOptions = {
@@ -38,11 +47,16 @@ function Patients(props) {
         plan_name: "Plan"
     };
 
-    // Load data
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  API FETCH REQUESTS
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+
     React.useEffect(() => {
+        // load patient data
         axios.get(`${process.env.REACT_APP_API}/patients`)
             .then((res) => {
                 res.data.map((row) => {
+                    // format DOB
                     row.date_of_birth = date.format(new Date(row.date_of_birth), "M/D/YYYY");
                     return row;
                 });
@@ -53,6 +67,7 @@ function Patients(props) {
                 setError(true);
             });
     }, []);
+
 
     return (
         <main>

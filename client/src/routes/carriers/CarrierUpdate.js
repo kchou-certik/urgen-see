@@ -19,15 +19,15 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 
+// Icons
 import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
-
 
 const axios = require('axios').default;
 
 
 function CarrierUpdate() {
-
     const navigate = useNavigate();
+    const { carrier_ID } = useParams();
 
     // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
     //  STATE VARIABLES
@@ -38,18 +38,16 @@ function CarrierUpdate() {
         phone_number: null
     });
 
-    const [loaded, setLoaded] = React.useState(false);
+    const [loaded, setLoaded] = React.useState(false); // if data is loaded
     const [status, setStatus] = React.useState(null); // success | error | deleted
     const [edited, setEdited] = useState(false); // if form has been changed from original data
-
-    const { carrier_ID } = useParams();
-
 
     // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
     //  API FETCH REQUESTS
     // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
 
     React.useEffect(() => {
+        // gets carrier data from API
         axios.get(`${process.env.REACT_APP_API}/carriers/${carrier_ID}`)
             .then((res) => {
                 setLoaded(true);
@@ -62,13 +60,13 @@ function CarrierUpdate() {
 
     }, [carrier_ID]);
 
-
     // ∘₊✧──────✧₊∘
     //  HANDLERS
     // ∘₊✧──────✧₊∘
 
     // from https://reactjs.org/docs/forms.html#handling-multiple-inputs
     function handleChange(e) {
+        // updates data state for controlled inputs
         const target = e.target;
         const name = target.name;
         setData({
@@ -80,6 +78,7 @@ function CarrierUpdate() {
     }
 
     function handleSubmit(e) {
+        // submits API update request
         e.preventDefault();
         axios.put(`${process.env.REACT_APP_API}/carriers/${carrier_ID}`, data)
             .then((res) => {

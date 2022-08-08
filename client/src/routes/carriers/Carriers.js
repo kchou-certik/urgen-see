@@ -1,18 +1,28 @@
+// Packages
 import React from 'react';
 import { Link } from 'react-router-dom';
+
+// Components
 import Table from '../../components/table/Table';
-
-import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
-import { Button } from '@mui/material';
-import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined';
-
 import ErrorMessage from '../../components/ErrorMessage';
 import Loading from '../../components/Loading';
 
+// MUI Components
+import Typography from '@mui/material/Typography';
+import Stack from '@mui/material/Stack';
+import { Button } from '@mui/material';
+
+// Icons
+import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined';
+
 const axios = require('axios').default;
 
+
 function Carriers(props) {
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  STATE VARIABLES
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+
     const [rows, setRows] = React.useState(null);
     const [loaded, setLoaded] = React.useState(false);
     const [error, setError] = React.useState(false);
@@ -23,7 +33,12 @@ function Carriers(props) {
         provider: "Name"
     }
 
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  API FETCH REQUESTS
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+
     React.useEffect(() => {
+        // loads carrier data
         axios.get(`${process.env.REACT_APP_API}/carriers`)
             .then((res) => {
                 setLoaded(true);
