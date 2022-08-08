@@ -1,8 +1,12 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import Button from '@mui/material/Button';
 
+import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
+
 function StaffUpdate() {
+    const navigate = useNavigate();
+
     function handleSubmit(e) {
         e.preventDefault();
         alert("Submitted!");
@@ -11,7 +15,7 @@ function StaffUpdate() {
     return (
         <>
             <header>
-                <Link to="/staff">{"<-"} Staff</Link>
+                <Button onClick={() => navigate(-1)}><ArrowBackOutlinedIcon sx={{ mr: 0.5, mb: 0.2 }} /> Back</Button>
                 <h1>Update Staff</h1>
                 <section>
                     <p>

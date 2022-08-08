@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ErrorMessage from '../../components/ErrorMessage';
 import SuccessMessage from '../../components/SuccessMessage';
 import DeleteButton from '../../components/DeleteButton';
-import { Link, useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import date from 'date-and-time';
 
 import Container from '@mui/material/Container';
@@ -23,11 +23,14 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Stack from '@mui/material/Stack';
 import Loading from '../../components/Loading';
 
+import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
+
 const axios = require('axios').default;
 
 
 function PatientUpdate() {
     const { mrn } = useParams();
+    const navigate = useNavigate();
 
     // STATE VARIABLES
     const [status, setStatus] = React.useState(null); // success | error | deleted
@@ -150,7 +153,7 @@ function PatientUpdate() {
                 {status === "error" && <ErrorMessage msg="An error occurred! Please try again." setStatus={setStatus} />}
                 {status === 'deleted' && <SuccessMessage msg="Successfully deleted." setStatus={setStatus} />}
 
-                <Button component={Link} to="/patients">{"<-"} Patients</Button>
+                <Button onClick={() => navigate(-1)}><ArrowBackOutlinedIcon sx={{ mr: 0.5, mb: 0.2 }} /> Back</Button>
                 <Typography variant="h4">Edit Patient Record</Typography>
                 <Typography variant="subtitle1" gutterBottom>* denotes required</Typography>
 

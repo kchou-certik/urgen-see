@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Table from '../../components/table/Table';
 import ErrorMessage from '../../components/ErrorMessage';
 
+import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
@@ -44,7 +45,7 @@ function Staff(props) {
     return (
         <main>
             <header>
-                <h1>Staff List</h1>
+                <Typography component="h2" variant="h3" sx={{ mb: 3 }}>Staff Registry</Typography>
             </header>
             <Stack direction="row" spacing="1em" sx={{ mb: 2 }}>
                 <Button component={Link} to="/staff/new" variant="outlined" endIcon={<PersonAddIcon />}>
@@ -61,7 +62,7 @@ function Staff(props) {
             }
             {
                 loaded &&
-                <Table options={tableOptions} rows={rows} updatable pKey="staff_ID" />
+                <Table options={tableOptions} rows={rows} pKey="staff_ID" />
             }
         </main >
 

@@ -45,7 +45,7 @@ function Table({ options, rows, updatable, pKey, clickable }) {
 
     return (
         <TableContainer component={Paper}>
-            <MUITable sx={{ minWidth: 650 }} aria-label="simple table">
+            <MUITable sx={{ width: "100%" }} aria-label="simple table">
                 <TableHead options={options} row={cols} />
                 <TableBody>
                     {rows.map((row, i) => {

@@ -147,7 +147,7 @@ function Patients(props) {
                             visitsLoaded &&
                             <Box sx={{ my: 5, width: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
                                 <Typography component="h2" variant="h6" gutterBottom>Patient Visits</Typography>
-                                <Table options={tableOptions} rows={rows} updatable pKey="visit_ID" />
+                                <Table options={tableOptions} rows={rows} updatable clickable pKey="visit_ID" />
                             </Box>
                         }
 

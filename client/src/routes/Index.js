@@ -1,18 +1,21 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-
+import ErrorMessage from '../components/ErrorMessage';
+import Loading from '../components/Loading';
 import Table from '../components/table/Table';
+
+import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
-import ErrorMessage from '../components/ErrorMessage';
 
 import date from 'date-and-time';
-import Loading from '../components/Loading';
+
 
 const axios = require('axios').default;
 
@@ -84,37 +87,31 @@ function Index(props) {
 
     return (
         <>
-            <header>
-                <h1>Urgen-See Patient Booking</h1>
-                <span>* Working Title</span>
-            </header>
-            <main>
-                <Container maxWidth="xl">
-                    <h2>Daily Schedule</h2>
-                    <h3>{date.transform(dateVal, 'YYYY-MM-DD', 'dddd, MMMM D, YYYY')}</h3>
-                    <TextField variant="outlined" type="date" label="Date" value={dateVal} onChange={handleChange} />
-                    <Stack direction="row" spacing="1em" sx={{ mb: 2 }}>
-                        <Button component={Link} to="/visits/new" variant="contained" endIcon={<MoreTimeIcon />}>
-                            Book Appointment
-                        </Button>
-                        <Button component={Link} to="/patients/new" variant="outlined" endIcon={<PersonAddIcon />}>
-                            Register
-                        </Button>
-                    </Stack>
-                    {
-                        !loaded &&
-                        <Loading />
-                    }
-                    {
-                        error &&
-                        <ErrorMessage msg="An error occurred while loading data. Please try again." />
-                    }
-                    {
-                        loaded &&
-                        <Table options={tableOptions} rows={rows} updatable pKey="visit_ID" />
-                    }
-                </Container>
-            </main>
+            <Container component="main" maxWidth="xl">
+                <Typography component="h2" variant="h4">Daily Schedule</Typography>
+                <Typography component="h3" variant="h5" gutterBottom>{date.transform(dateVal, 'YYYY-MM-DD', 'dddd, MMMM D, YYYY')}</Typography>
+                <TextField variant="standard" type="date" label="Choose Date" value={dateVal} onChange={handleChange} sx={{ my: 2 }} />
+                <Stack direction="row" spacing="1em" sx={{ mb: 3 }}>
+                    <Button component={Link} to="/visits/new" variant="contained" endIcon={<MoreTimeIcon />}>
+                        Book Appointment
+                    </Button>
+                    <Button component={Link} to="/patients/new" variant="outlined" endIcon={<PersonAddIcon />}>
+                        Register
+                    </Button>
+                </Stack>
+                {
+                    !loaded &&
+                    <Loading />
+                }
+                {
+                    error &&
+                    <ErrorMessage msg="An error occurred while loading data. Please try again." />
+                }
+                {
+                    loaded &&
+                    <Table options={tableOptions} rows={rows} updatable clickable pKey="visit_ID" />
+                }
+            </Container>
         </>
     );
 }

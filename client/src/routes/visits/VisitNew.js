@@ -3,7 +3,7 @@ import date from 'date-and-time';
 import ErrorMessage from '../../components/ErrorMessage';
 import SuccessMessage from '../../components/SuccessMessage';
 import InfoMessage from '../../components/InfoMessage';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
@@ -26,9 +26,13 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import Autocomplete from '@mui/material/Autocomplete';
 
+import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
+
 const axios = require('axios').default;
 
 function VisitNew() {
+    const navigate = useNavigate();
+
     // STATE VARIABLES
 
     const [status, setStatus] = React.useState(null); // success | error | nopatient
@@ -158,7 +162,7 @@ function VisitNew() {
                 {status === "error" && <ErrorMessage msg="An error occurred! Please try again." setStatus={setStatus} />}
                 {status === "nopatient" && <InfoMessage msg="Please choose a patient first!" setStatus={setStatus} />}
 
-                <Link to="/visits">{"<-"} Visits</Link>
+                <Button onClick={() => navigate(-1)}><ArrowBackOutlinedIcon sx={{ mr: 0.5, mb: 0.2 }} /> Back</Button>
                 <Typography variant="h4">Appointment Booking</Typography>
                 <Typography variant="subtitle1" gutterBottom>* denotes required</Typography>
                 <Box component="form" onSubmit={handleSubmit}>

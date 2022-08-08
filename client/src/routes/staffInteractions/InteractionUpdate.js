@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ErrorMessage from '../../components/ErrorMessage';
 import SuccessMessage from '../../components/SuccessMessage';
 import DeleteButton from '../../components/DeleteButton';
-import { Link, useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
@@ -16,11 +16,14 @@ import TextField from '@mui/material/TextField';
 import CircularProgress from '@mui/material/CircularProgress';
 import Stack from '@mui/material/Stack';
 
+import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
+
 const axios = require('axios').default;
 
 
 function InteractionUpdate() {
     const { visit_staff_ID } = useParams();
+    const navigate = useNavigate();
 
     // STATE VARIABLES
     const [status, setStatus] = React.useState(null); // success | error | deleted
@@ -84,7 +87,7 @@ function InteractionUpdate() {
                     }
                     return null;
                 });
-                
+
                 if (resData.staff_ID) {
                     resData.staffMember = {
                         staff_ID: resData.staff_ID,
@@ -109,7 +112,7 @@ function InteractionUpdate() {
                 {status === "error" && <ErrorMessage msg="An error occurred! Please try again." setStatus={setStatus} />}
                 {status === 'deleted' && <SuccessMessage msg="Successfully deleted." setStatus={setStatus} />}
 
-                <Button component={Link} to="/staff-interactions">{"<-"} Patients</Button>
+                <Button onClick={() => navigate(-1)}><ArrowBackOutlinedIcon sx={{ mr: 0.5, mb: 0.2 }} /> Back</Button>
                 <Typography variant="h4">Edit Patient-Staff Interaction</Typography>
                 <Typography variant="subtitle1" gutterBottom>* denotes required</Typography>
 

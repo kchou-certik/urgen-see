@@ -1,14 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import Table from '../../components/table/Table';
 import ErrorMessage from '../../components/ErrorMessage';
 
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import PeopleIcon from '@mui/icons-material/People';
-
 import date from 'date-and-time';
 import Loading from '../../components/Loading';
+import Typography from '@mui/material/Typography';
 
 const axios = require('axios').default;
 
@@ -47,15 +43,10 @@ function StaffInteractions(props) {
     return (
         <>
             <header>
-                <Link to="/visits">{"<-"} Visits</Link>
-                <h1>Patient-Staff Visit Interactions</h1>
+                <Typography component="h2" variant="h3">Patient-Staff Visit Interactions</Typography>
+                <Typography variant="subtitle1" sx={{ mb: 4 }}>To add interactions, edit a patient visit</Typography>
             </header>
             <main>
-                <Stack direction="row" spacing="1em" sx={{ mb: 2 }}>
-                    <Button component={Link} to="/staff-interactions/new" variant="outlined" endIcon={<PeopleIcon />}>
-                        Add Interaction
-                    </Button>
-                </Stack>
                 {
                     !loaded &&
                     <Loading />

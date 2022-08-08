@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ErrorMessage from '../../components/ErrorMessage';
 import SuccessMessage from '../../components/SuccessMessage';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
@@ -19,9 +19,12 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import RadioGroup from '@mui/material/RadioGroup';
 import Radio from '@mui/material/Radio';
 
+import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
+
 const axios = require('axios').default;
 
 function PlanNew() {
+    const navigate = useNavigate();
 
     // STATE VARIABLES
 
@@ -80,7 +83,7 @@ function PlanNew() {
                 {status === 'success' && <SuccessMessage msg="Successfully added!" setStatus={setStatus} />}
                 {status === "error" && <ErrorMessage msg="An error occurred! Please try again." setStatus={setStatus} />}
 
-                <Button component={Link} to="/plans">{"<-"} Plans</Button>
+                <Button onClick={() => navigate(-1)}><ArrowBackOutlinedIcon sx={{ mr: 0.5, mb: 0.2 }} /> Back</Button>
                 <Typography variant="h4">New Insurance Plan</Typography>
                 <Typography variant="subtitle1" gutterBottom>* denotes required</Typography>
                 <Box component="form" onSubmit={handleSubmit}>

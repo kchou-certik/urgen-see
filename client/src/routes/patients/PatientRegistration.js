@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ErrorMessage from '../../components/ErrorMessage';
 import SuccessMessage from '../../components/SuccessMessage';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
@@ -19,10 +19,15 @@ import TextField from '@mui/material/TextField';
 import Switch from '@mui/material/Switch';
 import CircularProgress from '@mui/material/CircularProgress';
 
+import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
+
 const axios = require('axios').default;
 
 
 function PatientRegistration() {
+
+    const navigate = useNavigate();
+
     // STATE VARIABLES
 
     const [status, setStatus] = React.useState(null); // success | error
@@ -96,8 +101,7 @@ function PatientRegistration() {
                 {status === 'success' && <SuccessMessage msg="Successfully added!" setStatus={setStatus} />}
                 {status === "error" && <ErrorMessage msg="An error occurred! Please try again." setStatus={setStatus} />}
 
-                <Button component={Link} to="/patients">{"<-"} Patients</Button>
-                <Typography variant="h4">Patient Registration</Typography>
+                <Button onClick={() => navigate(-1)}><ArrowBackOutlinedIcon sx={{ mr: 0.5, mb: 0.2 }} /> Back</Button>                <Typography variant="h4">Patient Registration</Typography>
                 <Typography variant="subtitle1" gutterBottom>* denotes required</Typography>
                 <Box component="form" onSubmit={handleSubmit}>
                     <Card sx={{ mb: 2, p: 2 }}>

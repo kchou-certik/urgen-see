@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import Button from '@mui/material/Button';
 
+import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
+
 function PlanUpdate() {
+    const navigate = useNavigate();
     const [referral, setReferral] = useState(0);
 
     function handleSubmit(e) {
@@ -18,7 +21,7 @@ function PlanUpdate() {
     return (
         <>
             <header>
-                <Link to="/plans">{"<-"} Plans</Link>
+                <Button onClick={() => navigate(-1)}><ArrowBackOutlinedIcon sx={{ mr: 0.5, mb: 0.2 }} /> Back</Button>
                 <h1>Update Plan</h1>
                 <p>
                     <h2><em>[SAMPLE DATA]</em></h2>

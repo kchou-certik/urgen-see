@@ -6,6 +6,7 @@ import ErrorMessage from '../../components/ErrorMessage';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
+import Typography from '@mui/material/Typography';
 
 import date from 'date-and-time';
 import Loading from '../../components/Loading';
@@ -53,8 +54,7 @@ function Visits(props) {
     return (
         <>
             <header>
-                <Link to="/patients">{"<-"} Patients</Link>
-                <h1>Patient Visits</h1>
+                <Typography component="h2" variant="h3" sx={{ mb: 3 }}>Patient Visits</Typography>
             </header>
             <main>
                 <Stack direction="row" spacing="1em" sx={{ mb: 2 }}>
@@ -72,7 +72,7 @@ function Visits(props) {
                 }
                 {
                     loaded &&
-                    <Table options={tableOptions} rows={rows} updatable pKey="visit_ID" />
+                    <Table options={tableOptions} rows={rows} updatable clickable pKey="visit_ID" />
                 }
 
             </main>

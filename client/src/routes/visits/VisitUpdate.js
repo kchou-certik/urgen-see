@@ -1,6 +1,6 @@
 // Packages
 import React, { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import date from 'date-and-time';
 
 // Components
@@ -16,28 +16,26 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
-import FormLabel from '@mui/material/FormLabel';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
 import Autocomplete from '@mui/material/Autocomplete';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Switch from '@mui/material/Switch';
 import CircularProgress from '@mui/material/CircularProgress';
 import Stack from '@mui/material/Stack';
-import InputAdornment from '@mui/material/InputAdornment';
 
 // Icons
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
+import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 
 const axios = require('axios').default;
 
 
 function VisitUpdate() {
     const { visit_ID } = useParams();
+    const navigate = useNavigate();
 
     // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
     //  STATE VARIABLES
@@ -69,9 +67,6 @@ function VisitUpdate() {
     const [staff, setStaff] = useState([]);
     const [staffSelectorOpen, setStaffSelectorOpen] = useState(false);
 
-    // TODO remove this
-    // console.log(data)
-
     // ∘₊✧──────✧₊∘
     //  HANDLERS
     // ∘₊✧──────✧₊∘
@@ -81,7 +76,6 @@ function VisitUpdate() {
         // update visit information
         axios.put(`${process.env.REACT_APP_API}/visits/${visit_ID}`, data)
             .then((res) => {
-                console.log(staffEdited);
                 if (staffEdited) {
 
                     // delete old interactions
@@ -227,7 +221,7 @@ function VisitUpdate() {
                 {status === "error" && <ErrorMessage msg="An error occurred! Please try again." setStatus={setStatus} />}
                 {status === 'deleted' && <SuccessMessage msg="Successfully deleted." setStatus={setStatus} />}
 
-                <Button component={Link} to="/visits">{"<-"} Visits</Button>
+                <Button onClick={() => navigate(-1)}><ArrowBackOutlinedIcon sx={{ mr: 0.5, mb: 0.2 }} /> Back</Button>
                 <Typography variant="h4">Edit Appointment Details</Typography>
                 <Typography variant="subtitle1" gutterBottom>* denotes required</Typography>
 

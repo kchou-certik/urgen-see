@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Table from '../../components/table/Table';
 import ErrorMessage from '../../components/ErrorMessage';
 
+import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import { Button } from '@mui/material';
 import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined';
@@ -47,9 +48,9 @@ function Plans(props) {
 
     return (
         <>
+
             <header>
-                <Link to="/carriers">{"<- "}Carriers</Link>
-                <h1>Insurance Plans</h1>
+                <Typography component="h2" variant="h3" sx={{ mb: 3 }}>Insurance Plans</Typography>
             </header>
             <main>
                 <Stack direction="row" spacing="1em" sx={{ mb: 2 }}>
@@ -67,7 +68,7 @@ function Plans(props) {
                 }
                 {
                     loaded &&
-                    <Table options={tableOptions} rows={rows} updatable pKey="plan_ID" />
+                    <Table options={tableOptions} rows={rows} pKey="plan_ID" />
                 }
             </main>
         </>

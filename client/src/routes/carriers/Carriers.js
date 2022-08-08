@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Table from '../../components/table/Table';
 
+import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import { Button } from '@mui/material';
 import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined';
@@ -36,7 +37,7 @@ function Carriers(props) {
     return (
         <>
             <header>
-                <h1>Insurance Carriers</h1>
+                <Typography component="h2" variant="h3" sx={{ mb: 3 }}>Insurance Carriers</Typography>
             </header>
             <main>
                 <Stack direction="row" spacing="1em" sx={{ mb: 2 }}>

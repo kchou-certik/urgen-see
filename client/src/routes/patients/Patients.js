@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import ErrorMessage from '../../components/ErrorMessage';
 import PatientSearchButton from '../../components/PatientSearchButton';
 
+import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import { Button } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
@@ -56,7 +57,7 @@ function Patients(props) {
     return (
         <main>
             <header>
-                <h1>Patients</h1>
+                <Typography component="h2" variant="h3" sx={{ mb: 3 }}>Patient Registry</Typography>
             </header>
             <Stack direction="row" spacing="1em" sx={{ mb: 2 }}>
                 <PatientSearchButton />
