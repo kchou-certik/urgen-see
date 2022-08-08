@@ -1,24 +1,69 @@
+// Packages
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Table from '../../components/table/Table';
 
+// Components
+import Table from '../../components/table/Table';
+import ErrorMessage from '../../components/ErrorMessage';
+import Loading from '../../components/Loading';
+
+// MUI Components
+import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import { Button } from '@mui/material';
 import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined';
 
+const axios = require('axios').default;
+
+
 function Plans(props) {
-    const cols = ["plan_ID", "referral_required", "carrier_ID", "carrier.provider", "name"];
-    const rows = [
-        [1, 1, 1, "Empire BCBS", "HealthPlus"],
-        [2, 0, 2, "Aetna", "Bronze PPO"],
-        [3, 1, 2, "Aetna", "HMO"]
-    ]
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  STATE VARIABLES
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    const [rows, setRows] = React.useState(null);   // plan data
+    const [loaded, setLoaded] = React.useState(false);  // whether plan data is loaded
+    const [error, setError] = React.useState(false);
+
+    const tableOptions = {
+        name: 'Plan Name',
+        plan_ID: false,
+        referral_required: 'Referral Required',
+        carrier_ID: false,
+        provider: 'Carrier'
+    };
+
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  API FETCH REQUESTS
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+
+    // Load plan data
+    React.useEffect(() => {
+        axios.get(`${process.env.REACT_APP_API}/plans`)
+            .then((res) => {
+                const data = res.data.map((row) => {
+                    // format referral_required for readability
+                    if (row.referral_required === 1) {
+                        row.referral_required = "Yes";
+                    } else if (row.referral_required === 0) {
+                        row.referral_required = "No";
+                    } else {
+                        row.referral_required = "";
+                    }
+                    return row;
+                })
+                setLoaded(true);
+                setRows(data);
+            })
+            .catch((err) => {
+                setError(true);
+            });
+    }, []);
 
     return (
         <>
+
             <header>
-                <Link to="/carriers">{"<- "}Carriers</Link>
-                <h1>Insurance Plans</h1>
+                <Typography component="h2" variant="h3" sx={{ mb: 3 }}>Insurance Plans</Typography>
             </header>
             <main>
                 <Stack direction="row" spacing="1em" sx={{ mb: 2 }}>
@@ -26,7 +71,18 @@ function Plans(props) {
                         Add Plan
                     </Button>
                 </Stack>
-                <Table cols={cols} rows={rows} updatable pKey="plans_ID" />
+                {
+                    !loaded &&
+                    <Loading />
+                }
+                {
+                    error &&
+                    <ErrorMessage msg="An error occurred while loading data. Please try again." />
+                }
+                {
+                    loaded &&
+                    <Table options={tableOptions} rows={rows} pKey="plan_ID" />
+                }
             </main>
         </>
 

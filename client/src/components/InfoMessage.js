@@ -10,8 +10,8 @@ import Alert from '@mui/material/Alert';
 import CloseIcon from '@mui/icons-material/Close';
 
 
-function ErrorMessage({ msg, setStatus }) {
-    // An error message MUI snackbar notification
+function InfoMessage({ msg, setStatus }) {
+    // An info message MUI snackbar notification
     //
     // msg: String - the text to display on the message
     // setStatus: Function - a function returned by the setState() hook which
@@ -31,8 +31,8 @@ function ErrorMessage({ msg, setStatus }) {
     function handleClose(e, reason) {
         // disable clickaway dismissal of notification to ensure user doesn't accidentally miss it
         if (reason === 'clickaway') return;
-        setOpen(false);     // close notif
-        setStatus(null);    // remove "error" status from parent component
+        setOpen(false); // close notif
+        setStatus(null);    // remove `status` state from parent component
     };
 
     // action buttons to nest inside Snackbar notif
@@ -57,11 +57,11 @@ function ErrorMessage({ msg, setStatus }) {
             onClose={handleClose}
             action={action}
         >
-            <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+            <Alert onClose={handleClose} severity="info" sx={{ width: '100%' }}>
                 {msg}
             </Alert>
         </Snackbar>
     )
 }
 
-export default ErrorMessage;
+export default InfoMessage;

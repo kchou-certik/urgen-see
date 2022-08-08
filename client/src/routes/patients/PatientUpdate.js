@@ -1,165 +1,305 @@
+// Packages
 import React, { useState } from 'react';
-import PlanSelect from '../../components/PlanSelect';
-import { Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import date from 'date-and-time';
 
+// Components
+import ErrorMessage from '../../components/ErrorMessage';
+import SuccessMessage from '../../components/SuccessMessage';
+import DeleteButton from '../../components/DeleteButton';
+import Loading from '../../components/Loading';
+
+// MUI Components
+import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
+import FormLabel from '@mui/material/FormLabel';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import Autocomplete from '@mui/material/Autocomplete';
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
+import Switch from '@mui/material/Switch';
+import CircularProgress from '@mui/material/CircularProgress';
+import Stack from '@mui/material/Stack';
+
+// Icons
+import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
+
+const axios = require('axios').default;
+
 
 function PatientUpdate() {
-    const [req, setReq] = useState(false);
-    const [carrier, setCarrier] = useState("empireBcbs");
-    const [insuranceNeeded, setInsuranceNeeded] = useState(true);
+    const { mrn } = useParams();
+    const navigate = useNavigate();
+
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  STATE VARIABLES
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+
+    const [status, setStatus] = React.useState(null); // success | error | deleted
+    const [req, setReq] = useState(false);  // if text input field for 'other' sex is required
+    const [loaded, setLoaded] = useState(false); // if patient's data is loaded from API 
+    const [edited, setEdited] = useState(false); // if form has been changed from original data
+    const [data, setData] = useState({      // form data
+        first_name: "",
+        last_name: "",
+        date_of_birth: "",
+        sex: "",
+        phone_number: "",
+        email: "",
+        address_1: "",
+        address_2: "",
+        city: "",
+        state: "",
+        postal_code: "",
+        insurance_policy: "",
+        insurance_group: "",
+        plan: null
+    });
+
+    // insurance selector/input state variables
+    const [plans, setPlans] = useState([]);     // plan data
+    const [insuranceNeeded, setInsuranceNeeded] = useState(true);   // is insurance data needed? false for self-pay
+    const [planSelectorOpen, setPlanSelectorOpen] = useState(false);    // plan dropdown selector state
+
+    // ∘₊✧──────✧₊∘
+    //  HANDLERS
+    // ∘₊✧──────✧₊∘
 
     function handleSubmit(e) {
+        // submits API PUT request
         e.preventDefault();
-        alert("Submitted!");
+        axios.put(`${process.env.REACT_APP_API}/patients/${mrn}`, data)
+            .then((res) => setStatus("success"))
+            .catch((err) => setStatus("error"));
     }
+
+    // from https://reactjs.org/docs/forms.html#handling-multiple-inputs
+    function handleInputChange(event) {
+        // updates form data for controlled inputs
+        const target = event.target;
+        const name = target.name;
+
+        setData({
+            ...data,
+            [name]: target.value
+        });
+
+        if (!edited) setEdited(true);
+    }
+
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  API FETCH REQUESTS
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+
+    const loading = planSelectorOpen && plans.length === 0; // from https://mui.com/material-ui/react-autocomplete/#load-on-open
+    React.useEffect(() => {
+        // load plan data for AutoComplete dropdown selector
+        axios.get(`${process.env.REACT_APP_API}/plans`)
+            .then((res) => {
+                setPlans(res.data);
+            })
+            .catch((err) => {
+                setStatus("error");
+            });
+    }, [loading]);
+
+    React.useEffect(() => {
+        // load patient data
+        if (loaded) return;
+
+        axios.get(`${process.env.REACT_APP_API}/patients/${mrn}`)
+            .then((res) => {
+                let resData = res.data;
+
+                // change NULL values to empty strings
+                Object.keys(resData).map((key) => {
+                    if (resData[key] === null) {
+                        resData[key] = "";
+                    }
+                    return null;
+                });
+
+                // format DOB so it works with calendar input field
+                resData.date_of_birth = date.format(new Date(resData.date_of_birth), "YYYY-MM-DD");
+
+                // checks if patient is not F/M and adjusts form accordingly
+                if (resData.sex !== "M" && resData.sex !== "F") {
+                    setReq(true);
+                }
+
+                // checks if patient is self-pay and adjusts form accordingly
+                if (resData.insurance_policy === "" && resData.insurance_group === "" && resData.plan_ID === "") {
+                    setInsuranceNeeded(false);
+                }
+
+                // update form data; `plan` is set to null as that is what Autocomplete component expects
+                // (despite all the other inputs not liking null lol)
+                if (resData.plan_ID) {
+                    resData.plan = {
+                        plan_ID: resData.plan_ID,
+                        name: resData.plan_name
+                    }
+                } else {
+                    resData.plan = null;
+                }
+
+                setData({ ...data, ...resData });
+                setLoaded(true);
+            })
+            .catch((err) => {
+                setStatus("error");
+            });
+    }, [mrn, data, loaded]);
+
 
     return (
         <>
-            <header>
-                <Link to="/patients">{"<-"} Patients</Link>
-                <h1>Update Patient</h1>
-                <section>
-                    <p>
-                        <h2>Alex, Alex</h2>
-                        <em>Last Name, First Name</em>
-                    </p>
-                    <p>
-                        <strong>DOB: 01/01/1990</strong>
-                        <br />
-                        <strong>MRN: 1</strong>
-                    </p>
-                    <p>
-                        <h2><em>[SAMPLE DATA]</em></h2>
-                    </p>
-                </section>
-            </header>
-            <main>
-                <form onSubmit={handleSubmit} >
-                    <fieldset> <legend>Demographics</legend>
-                        <p>
-                            <label htmlFor="fname">First name
-                                <input type="text" id="fname" name="first_name" placeholder="Alex" />
-                            </label>
-                        </p>
-                        <p>
-                            <label htmlFor="fname">Last name
-                                <input type="text" id="lname" name="last_name" placeholder="Alex" />
-                            </label>
-                        </p>
-                        <p>
-                            <label htmlFor="dob">DOB
-                                <input type="date" id="dob" name="date_of_birth" placeholder="MM/DD/YYYY" autoComplete="bday" />
-                            </label>
-                        </p>
-                        <fieldset> <legend>Sex</legend>
-                            <ul>
-                                <li>
-                                    <label htmlFor="msex">
-                                        <input type="radio" id="msex" name="sex" value="M" onClick={() => setReq(false)} />Male
-                                    </label>
-                                </li>
-                                <li>
-                                    <label htmlFor="fsex">
-                                        <input type="radio" checked="true" id="fsex" name="sex" value="F" onClick={() => setReq(false)} />Female
-                                    </label>
-                                </li>
-                                <li>
-                                    <label htmlFor="osex">
-                                        <input type="radio" id="osex" name="sex" value="" onClick={() => setReq(true)} />Other
-                                        <input type="text" name="sex" required={req} disabled={!req} />
-                                    </label>
-                                </li>
-                            </ul>
-                        </fieldset>
-                    </fieldset>
-                    <fieldset> <legend>Contact Info</legend>
-                        <p>
-                            <label htmlFor="phone">
-                                Phone number
-                                <input type="tel" name="phone_number" id="phone" placeholder="111-222-3333" />
-                            </label>
-                        </p>
-                        <p>
-                            <label htmlFor="email">
-                                Email
-                                <input type="email" id="email" name="email" placeholder='alex@alex.com' />
-                            </label>
-                        </p>
-                        <fieldset> <legend>Address</legend>
-                            <p>
-                                <label htmlFor="addr1">
-                                    Address Field 1
-                                    <input type="text" id="addr1" autoComplete="address-line1" name="address_1" placeholder='1 1st Street' />
-                                </label>
-                            </p>
-                            <p>
-                                <label htmlFor="addr2">
-                                    Address Field 2
-                                    <input type="text" id="addr2" autoComplete="address-line2" name="address_2" />
-                                </label>
-                            </p>
-                            <p>
-                                <label htmlFor="city">
-                                    City
-                                    <input type="text" id="city" autoComplete="address-level2" name="city" placeholder='New York City' />
-                                </label>
-                            </p>
-                            <p>
-                                <label htmlFor="state">
-                                    State/Province
-                                    <input type="text" id="state" autoComplete="address-level1" name="state" placeholder='NY' />
-                                </label>
-                            </p>
-                            <p>
-                                <label htmlFor="post">
-                                    Postal Code
-                                    <input type="text" id="post" autoComplete="postal-code" name="postal_code" placeholder='10010' />
-                                </label>
-                            </p>
-                        </fieldset>
-                    </fieldset>
-                    <fieldset> <legend>Primary Insurance</legend>
-                        <p>
-                            <label htmlFor="selfpay">
-                                <input type="checkbox" id="selfpay" onChange={(e) => setInsuranceNeeded(!e.target.checked)} />
-                                Self-pay / Uninsured
-                            </label>
-                        </p>
-                        <p>
-                            <label htmlFor="inspolicy">
-                                Policy ID
-                                <input type="text" id="inspolicy" name="insurance_policy" disabled={!insuranceNeeded} placeholder="12345abc" />
-                            </label>
-                        </p>
-                        <p>
-                            <label htmlFor="insgrp">
-                                Policy ID
-                                <input type="text" id="insgrp" name="insurance_group" disabled={!insuranceNeeded} placeholder="xyz" />
-                            </label>
-                        </p>
-                        <p>
-                            <label htmlFor="inscarrier">
-                                Insurance Carrier
-                                <select id="inscarrier" name="carrier" value={carrier} onChange={(e) => setCarrier(e.target.value)} disabled={!insuranceNeeded}>
-                                    <option value="empireBcbs">Empire BCBS</option>
-                                    <option value="aetna">Aetna</option>
-                                </select>
-                            </label>
-                        </p>
-                        <p>
-                            <label htmlFor="insplan">
-                                Insurance Plan
-                                <PlanSelect carrier={carrier} disabled={!insuranceNeeded} />
-                            </label>
-                        </p>
-                    </fieldset>
-                    <input type="submit" />
-                </form>
-                <p>
-                    <Button variant="outlined" color="warning" component={Link} to="#">Delete Patient</Button>
-                </p>
-            </main>
+            <Container component="main" maxWidth="md" sx={{ mb: 10 }} >
+                {status === 'success' && <SuccessMessage msg="Successfully updated!" setStatus={setStatus} />}
+                {status === "error" && <ErrorMessage msg="An error occurred! Please try again." setStatus={setStatus} />}
+                {status === 'deleted' && <SuccessMessage msg="Successfully deleted." setStatus={setStatus} />}
+
+                <Button onClick={() => navigate(-1)}><ArrowBackOutlinedIcon sx={{ mr: 0.5, mb: 0.2 }} /> Back</Button>
+                <Typography variant="h4">Edit Patient Record</Typography>
+                <Typography variant="subtitle1" gutterBottom>* denotes required</Typography>
+
+                {
+                    !loaded &&
+                    <Loading />
+                }
+
+                {loaded &&
+                    <Box component="form" onSubmit={handleSubmit}>
+                        <Card sx={{ mb: 2, p: 2 }}>
+                            <CardContent>
+                                <Grid container spacing={2} mb={2}>
+                                    <Grid item xs={12} sm={4}>
+                                        <TextField required id="lastName" value={data.last_name} name="last_name" label="Last name" fullWidth onChange={handleInputChange} />
+                                    </Grid>
+                                    <Grid item xs={12} sm={4}>
+                                        <TextField required id="firstName" value={data.first_name} name="first_name" label="First name" fullWidth onChange={handleInputChange} />
+                                    </Grid>
+                                    <Grid item xs={12} sm={4}>
+                                        <TextField required id="dob" value={data.date_of_birth} type="date" name="date_of_birth" label="Date of birth" fullWidth onChange={handleInputChange} InputLabelProps={{
+                                            shrink: true,
+                                        }} />
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <FormLabel id="sex-radio">Sex *</FormLabel>
+                                        <RadioGroup
+                                            aria-labelledby="sex-radio"
+                                            name="sex"
+                                            value={data.sex}
+                                            onChange={handleInputChange}
+                                        >
+                                            <FormControlLabel value="F" name="sex" control={<Radio size="small" />} label="Female" onClick={() => setReq(false)} />
+                                            <FormControlLabel value="M" name="sex" control={<Radio size="small" />} label="Male" onClick={() => setReq(false)} />
+                                            <FormControlLabel value="other" checked={data.sex !== 'M' && data.sex !== 'F'} name="sex" control={<Radio size="small" />} label="Other" onClick={() => setReq(true)} />
+                                            <TextField name="sex" value={req ? data.sex : ""} size="small" label="Other" fullWidth required={req} disabled={!req} onChange={handleInputChange} />
+                                        </RadioGroup>
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField id="mrn" value={data.mrn} label="MRN" disabled />
+                                    </Grid>
+                                </Grid>
+                            </CardContent>
+                        </Card>
+                        <Card sx={{ mb: 2, p: 2 }}>
+                            <CardContent>
+                                <Typography variant="h6" gutterBottom>Contact Info</Typography>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField id="phone" required value={data.phone_number} type="tel" name="phone_number" label="Phone number" fullWidth onChange={handleInputChange} />
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField id="email" value={data.email} type="email" name="email" label="Email" fullWidth onChange={handleInputChange} />
+                                    </Grid>
+                                    <Grid item xs={12} sm={12}>
+                                        <TextField id="addr1" value={data.address_1} name="address_1" label="Address line 1" fullWidth onChange={handleInputChange} />
+                                    </Grid>
+                                    <Grid item xs={12} sm={12}>
+                                        <TextField id="addr2" value={data.address_2} name="address_2" label="Address line 2" fullWidth onChange={handleInputChange} />
+                                    </Grid>
+                                    <Grid item xs={12} sm={4}>
+                                        <TextField id="city" value={data.city} name="city" label="City" fullWidth onChange={handleInputChange} />
+                                    </Grid>
+                                    <Grid item xs={6} sm={4}>
+                                        <TextField id="state" value={data.state} name="state" label="State" fullWidth onChange={handleInputChange} />
+                                    </Grid>
+                                    <Grid item xs={6} sm={4}>
+                                        <TextField id="postalCode" value={data.postal_code} name="postal_code" label="Postal code" fullWidth onChange={handleInputChange} />
+                                    </Grid>
+                                </Grid>
+                            </CardContent>
+                        </Card>
+                        <Card sx={{ mb: 2, p: 2 }}>
+                            <CardContent>
+                                <Typography variant="h6" mt={3} gutterBottom>Primary Insurance</Typography>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12} sm={4}>
+                                        <FormControlLabel label="Self-pay" control={<Switch checked={!insuranceNeeded} />} onChange={(e) => {
+                                            if (e.target.checked) {
+                                                setData({ ...data, insurance_policy: "", insurance_group: "", plan: null });
+                                            }
+                                            setInsuranceNeeded(!e.target.checked);
+                                            if (!edited) setEdited(true)
+                                        }} />
+                                    </Grid>
+                                    <Grid item xs={12} sm={4}>
+                                        <TextField id="inspolicy" name="insurance_policy" required={insuranceNeeded} value={data.insurance_policy} label="Insurance Policy #" fullWidth onChange={handleInputChange} disabled={!insuranceNeeded} />
+                                    </Grid>
+                                    <Grid item xs={12} sm={4}>
+                                        <TextField id="insgrp" name="insurance_group" value={data.insurance_group} label="Insurance Group #" fullWidth onChange={handleInputChange} disabled={!insuranceNeeded} />
+                                    </Grid>
+                                    <Grid item xs={12} sm={12}>
+                                        <Autocomplete id="plans"
+                                            disabled={!insuranceNeeded}
+                                            options={plans} groupBy={(option) => option.provider}
+                                            getOptionLabel={(option) => option.name}
+                                            isOptionEqualToValue={(option, val) => option.plan_ID === val.plan_ID}
+                                            value={data.plan}
+                                            onChange={(e, val) => {
+                                                setData({ ...data, plan: val });
+                                                if (!edited) setEdited(true);
+                                            }}
+                                            open={planSelectorOpen}
+                                            onOpen={() => {
+                                                setPlanSelectorOpen(true);
+                                            }}
+                                            onClose={() => {
+                                                setPlanSelectorOpen(false);
+                                            }}
+                                            renderInput={(params) => (
+                                                <TextField
+                                                    {...params} label="Insurance Plan" fullWidth
+                                                    InputProps={{
+                                                        ...params.InputProps,
+                                                        endAdornment: (
+                                                            <>
+                                                                {loading ? <CircularProgress size={20} /> : null}
+                                                                {params.InputProps.endAdornment}
+                                                            </>
+                                                        )
+                                                    }}
+                                                />)}
+                                        />
+                                    </Grid>
+                                </Grid>
+                            </CardContent>
+                        </Card>
+                        <Stack direction="row" spacing={2}>
+                            <Button type="submit" variant="outlined" disabled={!edited}>Submit</Button>
+                            <DeleteButton text="Delete" route={"patients"} id={mrn} setStatus={setStatus} />
+                        </Stack>
+                    </Box>
+                }
+            </Container>
         </>
     )
 }

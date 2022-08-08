@@ -1,31 +1,79 @@
+// Packages
 import React from 'react';
-import { Link } from 'react-router-dom';
-import Table from '../../components/table/Table';
+import date from 'date-and-time';
 
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import PeopleIcon from '@mui/icons-material/People';
+// Components
+import Table from '../../components/table/Table';
+import ErrorMessage from '../../components/ErrorMessage';
+import Loading from '../../components/Loading';
+
+// MUI Components
+import Typography from '@mui/material/Typography';
+
+const axios = require('axios').default;
+
 
 function StaffInteractions(props) {
-    const cols = ["visit_staff_ID", "visit_ID", "visit.scheduled_time", "patient.first_name", "patient.last_name", "patient.date_of_birth", "staff_ID", "staff.first_name", "staff.last_name", "staff.practitioner_type"];
-    const rows = [
-        [1, 1, "10/07/2022 10:30", "Alex", "Alex", "01/01/1990", 2, "Florence", "Nightingale", "RN"],
-        [2, 1, "10/07/2022 10:30", "Alex", "Alex", "01/01/1990", 3, "Bill", "Billingson", "PA"]
-    ]
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  STATE VARIABLES
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+
+    const [rows, setRows] = React.useState(null);   // staff-interaction data
+    const [loaded, setLoaded] = React.useState(false);  // if data is loaded
+    const [error, setError] = React.useState(false);
+
+    const tableOptions = {
+        visit_staff_ID: false,
+        patient_name: "Patient",
+        date_of_birth: "DOB",
+        mrn: "MRN",
+        scheduled_time: "Visit Date",
+        staff_name: "Staff",
+        staff_ID: "Staff ID"
+    }
+
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  API FETCH REQUESTS
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+
+    React.useEffect(() => {
+        // Load staff-interaction data
+        axios.get(`${process.env.REACT_APP_API}/staff-interactions`)
+            .then((res) => {
+                res.data.map((row) => {
+                    // format dates/times
+                    row.date_of_birth = date.format(new Date(row.date_of_birth), "M/D/YYYY");
+                    row.scheduled_time = date.format(new Date(row.scheduled_time), "M/D/YY HH:mm");
+                    return row;
+                });
+                setLoaded(true);
+                setRows(res.data);
+            })
+            .catch((err) => {
+                setError(true);
+            });
+    }, []);
+
 
     return (
         <>
             <header>
-                <Link to="/visits">{"<-"} Visits</Link>
-                <h1>Patient-Staff Visit Interactions</h1>
+                <Typography component="h2" variant="h3">Patient-Staff Visit Interactions</Typography>
+                <Typography variant="subtitle1" sx={{ mb: 4 }}>To add interactions, edit a patient visit</Typography>
             </header>
             <main>
-                <Stack direction="row" spacing="1em" sx={{ mb: 2 }}>
-                    <Button component={Link} to="/staff-interactions/new" variant="outlined" endIcon={<PeopleIcon />}>
-                        Add Interaction
-                    </Button>
-                </Stack>
-                <Table cols={cols} rows={rows} updatable pKey="visit_staff_ID" />
+                {
+                    !loaded &&
+                    <Loading />
+                }
+                {
+                    error &&
+                    <ErrorMessage msg="An error occurred while loading data. Please try again." />
+                }
+                {
+                    loaded &&
+                    <Table options={tableOptions} rows={rows} updatable pKey="visit_staff_ID" />
+                }
             </main>
         </>
 

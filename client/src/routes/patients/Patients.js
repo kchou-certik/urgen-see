@@ -1,35 +1,97 @@
+// Packages
 import React from 'react';
-import Table from '../../components/table/Table'
 import { Link } from 'react-router-dom';
+import date from 'date-and-time';
 
+// Components
+import Table from '../../components/table/Table'
+import ErrorMessage from '../../components/ErrorMessage';
+import PatientSearchButton from '../../components/PatientSearchButton';
+import Loading from '../../components/Loading';
+
+// MUI Components
+import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import { Button } from '@mui/material';
-import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
+const axios = require('axios').default;
 
 
 function Patients(props) {
-    const cols = ["mrn", "first_name", "last_name", "sex", "date_of_birth", "phone_number", "email", "address_1", "address_2", "city", "state", "postal_code", "insurance_policy", "insurance_group", "plan_ID", "carrier.provider", "plan.name"];
 
-    const rows = [
-        [1, "Alex", "Alex", "F", "1990-01-01", "111-222-3333", "alex@alex.com", "1 1st Street", null, "New York City", "NY", "10010", "12345abc", "xyz", 1, "Empire BCBS", "HealthPlus"],
-        [2, "Betty", "Betty", "MTF", "1980-01-01", "444-555-6666", "betty@betty.com", "2 2nd Street", "Unit 1A", "New York City", "NY", "10011", "67890def", "def", 2, "Aetna", "Bronze PPO"]
-    ];
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  STATE VARIABLES
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+
+    const [rows, setRows] = React.useState(null);   // patient data
+    const [loaded, setLoaded] = React.useState(false);  // if data is loaded
+    const [error, setError] = React.useState(false);
+
+    const tableOptions = {
+        mrn: "MRN",
+        first_name: "First Name",
+        last_name: "Last Name",
+        sex: "Sex",
+        date_of_birth: "DOB",
+        phone_number: "Phone Number",
+        email: "Email",
+        address_1: "Address 1",
+        address_2: "Address 2",
+        city: "City",
+        state: "State",
+        postal_code: "Postcode",
+        insurance_policy: "Policy #",
+        insurance_group: "Group #",
+        plan_ID: false,
+        plan_name: "Plan"
+    };
+
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  API FETCH REQUESTS
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+
+    React.useEffect(() => {
+        // load patient data
+        axios.get(`${process.env.REACT_APP_API}/patients`)
+            .then((res) => {
+                res.data.map((row) => {
+                    // format DOB
+                    row.date_of_birth = date.format(new Date(row.date_of_birth), "M/D/YYYY");
+                    return row;
+                });
+                setLoaded(true);
+                setRows(res.data);
+            })
+            .catch((err) => {
+                setError(true);
+            });
+    }, []);
+
+
     return (
         <main>
             <header>
-                <h1>Patients</h1>
+                <Typography component="h2" variant="h3" sx={{ mb: 3 }}>Patient Registry</Typography>
             </header>
             <Stack direction="row" spacing="1em" sx={{ mb: 2 }}>
-                <Button component={Link} to="/patients/search" variant="outlined" endIcon={<PersonSearchIcon />}>
-                    Search
-                </Button>
+                <PatientSearchButton />
                 <Button component={Link} to="/patients/new" variant="outlined" endIcon={<PersonAddIcon />}>
                     Register
                 </Button>
             </Stack>
-            <Table cols={cols} rows={rows} updatable pKey="mrn" />
+            {
+                !loaded &&
+                <Loading />
+            }
+            {
+                error &&
+                <ErrorMessage msg="An error occurred while loading data. Please try again." />
+            }
+            {
+                loaded &&
+                <Table options={tableOptions} rows={rows} updatable clickable pKey="mrn" />
+            }
         </main >
     );
 }

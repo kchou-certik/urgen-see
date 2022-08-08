@@ -1,17 +1,19 @@
 // Packages
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // MUI Components
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import Alert from '@mui/material/Alert';
+import Button from '@mui/material/Button';
 
 // Icons
 import CloseIcon from '@mui/icons-material/Close';
 
 
-function ErrorMessage({ msg, setStatus }) {
-    // An error message MUI snackbar notification
+function SuccessMessage({ msg, setStatus }) {
+    // A success message MUI snackbar notification
     //
     // msg: String - the text to display on the message
     // setStatus: Function - a function returned by the setState() hook which
@@ -21,23 +23,23 @@ function ErrorMessage({ msg, setStatus }) {
     //  STATE VARIABLES
     // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
 
+    const navigate = useNavigate();
     const [open, setOpen] = React.useState(true);   // if notification is open (i.e. displayed)
 
     // ∘₊✧──────✧₊∘
     //  HANDLERS
     // ∘₊✧──────✧₊∘
 
-    // From: https://mui.com/material-ui/react-snackbar/#simple-snackbars
     function handleClose(e, reason) {
-        // disable clickaway dismissal of notification to ensure user doesn't accidentally miss it
-        if (reason === 'clickaway') return;
         setOpen(false);     // close notif
-        setStatus(null);    // remove "error" status from parent component
+        setStatus(null);    // remove "success" status from parent component
     };
 
     // action buttons to nest inside Snackbar notif
+    // BACK button pops the browser history stack
     const action = (
         <>
+            <Button size="small" color="inherit" onClick={() => navigate(-1)}>BACK</Button>
             <IconButton
                 size="small"
                 aria-label="close"
@@ -53,15 +55,14 @@ function ErrorMessage({ msg, setStatus }) {
     return (
         <Snackbar
             open={open}
-            autoHideDuration={10000}
             onClose={handleClose}
-            action={action}
+            message={msg}
         >
-            <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+            <Alert onClose={handleClose} severity="success" action={action} >
                 {msg}
             </Alert>
         </Snackbar>
     )
 }
 
-export default ErrorMessage;
+export default SuccessMessage;

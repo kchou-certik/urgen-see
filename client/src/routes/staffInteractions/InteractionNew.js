@@ -1,8 +1,23 @@
+// ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+//  TODO Unused route
+// ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+// New interactions are created when creating/updating Visits
+
+// Packages
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 function InteractionNew() {
+
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+    //  STATE VARIABLES
+    // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
+
     const [staff, setStaff] = useState();
+
+    // ∘₊✧──────✧₊∘
+    //  HANDLERS
+    // ∘₊✧──────✧₊∘
 
     function handleSubmit(e) {
         e.preventDefault();

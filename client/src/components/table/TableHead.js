@@ -1,12 +1,23 @@
+// Packages
 import React from 'react';
 
-import MUITableHead from '@mui/material/TableHead';
+// Components
 import TableRow from './TableRow';
 
-function TableHead({ row }) {
+// MUI Components
+import MUITableHead from '@mui/material/TableHead';
+
+
+function TableHead({ options, row }) {
+    /**Creates a MUI table header using TableRow. To be used for Table components.
+     * 
+     * options: Object - passed down from Table
+     * row: Array - passed down from Table, an array of column names
+     */
+
     return (
         <MUITableHead>
-            <TableRow row={row} />
+            <TableRow options={options} row={row} />
         </MUITableHead>
     );
 }
