@@ -74,7 +74,13 @@ function PatientUpdate() {
     function handleSubmit(e) {
         // submits API PUT request
         e.preventDefault();
-        axios.put(`${process.env.REACT_APP_API}/patients/${mrn}`, data)
+        const body = { ...data }
+
+        // convert date of birth to UTC
+        const bday = body.date_of_birth + " 12:00:00"
+        body.date_of_birth = new Date(bday);
+
+        axios.put(`${process.env.REACT_APP_API}/patients/${mrn}`, body)
             .then((res) => setStatus("success"))
             .catch((err) => setStatus("error"));
     }

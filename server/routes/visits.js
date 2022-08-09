@@ -41,7 +41,6 @@ router.get('/', (req, res) => {
     // perform query
     db.pool.query(query, (err, rows, fields) => {
         if (err) {
-            console.log(err)
             res.status(500).send(err);
             return;
         }

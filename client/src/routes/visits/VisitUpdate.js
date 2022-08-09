@@ -75,9 +75,15 @@ function VisitUpdate() {
     function handleSubmit(e) {
         // submits API requests to update records
         e.preventDefault();
+        const body = { ...data };
+
+        // convert times to UTC
+        body.scheduled_time = new Date(body.scheduled_time);
+        if (body.check_in_time) body.check_in_time = new Date(body.check_in_time);
+        if (body.discharge_time) body.discharge_time = new Date(body.discharge_time);
 
         // PUT request to update visit data
-        axios.put(`${process.env.REACT_APP_API}/visits/${visit_ID}`, data)
+        axios.put(`${process.env.REACT_APP_API}/visits/${visit_ID}`, body)
             .then((res) => {
                 // update visit-staff interaction records if staff list was changed
                 if (staffEdited) {

@@ -28,7 +28,7 @@ router.get('/', (req, res) => {
     ON Plans.carrier_ID = Carriers.carrier_ID
     WHERE IFNULL(first_name=?, True) 
     AND IFNULL(last_name=?, True) 
-    AND IFNULL(date_of_birth=?, True) 
+    AND IFNULL(DATE(date_of_birth)=?, True) 
     AND IFNULL(mrn=?, True)
     ORDER BY last_name ASC;`;
 
@@ -107,7 +107,6 @@ router.get('/:id/visits', (req, res) => {
     // perform query, passing in query and ID
     db.pool.query(query, mrn, (err, rows, fields) => {
         if (err) {
-            console.log(err)
             res.status(500).send(err);
             return;
         }

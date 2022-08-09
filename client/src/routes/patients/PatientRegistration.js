@@ -1,6 +1,7 @@
 // Packages
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import date from 'date-and-time';
 
 // Components
 import ErrorMessage from '../../components/ErrorMessage';
@@ -31,6 +32,7 @@ const axios = require('axios').default;
 
 function PatientRegistration() {
     const navigate = useNavigate();
+
 
     // ∘₊✧──────✧₊∘∘₊✧──────✧₊∘
     //  STATE VARIABLES
@@ -68,8 +70,13 @@ function PatientRegistration() {
     function handleSubmit(e) {
         // submits API request
         e.preventDefault();
+        const body = { ...data };
 
-        axios.post(`${process.env.REACT_APP_API}/patients`, data)
+        // convert date of birth to UTC
+        const bday = body.date_of_birth + " 12:00:00";
+        body.date_of_birth = new Date(bday);
+
+        axios.post(`${process.env.REACT_APP_API}/patients`, body)
             .then((res) => setStatus("success"))
             .catch((err) => setStatus("error"));
     }

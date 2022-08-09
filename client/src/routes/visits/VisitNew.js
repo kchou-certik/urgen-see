@@ -78,14 +78,18 @@ function VisitNew() {
     function handleSubmit(e) {
         // submit API POST requests
         e.preventDefault();
+        const body = { ...data };
 
-        if (!data.mrn) {
+        if (!body.mrn) {
             setStatus("nopatient");
             return;
         }
 
+        // convert scheduled_time to UTC
+        body.scheduled_time = new Date(body.scheduled_time);
+
         // chaining axios queries: https://medium.com/software-development-turkey/using-async-await-with-axios-edf8a0fed4b1
-        axios.post(`${process.env.REACT_APP_API}/visits`, data).then(response => { return response.data.insertId })
+        axios.post(`${process.env.REACT_APP_API}/visits`, body).then(response => { return response.data.insertId })
             .then(insertId => {
                 axios.post(`${process.env.REACT_APP_API}/staff-interactions`, { data, insertId })
                     .then((res) => setStatus("success"))
