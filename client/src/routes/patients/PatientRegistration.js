@@ -1,7 +1,6 @@
 // Packages
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import date from 'date-and-time';
 
 // Components
 import ErrorMessage from '../../components/ErrorMessage';
